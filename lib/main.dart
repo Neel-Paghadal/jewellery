@@ -12,6 +12,10 @@ void main() {
     DeviceOrientation.portraitDown,
   ]);
   runApp(const MyApp());
+  // runApp(DevicePreview(
+  //   builder: (context) => const MyApp(),
+  //   enabled: true,
+  // ));
 }
 
 class MyApp extends StatelessWidget {

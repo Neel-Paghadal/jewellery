@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
+import 'package:jewellery_user/Models/dashboard_model.dart';
 
 
 class HomeController extends GetxController{
@@ -13,8 +14,9 @@ class HomeController extends GetxController{
 
   RxBool loading = false.obs;
 
+  RxList<Order> homeList = <Order>[].obs;
 
-  Future<void> getOrderCall() async {
+ getOrderCall(int pageIndex, int pageSize) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
 
@@ -25,9 +27,14 @@ class HomeController extends GetxController{
     };
 
 
-    final response =  await http.get(Uri.parse(ConstApi.getOrder),headers: headers);
+    final response =  await http.get(Uri.parse("http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),headers: headers);
     if (response.statusCode == 200) {
-      // Successful API call
+      final responseData = dashboardFromJson(response.body);
+      debugPrint("HOME LIST "+responseData.toString());
+       homeList.addAll(responseData.orders);
+      debugPrint("HOME LIST "+homeList[0].name.toString());
+      debugPrint("HOME LIST "+homeList[1].name.toString());
+
       print('Response: ${response.body}');
       // Process the data as needed
     } else {
@@ -36,5 +43,36 @@ class HomeController extends GetxController{
       print('Error body: ${response.body}');
     }
   }
+
+
+  // getOrderCall(int pageIndex, int pageSize) async {
+  //   String? token = await ConstPreferences().getToken();
+  //   debugPrint(token);
+  //
+  //   // Set up headers with the token
+  //   Map<String, String> headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer $token',
+  //   };
+  //
+  //
+  //   final response =  await http.get(Uri.parse("http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),headers: headers);
+  //   if (response.statusCode == 200) {
+  //     final responseData = dashboardFromJson(response.body);
+  //     debugPrint("HOME LIST "+responseData.toString());
+  //     homeList.clear();
+  //     homeList.addAll(responseData.orders);
+  //     // Successful API call
+  //     debugPrint("HOME LIST "+homeList[0].name.toString());
+  //     debugPrint("HOME LIST "+homeList[1].name.toString());
+  //
+  //     print('Response: ${response.body}');
+  //     // Process the data as needed
+  //   } else {
+  //     // Error in API call
+  //     print('Error: ${response.statusCode}');
+  //     print('Error body: ${response.body}');
+  //   }
+  // }
 
 }

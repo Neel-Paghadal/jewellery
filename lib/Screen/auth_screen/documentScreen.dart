@@ -385,7 +385,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: ConstColour.primaryColor)
+                    border: Border.all(color: ConstColour.primaryColor,strokeAlign: BorderSide.strokeAlignInside,style: BorderStyle.solid)
                   ),
                   child: Stack(
                     children: [
@@ -450,7 +450,18 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                     );
                                   },
                                   child: (userProfileImage == null || userProfileImage!.isEmpty)
-                                      ? Image.asset('asset/images/add-image.gif')
+                                      ?
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                     mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset('asset/icons/image.png',width: deviceWidth * 0.2),
+                                      Padding(
+                                        padding:  EdgeInsets.all(8.0),
+                                        child: Text("Upload identity document",style: TextStyle(color: Colors.grey,fontFamily: ConstFont.poppinsMedium,fontSize: 14,),overflow: TextOverflow.ellipsis,),
+                                      )
+                                    ],
+                                  )
 
                                       : CircleAvatar(
                                     radius: 55,
@@ -496,6 +507,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   ),
                 ),
               ),
+
               Padding(
                 padding: EdgeInsets.only(top: deviceHeight * 0.05),
                 child: NextButton(
