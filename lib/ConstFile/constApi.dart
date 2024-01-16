@@ -4,5 +4,9 @@ class ConstApi {
   static  String userRegister = '${baseUrl}Auth/Register';
   static  String userLogin = '${baseUrl}Auth/login';
   static  String  getOrder = '${baseUrl}Order/Orders?PageNumber=1&PageSize=10';
+  static  String  getUser = '${baseUrl}Order/GetOrderUsers?orderId=2239E3D2-56D2-42C6-99AC-11440B4C53B7';
+  static  String  getUserForDrop = '${baseUrl}Order/Users?orderId=de060e20-bf54-48b9-b50c-048c9b5fbfb5';
+  static  String  order = '${baseUrl}Order';
+  static  String  assignOrder = '${baseUrl}Order/AssignOrder';
 
 }

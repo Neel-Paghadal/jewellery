@@ -4,6 +4,8 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jewellery_user/Screen/splashScreen.dart';
 
 import 'Screen/auth_screen/documentScreen.dart';
+import 'Screen/report.dart';
+import 'Screen/user_list.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(splashColor: Colors.white,useMaterial3: false),
       home: const SplashScreen(),
+      // home: const ReportScreen(),
       // home: const DocumentScreen(),
     );
   }

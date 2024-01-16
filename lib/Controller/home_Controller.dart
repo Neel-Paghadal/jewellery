@@ -33,7 +33,7 @@ class HomeController extends GetxController{
       debugPrint("HOME LIST "+responseData.toString());
        homeList.addAll(responseData.orders);
       debugPrint("HOME LIST "+homeList[0].name.toString());
-      debugPrint("HOME LIST "+homeList[1].name.toString());
+
 
       print('Response: ${response.body}');
       // Process the data as needed

@@ -5,10 +5,12 @@ import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
+import 'package:jewellery_user/Controller/user_list_controller.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../Models/dashboard_model.dart';
 import 'order.dart';
+import 'user_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.put(HomeController());
   ScrollController _scrollController = ScrollController();
+  UserListController userListController = Get.put(UserListController());
 
   int _pageIndex = 0;
   int _pageSize = 5;
@@ -33,13 +36,15 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController.addListener(_onScroll);
   }
 
-
-  Future<void> _handleRefresh() async{
+  Future<void> _handleRefresh() async {
     _pageIndex = 1;
     _pageSize = 5;
 
     homeController.homeList.clear();
-    homeController.getOrderCall(_pageIndex, _pageSize,);
+    homeController.getOrderCall(
+      _pageIndex,
+      _pageSize,
+    );
     debugPrint("ScreenRefresh");
     return await Future.delayed(Duration(seconds: 1));
   }
@@ -50,9 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     _pageIndex++;
 
-    debugPrint("Page Order index"+_pageIndex.toString());
+    debugPrint("Page Order index" + _pageIndex.toString());
     try {
-      final RxList<Order> products = await homeController.getOrderCall(_pageIndex, _pageSize,);
+      final RxList<Order> products = await homeController.getOrderCall(
+        _pageIndex,
+        _pageSize,
+      );
       setState(() {
         homeController.homeList.addAll(products);
       });
@@ -67,12 +75,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       // User has reached the end of the list, load more products
       _loadProducts();
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: true,
           actions: [
             TextButton(
-                onPressed: () {
-                },
+                onPressed: () {},
                 child: Text("Report",
                     style: TextStyle(
                         color: ConstColour.primaryColor,
@@ -113,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: NextButton(
             onPressed: () {
               Get.to(() => OrderScreen());
-
             },
             btnName: "Add Design",
           ),
@@ -127,21 +133,26 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: ConstColour.primaryColor,
           springAnimationDurationInMilliseconds: 1,
           child: Obx(
-            () =>  ListView.builder(
+            () => ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: homeController.homeList.length  + (_loading ? 1 : 0),
+              itemCount: homeController.homeList.length + (_loading ? 1 : 0),
               itemBuilder: (context, index) {
-
                 if (index == homeController.homeList.length) {
                   // Loading indicator
-                  return _loading ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(child: const CircularProgressIndicator(color: ConstColour.primaryColor),widthFactor: deviceWidth * 0.1,),
-                  ) : Container();
+                  return _loading
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: const CircularProgressIndicator(
+                                color: ConstColour.primaryColor),
+                            widthFactor: deviceWidth * 0.1,
+                          ),
+                        )
+                      : Container();
                 }
 
-                final product =homeController.homeList[index];
+                final product = homeController.homeList[index];
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -162,12 +173,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(21),
                             ),
-                            child: Image.network(
-                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                  // Custom error widget to display when image fails to load
-                                  return Icon(Icons.image,size: 80,color: Colors.grey,);
-                                },
-                                homeController.homeList[index].image.toString(),
+                            child: Image.network(errorBuilder:
+                                    (BuildContext context, Object exception,
+                                        StackTrace? stackTrace) {
+                              // Custom error widget to display when image fails to load
+                              return Icon(
+                                Icons.image,
+                                size: 80,
+                                color: Colors.grey,
+                              );
+                            }, homeController.homeList[index].image.toString(),
                                 width: deviceWidth * 0.1),
                           ),
                         ),
@@ -190,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Padding(
                               padding: EdgeInsets.only(
                                   top: deviceHeight * 0.015,
-                                  bottom: deviceHeight * 0.015),
+                                  bottom: deviceHeight * 0.01),
                               child: Text(
                                 homeController.homeList[index].dateCreated,
                                 style: TextStyle(
@@ -200,34 +215,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: ConstColour.primaryColor,
-                                    ),
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Genrate Code",
-                                      style: TextStyle(
-                                          fontFamily: ConstFont.poppinsBold,
-                                          color: Colors.black),
-                                    )),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: deviceWidth * 0.1),
-                                  child: Text(
-                                    homeController.homeList[index].party,
-                                    style: TextStyle(
-                                        color: ConstColour.primaryColor,
-                                        fontSize: 14,
-                                        fontFamily: ConstFont.poppinsMedium),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
-                              ],
-                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: deviceWidth * 0.4),
+                              child: TextButton(
+                                onPressed: () {
+                                  userListController.orderId = homeController.homeList[index].id;
+                                  userListController.getUserCall();
+
+
+                                },
+                                child: Text(
+                                  "User",
+                                  style: TextStyle(
+                                      color: ConstColour.primaryColor,
+                                      fontSize: 16,
+                                      fontFamily: ConstFont.poppinsMedium),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            )
                           ],
                         )
                       ],
@@ -236,7 +242,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
               controller: _scrollController,
-
             ),
           ),
         ),

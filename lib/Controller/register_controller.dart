@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/Common/snackbar.dart';
+import 'package:jewellery_user/Models/file_model.dart';
 import 'package:jewellery_user/Screen/auth_screen/login.dart';
 import '../ConstFile/constApi.dart';
 import '../ConstFile/constPreferences.dart';
@@ -35,6 +36,10 @@ class RegisterController extends GetxController{
   TextEditingController ifsc = TextEditingController();
   TextEditingController branchName = TextEditingController();
   TextEditingController accHolName = TextEditingController();
+
+
+  RxList<FileElement> imgList = <FileElement>[].obs;
+
 
 
   void clearController(){
@@ -68,9 +73,11 @@ class RegisterController extends GetxController{
         debugPrint('File uploaded successfully');
         debugPrint(response.toString());
         debugPrint('Response: $responseBody');
+        final responseData = fileUploadFromJson(responseBody);
+        imgList.addAll(responseData.files);
         var jsonResponse = json.decode(responseBody);
         // var filePath = json.decode(responseBody);
-
+        debugPrint(imgList.toString());
         // Extract and store the filePath value
         filePath = jsonResponse['filePath'];
         debugPrint("File Path "+filePath);
