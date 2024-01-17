@@ -52,16 +52,17 @@ class UserListController extends GetxController {
       if (response.statusCode == 200) {
         // Successful API call
         var responseBody = json.decode(response.body);
-        Get.to(() => HomeScreen());
-        print('Response: $responseBody');
+        Get.to(() => const HomeScreen());
+        debugPrint('Response: $responseBody');
         Utils().toastMessage("Order assign Successfully");
       } else {
         // Failed API call
-        print('Failed to make API call. Status code: ${response.statusCode}');
-        print('Response: ${response.body}');
+        debugPrint(
+            'Failed to make API call. Status code: ${response.statusCode}');
+        debugPrint('Response: ${response.body}');
       }
     } catch (error) {
-      print('Error making API call: $error');
+      debugPrint('Error making API call: $error');
     }
     homeController.loading.value = false;
   }
@@ -82,16 +83,16 @@ class UserListController extends GetxController {
       debugPrint(response.body);
       final responseData = usersListFromJson(response.body);
       debugPrint("HOME LIST " + responseData.toString());
-      Get.to(() => UserListScreen());
+      Get.to(() => const UserListScreen());
       userList.addAll(responseData.users);
       debugPrint("HOME LIST " + userList[0].userName.toString());
 
-      print('Response: ${response.body}');
+      debugPrint('Response: ${response.body}');
       // Process the data as needed
     } else {
       // Error in API call
-      print('Error: ${response.statusCode}');
-      print('Error body: ${response.body}');
+      debugPrint('Error: ${response.statusCode}');
+      debugPrint('Error body: ${response.body}');
     }
     getUserDropCall(orderId.toString());
   }
@@ -117,12 +118,12 @@ class UserListController extends GetxController {
       userListDrop.addAll(responseData.users);
       debugPrint("HOME LIST " + userList[0].userName.toString());
 
-      print('Response: ${response.body}');
+      debugPrint('Response: ${response.body}');
       // Process the data as needed
     } else {
       // Error in API call
-      print('Error: ${response.statusCode}');
-      print('Error body: ${response.body}');
+      debugPrint('Error: ${response.statusCode}');
+      debugPrint('Error body: ${response.body}');
     }
   }
 }

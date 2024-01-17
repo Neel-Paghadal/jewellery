@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
@@ -53,9 +54,16 @@ class _DocumentScreenState extends State<DocumentScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  final ifscVal = RegExp(r"^[A-Z]{4}[0]{1}[0-9A-Z}[6]");
+  bool ifscCodeValidate({required String content}) {
+    if (content.length != 11) {
+      return false;
+    } else {
+      return RegExp(r"^[A-Z]{4}[0]{1}[0-9A-Z}[6]").hasMatch(content);
+    }
+  }
 
-
-  @override
+    @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
@@ -65,7 +73,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
       appBar: AppBar(
         backgroundColor: ConstColour.bgColor,
         centerTitle: true,
-        title: Text("Register",
+        title: Text("Bank Details",
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: ConstFont.poppinsRegular,
@@ -81,14 +89,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
           child: Column(
             children: [
 
-              Text("Bank Details",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: ConstFont.poppinsRegular,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      overflow: TextOverflow.ellipsis)),
-              Divider(height: deviceHeight * 0.01),
               Padding(
                 padding: EdgeInsets.only(
                     left: deviceWidth * 0.03, right: deviceWidth * 0.03),
@@ -211,16 +211,21 @@ class _DocumentScreenState extends State<DocumentScreen> {
                 child: TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   textAlign: TextAlign.start,
+                   textCapitalization: TextCapitalization.characters,
+                   inputFormatters: [LengthLimitingTextInputFormatter(11),],
                   keyboardType: TextInputType.text,
                   autocorrect: true,
                   controller: registerController.ifsc,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter IFSC code";
-                    } else {
+                    } else if(ifscVal.hasMatch(value)) {
+                      return "Enter Valid IFSC Code";
+                    }else{
                       return null;
                     }
                   },
+
                   decoration: InputDecoration(
                     labelStyle: const TextStyle(color: Colors.grey),
                     enabledBorder: OutlineInputBorder(
@@ -458,7 +463,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                       Image.asset('asset/icons/image.png',width: deviceWidth * 0.2),
                                       Padding(
                                         padding:  EdgeInsets.all(8.0),
-                                        child: Text("Upload identity document",style: TextStyle(color: Colors.grey,fontFamily: ConstFont.poppinsMedium,fontSize: 14,),overflow: TextOverflow.ellipsis,),
+                                        child: Text("Upload Aadhaar Card",style: TextStyle(color: Colors.grey,fontFamily: ConstFont.poppinsMedium,fontSize: 14,),overflow: TextOverflow.ellipsis,),
                                       )
                                     ],
                                   )

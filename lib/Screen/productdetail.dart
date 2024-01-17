@@ -1,6 +1,9 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:jewellery_user/Controller/product_controller.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../Common/bottom_button_widget.dart';
 import '../ConstFile/constColors.dart';
@@ -16,7 +19,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   TextEditingController _createDateController = TextEditingController();
   TextEditingController _deliveryDateController = TextEditingController();
-
+  ProductController productController = Get.put(ProductController());
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -37,7 +40,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           actions: [
             IconButton(
               onPressed: () {},
-              icon: Image.asset("asset/images/Group.png"),
+              icon: Image.asset("asset/icons/edit.png"),
             ),
           ],
         leading: IconButton(
@@ -62,10 +65,27 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Container(
+                  height: deviceHeight * 0.4,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(21),
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.white
                   ),
-                  child: Image.asset("asset/images/jeweller.png"),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                        errorBuilder:
+                            (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          // Custom error widget to display when image fails to load
+                          return const Icon(
+                            Icons.image,
+                            size: 150,
+                            color: Colors.grey,
+                          );
+                        },
+                        productController.productDetail[0].image),
+                  ),
                 ),
               ),
             ),
@@ -78,16 +98,57 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       controller: ScrollController(),
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
-                      itemCount: 8,
+                      itemCount: productController.productDetail[0].orderImages.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(7.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                            child: Image.asset("asset/images/jeweller.png",
-                                width: deviceWidth * 0.2
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    child: PhotoView(
+                                      tightMode: true,
+                                      backgroundDecoration:
+                                      const BoxDecoration(
+                                          color:
+                                          Colors.transparent),
+                                      imageProvider:
+                                      NetworkImage(productController.productDetail[0].orderImages[index].path),
+                                      heroAttributes:
+                                      const PhotoViewHeroAttributes(
+                                          tag: "someTag"),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Image.network(
+                                    errorBuilder:
+                                        (BuildContext context, Object exception,
+                                        StackTrace? stackTrace) {
+                                      // Custom error widget to display when image fails to load
+                                      return const Icon(
+                                        Icons.image,
+                                        size: 60,
+                                        color: Colors.grey,
+                                      );
+                                    },
+                                    productController.productDetail[0].orderImages[index].path,
+                                    width: deviceWidth * 0.16
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -104,6 +165,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   keyboardType: TextInputType.text,
+                  controller: productController.designT,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -134,6 +196,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 keyboardType: TextInputType.text,
+                controller: productController.partyT,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -168,6 +231,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      controller: productController.caratT,
+
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -199,6 +264,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      controller: productController.weightT,
+
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -347,6 +414,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 maxLines: 3,
+                controller: productController.descripT,
+
                 keyboardType: TextInputType.text,
                 style: TextStyle(
                   color: Colors.white,

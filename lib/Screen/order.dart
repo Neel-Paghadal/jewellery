@@ -867,21 +867,26 @@ class _OrderScreenState extends State<OrderScreen> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: _imageList[index] != null
-                                      ? IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _imageList.removeAt(index);
-                                              orderController.uploadFileMulti(_imageList);
-                                            });
-                                          },
-                                          icon: const Icon(
-                                            Icons.cancel_outlined,
-                                            color: Colors.red,
-                                            size: 18,
-                                          ))
-                                      : const SizedBox(),
+                                Positioned(
+                                  left: deviceWidth * 0.1,
+                                  bottom: deviceHeight * 0.05,
+                                  child: Container(
+                                    child: _imageList[index] != null
+                                        ? IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _imageList.removeAt(index);
+                                                orderController.uploadFileMulti(_imageList);
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              Icons.cancel_outlined,
+                                              color: Colors.white,
+                                              size: 20,
+
+                                            ))
+                                        : const SizedBox(),
+                                  ),
                                 )
                               ],
                             );

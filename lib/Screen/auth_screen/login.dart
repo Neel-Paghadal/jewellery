@@ -82,7 +82,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     autocorrect: true,
-                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10)
+                    ],
                     controller: loginController.phoneController,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -129,7 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 16,
                           overflow: TextOverflow.ellipsis),
                     ),
-                    maxLength: 10,
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -140,7 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.only(
                       top: deviceHeight * 0.03,
                       left: deviceWidth * 0.03,
-                      right: deviceWidth * 0.03),
+                      right: deviceWidth * 0.03,
+                      bottom: deviceHeight * 0.02),
                   child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     textAlign: TextAlign.start,
@@ -182,7 +185,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       border: InputBorder.none,
                       filled: true,
-                      // isDense: true,
                       hintText: "Password",
                       hintStyle: const TextStyle(
                           color: Colors.grey,

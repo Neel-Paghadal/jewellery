@@ -55,7 +55,7 @@ class OrderController extends GetxController{
         debugPrint(imgList.toString());
         // Extract and store the filePath value
         filePath = jsonResponse['filePath'];
-        filePath = imgList[0].name;
+        filePath = imgList[0].path;
         debugPrint("File Path "+filePath);
 
 
@@ -119,7 +119,7 @@ class OrderController extends GetxController{
       "weight": weight,
       "deliveryDate": date,
       "description": description,
-      "image": imgList[0].name,
+      "image": imgList[0].path,
       "orderImages": imgListMulti
     };
 
@@ -148,7 +148,7 @@ class OrderController extends GetxController{
         Utils().toastMessage("Order Successfull");
 
         Utils().snackBar(response.body, '');
-        Get.to(() => HomeScreen());
+        Get.to(() => const HomeScreen());
         clearController();
       } else {
         debugPrint('Error: ${response.reasonPhrase}');

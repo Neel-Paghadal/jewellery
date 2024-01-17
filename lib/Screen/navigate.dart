@@ -33,8 +33,8 @@ class _NavigateScreenState extends State<NavigateScreen> {
                  ),
                  onPressed: () {
 
-                    Get.to(() => LoginScreen() );
-             }, child: Text("Login",style: TextStyle(fontFamily: ConstFont.poppinsRegular,fontSize: 16,color: Colors.white),overflow: TextOverflow.ellipsis,)),
+                    Get.to(() => const LoginScreen() );
+             }, child: const Text("Login",style: TextStyle(fontFamily: ConstFont.poppinsRegular,fontSize: 16,color: Colors.white),overflow: TextOverflow.ellipsis,)),
            ),
           Center(
             child: ElevatedButton(
@@ -42,9 +42,9 @@ class _NavigateScreenState extends State<NavigateScreen> {
                 backgroundColor: ConstColour.primaryColor
               ),
                 onPressed: () {
-              Get.to(() => RegisterScreen());
+              Get.to(() => const RegisterScreen());
 
-             }, child: Text("Register",style: TextStyle(fontFamily: ConstFont.poppinsRegular,fontSize: 16,color: Colors.white),overflow: TextOverflow.ellipsis,)),
+             }, child: const Text("Register",style: TextStyle(fontFamily: ConstFont.poppinsRegular,fontSize: 16,color: Colors.white),overflow: TextOverflow.ellipsis,)),
           )
         ],
       ),

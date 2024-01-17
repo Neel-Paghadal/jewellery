@@ -5,11 +5,14 @@ import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
+import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../Models/dashboard_model.dart';
+import 'newUser_register.dart';
 import 'order.dart';
+import 'productdetail.dart';
 import 'user_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.put(HomeController());
   ScrollController _scrollController = ScrollController();
   UserListController userListController = Get.put(UserListController());
-
+  ProductController productController = Get.put(ProductController());
   int _pageIndex = 0;
   int _pageSize = 5;
   bool _loading = false;
@@ -46,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _pageSize,
     );
     debugPrint("ScreenRefresh");
-    return await Future.delayed(Duration(seconds: 1));
+    return await Future.delayed(const Duration(seconds: 1));
   }
 
   Future<void> _loadProducts() async {
@@ -94,12 +97,12 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: ConstColour.bgColor,
+          backgroundColor: ConstColour.black,
           centerTitle: true,
           actions: [
             TextButton(
                 onPressed: () {},
-                child: Text("Report",
+                child: const Text("Report",
                     style: TextStyle(
                         color: ConstColour.primaryColor,
                         fontFamily: ConstFont.poppinsBold,
@@ -115,11 +118,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis)),
         ),
+        drawer: Drawer(
+            backgroundColor: Colors.grey,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ListTile(
+                tileColor: ConstColour.bgColor,
+                splashColor: ConstColour.btnHowerColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(color: ConstColour.primaryColor)),
+                onTap: () {
+                  Get.to(() => NewUserRegister());
+                },
+                trailing: Icon(Icons.arrow_forward,
+                    size: 24, color: ConstColour.primaryColor),
+                title: Text("Add New User",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: ConstFont.poppinsRegular,
+                    ),
+                    overflow: TextOverflow.ellipsis),
+              )
+            ])),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
           child: NextButton(
             onPressed: () {
-              Get.to(() => OrderScreen());
+              Get.to(() => const OrderScreen());
             },
             btnName: "Add Design",
           ),
@@ -156,87 +183,96 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      border: Border.all(color: ConstColour.primaryColor),
-                      borderRadius: BorderRadius.circular(11),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: deviceHeight * 0.13,
-                            width: deviceWidth * 0.28,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(21),
+                  child: InkWell(
+                    onTap: () {
+                      productController.getProductDetailCall(
+                          homeController.homeList[index].id);
+                    },
+                    splashColor: ConstColour.btnHowerColor,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        border: Border.all(color: ConstColour.primaryColor),
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: deviceHeight * 0.13,
+                              width: deviceWidth * 0.28,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(21),
+                              ),
+                              child: Image.network(errorBuilder:
+                                      (BuildContext context, Object exception,
+                                          StackTrace? stackTrace) {
+                                // Custom error widget to display when image fails to load
+                                return const Icon(
+                                  Icons.image,
+                                  size: 80,
+                                  color: Colors.grey,
+                                );
+                              },
+                                  homeController.homeList[index].image
+                                      .toString(),
+                                  width: deviceWidth * 0.1),
                             ),
-                            child: Image.network(errorBuilder:
-                                    (BuildContext context, Object exception,
-                                        StackTrace? stackTrace) {
-                              // Custom error widget to display when image fails to load
-                              return Icon(
-                                Icons.image,
-                                size: 80,
-                                color: Colors.grey,
-                              );
-                            }, homeController.homeList[index].image.toString(),
-                                width: deviceWidth * 0.1),
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: deviceHeight * 0.01,
-                              ),
-                              child: Text(
-                                homeController.homeList[index].name,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: ConstFont.poppinsRegular),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: deviceHeight * 0.015,
-                                  bottom: deviceHeight * 0.01),
-                              child: Text(
-                                homeController.homeList[index].dateCreated,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 14,
-                                    fontFamily: ConstFont.poppinsRegular),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: deviceWidth * 0.4),
-                              child: TextButton(
-                                onPressed: () {
-                                  userListController.orderId = homeController.homeList[index].id;
-                                  userListController.getUserCall();
-
-
-                                },
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: deviceHeight * 0.01,
+                                ),
                                 child: Text(
-                                  "User",
-                                  style: TextStyle(
-                                      color: ConstColour.primaryColor,
+                                  homeController.homeList[index].name,
+                                  style: const TextStyle(
+                                      color: Colors.white,
                                       fontSize: 16,
-                                      fontFamily: ConstFont.poppinsMedium),
+                                      fontFamily: ConstFont.poppinsRegular),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                            )
-                          ],
-                        )
-                      ],
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: deviceHeight * 0.015,
+                                    bottom: deviceHeight * 0.01),
+                                child: Text(
+                                  homeController.homeList[index].dateCreated,
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                      fontFamily: ConstFont.poppinsRegular),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: deviceWidth * 0.4),
+                                child: TextButton(
+                                  onPressed: () {
+                                    userListController.orderId =
+                                        homeController.homeList[index].id;
+                                    userListController.getUserCall();
+                                  },
+                                  child: const Text(
+                                    "User",
+                                    style: TextStyle(
+                                        color: ConstColour.primaryColor,
+                                        fontSize: 16,
+                                        fontFamily: ConstFont.poppinsMedium),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );

@@ -35,12 +35,12 @@ class HomeController extends GetxController{
       debugPrint("HOME LIST "+homeList[0].name.toString());
 
 
-      print('Response: ${response.body}');
+      debugPrint('Response: ${response.body}');
       // Process the data as needed
     } else {
       // Error in API call
-      print('Error: ${response.statusCode}');
-      print('Error body: ${response.body}');
+      debugPrint('Error: ${response.statusCode}');
+      debugPrint('Error body: ${response.body}');
     }
   }
 
@@ -66,12 +66,12 @@ class HomeController extends GetxController{
   //     debugPrint("HOME LIST "+homeList[0].name.toString());
   //     debugPrint("HOME LIST "+homeList[1].name.toString());
   //
-  //     print('Response: ${response.body}');
+  //     debugPrint('Response: ${response.body}');
   //     // Process the data as needed
   //   } else {
   //     // Error in API call
-  //     print('Error: ${response.statusCode}');
-  //     print('Error body: ${response.body}');
+  //     debugPrint('Error: ${response.statusCode}');
+  //     debugPrint('Error body: ${response.body}');
   //   }
   // }
 

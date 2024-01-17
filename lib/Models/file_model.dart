@@ -25,17 +25,17 @@ class FileUpload {
 }
 
 class FileElement {
-  String name;
+  String path;
 
   FileElement({
-    required this.name,
+    required this.path,
   });
 
   factory FileElement.fromJson(Map<String, dynamic> json) => FileElement(
-    name: json["name"],
+    path: json["path"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
+    "path": path,
   };
 }

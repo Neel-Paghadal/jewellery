@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
-import 'package:jewellery_user/ConstFile/constFonts.dart';
-import 'package:jewellery_user/Controller/register_controller.dart';
-import 'package:jewellery_user/Screen/auth_screen/documentScreen.dart';
+import 'package:jewellery_user/Controller/newRegister_controller.dart';
+import 'package:jewellery_user/Screen/home.dart';
 
-import '../../Common/bottom_button_widget.dart';
-import '../../Common/snackbar.dart';
+import '../ConstFile/constFonts.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class NewUserRegister extends StatefulWidget {
+  const NewUserRegister({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<NewUserRegister> createState() => _NewUserRegisterState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  RegisterController registerController = Get.put(RegisterController());
+class _NewUserRegisterState extends State<NewUserRegister> {
 
   final mobileRegex = RegExp(r'^[0-9]{10}$');
   final _formKey = GlobalKey<FormState>();
-  // RegExp regex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$');
+  NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
 
   @override
   Widget build(BuildContext context) {
+
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
 
@@ -33,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         backgroundColor: ConstColour.bgColor,
         centerTitle: true,
-        title: const Text("Register",
+        title: const Text("New Register",
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: ConstFont.poppinsRegular,
@@ -52,18 +51,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
 
                 Text("Create Account",style: TextStyle(
-                  color: ConstColour.primaryColor,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: ConstFont.poppinsRegular,
-                  fontSize: 30
+                    color: ConstColour.primaryColor,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: ConstFont.poppinsRegular,
+                    fontSize: 30
                 )),
                 Divider(height: deviceHeight * 0.01),
 
                 Text("Create an account so you can\nexplore all the existing jobs",style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: ConstFont.poppinsRegular,
-                  fontSize: 19
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: ConstFont.poppinsRegular,
+                    fontSize: 19
                 ),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,maxLines: 2),
                 Divider(height: deviceHeight * 0.03),
 
@@ -78,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           textAlign: TextAlign.start,
                           keyboardType: TextInputType.text,
                           autocorrect: true,
-                          controller: registerController.firstName,
+                          controller: newRegisterCon.firstName,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Please Enter FirsName";
@@ -107,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderSide: BorderSide(
                                   color: ConstColour.textFieldBorder),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
+                              BorderRadius.all(Radius.circular(8)),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -136,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           textAlign: TextAlign.start,
                           keyboardType: TextInputType.text,
                           autocorrect: true,
-                          controller: registerController.lastName,
+                          controller: newRegisterCon.lastName,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Please Enter LastName";
@@ -165,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderSide: BorderSide(
                                   color: ConstColour.textFieldBorder),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
+                              BorderRadius.all(Radius.circular(8)),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -201,7 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly,LengthLimitingTextInputFormatter(10)],
                     autocorrect: true,
-                    controller: registerController.mobile,
+                    controller: newRegisterCon.mobile,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Enter Your Mobile Number";
@@ -230,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: ConstColour.textFieldBorder),
+                        BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -263,7 +262,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
-                    controller: registerController.address,
+                    controller: newRegisterCon.address,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Enter Address";
@@ -292,7 +291,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: ConstColour.textFieldBorder),
+                        BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -325,7 +324,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
-                    controller: registerController.password,
+                    controller: newRegisterCon.password,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Enter Password";
@@ -355,7 +354,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: ConstColour.textFieldBorder),
+                        BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -387,16 +386,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
-                    controller: registerController.cPassword,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Your Confirm Password";
-                        }  else if (value != registerController.password.text) {
-                          return 'Password doesn\'t Match';
-                        } else {
-                          return null;
-                        }
-                      },
+                    controller: newRegisterCon.cPassword,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Enter Your Confirm Password";
+                      }  else if (value != newRegisterCon.password.text) {
+                        return 'Password doesn\'t Match';
+                      } else {
+                        return null;
+                      }
+                    },
                     decoration: InputDecoration(
                       labelStyle: const TextStyle(color: Colors.grey),
                       enabledBorder: OutlineInputBorder(
@@ -416,7 +415,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: ConstColour.textFieldBorder),
+                        BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -449,7 +448,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
-                    controller: registerController.reference,
+                    controller: newRegisterCon.reference,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Enter Reference Name";
@@ -476,7 +475,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: ConstColour.textFieldBorder),
+                        BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -509,34 +508,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     splashColor: ConstColour.btnHowerColor,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        registerController.firstNames =
-                            registerController.firstName.text;
-                        registerController.lastNames =
-                            registerController.lastName.text;
-                        registerController.phone =
-                            registerController.mobile.text;
-                        registerController.pass =
-                            registerController.password.text;
-                        registerController.ref =
-                            registerController.reference.text;
-                        registerController.addr =
-                            registerController.address.text;
 
-                        if (registerController.mobile.text.isEmpty &&
-                            registerController.password.text.isEmpty) {
+
+                        if (newRegisterCon.mobile.text.isEmpty && newRegisterCon.password.text.isEmpty) {
                           setState(() {
                             Utils().toastMessage(
                                 "Enter valid Username & password");
                           });
                         } else {
-                          debugPrint(registerController.firstNames);
-                          debugPrint(registerController.lastNames);
-                          debugPrint(registerController.phone);
-                          debugPrint(registerController.pass);
-                          debugPrint(registerController.ref);
-                          debugPrint(registerController.addr);
-
-                          Get.to(() => const DocumentScreen());
+                       newRegisterCon.userRegister(
+                           newRegisterCon.firstName.text,
+                           newRegisterCon.lastName.text,
+                           newRegisterCon.password.text,
+                           newRegisterCon.mobile.text,
+                           newRegisterCon.address.text,
+                           newRegisterCon.reference.text
+                       );
 
                           // loginController.login(mobileNo!, password!);
                         }
@@ -565,40 +552,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
-
-                // Padding(
-                //   padding: EdgeInsets.only(top: deviceHeight * 0.08),
-                //   child: NextButton(
-                //     onPressed: () {
-                //       if (_formKey.currentState!.validate()) {
-                //         registerController.firstNames = registerController.firstName.text;
-                //         registerController.lastNames = registerController.lastName.text;
-                //         registerController.phone= registerController.mobile.text;
-                //         registerController.pass = registerController.password.text;
-                //         registerController.ref = registerController.reference.text;
-                //         registerController.addr = registerController.address.text;
-                //
-                //         if (registerController.mobile.text.isEmpty && registerController.password.text.isEmpty) {
-                //           setState(() {
-                //             Utils().toastMessage("Enter valid Username & password");
-                //           });
-                //         } else {
-                //           debugPrint(registerController.firstNames);
-                //           debugPrint(registerController.lastNames);
-                //           debugPrint(registerController.phone);
-                //           debugPrint(registerController.pass);
-                //           debugPrint(registerController.ref);
-                //           debugPrint(registerController.addr);
-                //
-                //           Get.to(() => const DocumentScreen());
-                //
-                //           // loginController.login(mobileNo!, password!);
-                //         }
-                //       }
-                //     },
-                //     btnName: "Register",
-                //   ),
-                // ),
               ],
             ),
           ),

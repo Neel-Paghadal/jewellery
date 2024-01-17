@@ -26,6 +26,7 @@ class RegisterController extends GetxController{
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController cPassword = TextEditingController();
   TextEditingController mobile = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController reference = TextEditingController();
@@ -104,7 +105,6 @@ class RegisterController extends GetxController{
       "mobileNumber": mobileNumber.toString(),
       "address": address.toString(),
       "referenceName": referenceName.toString(),
-      "role": 1,
       "DeviceId": "123",
       "userDocuments": [
         {
@@ -197,16 +197,16 @@ class RegisterController extends GetxController{
 
       if (response.statusCode == 200) {
         // Successful API call, handle the response accordingly
-        print("API call successful");
-        print("Response: ${response.body}");
+        debugPrint("API call successful");
+        debugPrint("Response: ${response.body}");
       } else {
         // Handle errors, e.g., server errors, invalid data, etc.
-        print("API call failed with status code: ${response.statusCode}");
-        print("Error response: ${response.body}");
+        debugPrint("API call failed with status code: ${response.statusCode}");
+        debugPrint("Error response: ${response.body}");
       }
     } catch (error) {
       // Handle network errors
-      print("Error making API call: $error");
+      debugPrint("Error making API call: $error");
     }
   }
 
@@ -230,13 +230,13 @@ class RegisterController extends GetxController{
   //   var part = await http.MultipartFile.fromPath('file', imageFile.path,contentType: contentType,);
   //   request.files.add(part);
   //
-  //   print("request: " + request.toString());
+  //   debugPrint("request: " + request.toString());
   //   var res = await request.send();
   //   var responseBody = await res.stream.bytesToString();
   //
-  //   print("This is response:" + res.toString());
+  //   debugPrint("This is response:" + res.toString());
   //   if (res.statusCode == 200) {
-  //     print('Response: $responseBody');
+  //     debugPrint('Response: $responseBody');
   //     Fluttertoast.showToast(
   //       msg: 'Profile Updated Succefully!!!',
   //       toastLength: Toast.LENGTH_SHORT,

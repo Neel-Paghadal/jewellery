@@ -53,7 +53,7 @@ class _UserListScreenState extends State<UserListScreen> {
       appBar: AppBar(
         backgroundColor: ConstColour.bgColor,
         centerTitle: true,
-        title: Text("User List",
+        title: const Text("User List",
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: ConstFont.poppinsRegular,
@@ -62,11 +62,11 @@ class _UserListScreenState extends State<UserListScreen> {
                 overflow: TextOverflow.ellipsis)),
         leading: IconButton(
             onPressed: () {},
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: NextButton(
           onPressed: () {
             setState(() {
@@ -84,7 +84,7 @@ class _UserListScreenState extends State<UserListScreen> {
 
                       },);
                       return Dialog(
-                        insetAnimationDuration: Duration(seconds: 1),
+                        insetAnimationDuration: const Duration(seconds: 1),
                         insetAnimationCurve: Curves.linear,
                         shadowColor: ConstColour.primaryColor,
                         backgroundColor: Colors.black45,
@@ -118,7 +118,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                     children: [
                                       Text(
                                         uniqueCode,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 16,
                                             fontFamily: ConstFont.poppinsBold,
                                             color: Colors.white),
@@ -131,7 +131,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                         onPressed: () {
                                           FlutterClipboard.copy(uniqueCode);
                                         },
-                                        child: Text(
+                                        child: const Text(
                                           "Copy Code",
                                           style: TextStyle(
                                               fontFamily: ConstFont.poppinsBold,
@@ -163,10 +163,10 @@ class _UserListScreenState extends State<UserListScreen> {
                                         elevation: 5,
                                         iconSize: 30,
                                         focusColor: Colors.white,
-                                        underline: DropdownButtonHideUnderline(
+                                        underline: const DropdownButtonHideUnderline(
                                             child: SizedBox()),
-                                        hint: Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                        hint: const Padding(
+                                          padding: EdgeInsets.all(8.0),
                                           child: Text(
                                             'Select username',
                                             style: TextStyle(
@@ -185,7 +185,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                                     const EdgeInsets.all(8.0),
                                                 child: Text(
                                                   item.name.toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontFamily: ConstFont
                                                           .poppinsRegular,
                                                       fontSize: 14,
@@ -259,7 +259,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                       labelText: "Note",
                                       hintText: "Enter your note",
                                       floatingLabelStyle:
-                                          TextStyle(color: Colors.white),
+                                          const TextStyle(color: Colors.white),
                                       hintStyle: const TextStyle(
                                           color: Colors.grey,
                                           fontFamily: ConstFont.poppinsRegular,
@@ -342,7 +342,7 @@ class _UserListScreenState extends State<UserListScreen> {
                   }
 
                   return Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.black,
@@ -354,14 +354,14 @@ class _UserListScreenState extends State<UserListScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.all(15.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(21),
                               ),
                               child: Text(
                                 userListController.userList[index].userName,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontFamily: ConstFont.poppinsRegular),

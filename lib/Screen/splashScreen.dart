@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Future.delayed(
-      Duration(seconds: 3),
+      const Duration(seconds: 3),
       () {
         checkPref();
       },
@@ -29,15 +29,15 @@ class _SplashScreenState extends State<SplashScreen> {
   checkPref() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getBool("login") == true) {
-      Get.to(() => HomeScreen());
+      Get.to(() => const HomeScreen());
     } else {
-      Get.to(() => LoginScreen());
+      Get.to(() => const LoginScreen());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: ConstColour.bgColor,
       body: Center(
         child: Text("Jewellery",
