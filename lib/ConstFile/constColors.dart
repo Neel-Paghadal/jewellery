@@ -16,6 +16,7 @@ class ConstColour {
   static const Color offerImageColor = Color(0xff2F7AF7);
   static const Color errorImage = Colors.grey;
   static const Color textFieldBorder = Colors.white;
+  static const Color searchColor = Color(0xffE8E8E8);
 
 
 
