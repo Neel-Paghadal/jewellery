@@ -13,6 +13,7 @@ import '../Models/dashboard_model.dart';
 import 'newUser_register.dart';
 import 'order.dart';
 import 'productdetail.dart';
+import 'report_search_Screen.dart';
 import 'user_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -101,7 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: true,
           actions: [
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => ReportSearchScreen());
+                },
                 child: const Text("Report",
                     style: TextStyle(
                         color: ConstColour.primaryColor,
