@@ -44,61 +44,45 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: Image.asset("asset/images/jeweller.png",
-                          width: deviceWidth * 0.12),
+              ListTile(
+                leading: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: Colors.white,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.asset(
+                        "asset/images/jeweller.png",
+                        width: deviceWidth * 0.12),
+                  ),
+                ),
+                title: Text(
+                  "# 2352",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: ConstFont.poppinsRegular),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Text(
+                  "Create Date: 02/01/2024",
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                      fontFamily: ConstFont.poppinsRegular),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                trailing: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "completed",
+                    style: TextStyle(
+                        color: ConstColour.greenColor,
+                        fontFamily: ConstFont.poppinsRegular
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: deviceHeight * 0.02),
-                        child: Text(
-                          "# 2352",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: ConstFont.poppinsRegular),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: deviceHeight * 0.002),
-                        child: Text(
-                          "Create Date : 02/01/2024",
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                              fontFamily: ConstFont.poppinsRegular),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: deviceHeight * 0.02,
-                      left: deviceWidth * 0.22
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Completed',
-                        style: TextStyle(
-                            color: ConstColour.greenColor,
-                            fontFamily: ConstFont.poppinsRegular),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               Divider(
                 color: ConstColour.primaryColor,
@@ -110,10 +94,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                      top:  deviceHeight * 0.002,
-                      left: deviceWidth * 0.025,
-                    ),
+                    padding: EdgeInsets.only(left: deviceWidth * 0.05),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,19 +104,21 @@ class _ReportScreenState extends State<ReportScreen> {
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
-                              fontFamily: ConstFont.poppinsRegular),
+                              fontFamily: ConstFont.poppinsRegular,
+                          ),
                         ),
                         IconButton(
-                            onPressed: () {},
-                            icon: Image.asset('asset/images/report_icon.png')
+                          onPressed: () {},
+                          icon: Image.asset(
+                            "asset/icons/report_icon.png",
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: deviceHeight * 0.008,
-                      left: deviceWidth * 0.02,
+                      left: deviceWidth * 0.05,
                     ),
                     child: Text(
                       'Assign Date: 05/01/2024',
@@ -149,7 +132,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   Padding(
                     padding: EdgeInsets.only(
                         top: deviceHeight * 0.002,
-                        left: deviceWidth * 0.02,
+                        left: deviceWidth * 0.05,
                     ),
                     child: Text(
                       'Complet Date: 09/01/2024',
