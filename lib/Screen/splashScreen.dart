@@ -37,16 +37,54 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: ConstColour.bgColor,
       body: Center(
-        child: Text("Jewellery",
+        child: Text('splash'.tr,
             style: TextStyle(
                 fontFamily: ConstFont.poppinsBold,
                 color: ConstColour.primaryColor,
-                fontSize: 45),
+                fontSize: 40),
             overflow: TextOverflow.ellipsis),
       ),
     );
   }
 }
+// Text('name'.tr,
+//     style: TextStyle(
+//         fontFamily: ConstFont.poppinsBold,
+//         color: ConstColour.primaryColor,
+//         fontSize: 16),
+//     overflow: TextOverflow.ellipsis),
+// SizedBox(
+//   height: 40,
+// ),
+// Text('message'.tr,
+//     style: TextStyle(
+//         fontFamily: ConstFont.poppinsBold,
+//         color: ConstColour.primaryColor,
+//         fontSize: 16),
+//     overflow: TextOverflow.ellipsis),
+// Text('name'.tr,
+//     style: TextStyle(
+//         fontFamily: ConstFont.poppinsBold,
+//         color: ConstColour.primaryColor,
+//         fontSize: 16),
+//     overflow: TextOverflow.ellipsis),
+// ElevatedButton(
+//     onPressed: () {
+//       setState(() {
+//         Get.updateLocale(Locale('en', 'US'));
+//       });
+//     },
+//     child: Text("English")),
+// SizedBox(
+//   height: 40,
+// ),
+// ElevatedButton(
+//     onPressed: () {
+//       setState(() {
+//         Get.updateLocale(Locale('gu', 'IN'));
+//       });
+//     },
+//     child: Text("ગુજરાતી")),

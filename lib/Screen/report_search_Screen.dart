@@ -136,24 +136,12 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                            top: deviceHeight * 0.008,
-                            left: deviceWidth * 0.24
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ReportScreen())
-                            );
-                          },
-                          child: Text(
-                            reportSearchController.reportlist[index].btnName,
-                            style: TextStyle(
-                              color: reportbuttonColor,
-                                fontFamily: ConstFont.poppinsRegular),
-                          ),
+                        padding:  EdgeInsets.only(top: deviceHeight * 0.05),
+                        child: Text(
+                          reportSearchController.reportlist[index].btnName,
+                          style: TextStyle(
+                            color: reportbuttonColor,
+                              fontFamily: ConstFont.poppinsRegular),
                         ),
                       ),
                     ],

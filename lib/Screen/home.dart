@@ -10,6 +10,7 @@ import 'package:jewellery_user/Controller/user_list_controller.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../Models/dashboard_model.dart';
+import 'loader.dart';
 import 'newUser_register.dart';
 import 'order.dart';
 import 'productdetail.dart';
@@ -102,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: true,
           actions: [
             TextButton(
+
                 onPressed: () {
                   Get.to(() => ReportSearchScreen());
                 },
@@ -163,7 +165,76 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: ConstColour.primaryColor,
           springAnimationDurationInMilliseconds: 1,
           child: Obx(
-            () => ListView.builder(
+            () => homeController.homeList.isEmpty ?
+            Loaders(
+              items: 6,
+              direction: LoaderDirection.ltr,
+              builder: Padding(
+                padding: EdgeInsets.only(
+                    right: deviceWidth * 0.01),
+                child: Column(
+                  mainAxisAlignment:
+                  MainAxisAlignment.start,
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: ConstColour.primaryColor),
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                  Icons.image,
+                                  size: 100,
+                                  color: Colors.grey.shade400,
+                              ),
+                            ),
+
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                               Padding(
+                                 padding: EdgeInsets.only(top: deviceHeight * 0.035),
+                                 child: Container(
+                                   height: deviceHeight * 0.01,
+                                   width: deviceWidth * 0.5,
+                                   color: Colors.grey,
+                                 ),
+                               ),Padding(
+                                 padding: EdgeInsets.only(top: deviceHeight * 0.01),
+                                 child: Container(
+                                   height: deviceHeight * 0.01,
+                                   width: deviceWidth * 0.5,
+                                   color: Colors.grey,
+                                 ),
+                               ),
+
+                              Padding(
+                                padding:  EdgeInsets.only(left: deviceWidth * 0.37,top: deviceHeight * 0.035),
+                                child: Container(
+                                  width:  deviceWidth * 0.2,
+                                  height: deviceHeight * 0.01,
+                                  color: Colors.grey,
+                                ),
+                              )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+
+                  ],
+                ),
+              ),
+            ) :   ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemCount: homeController.homeList.length + (_loading ? 1 : 0),

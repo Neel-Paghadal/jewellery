@@ -2,10 +2,11 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:jewellery_user/Screen/User_screen/user_home.dart';
+import 'package:jewellery_user/Screen/languages.dart';
 import 'package:jewellery_user/Screen/splashScreen.dart';
 
 import 'Screen/auth_screen/documentScreen.dart';
-import 'Screen/report.dart';
 import 'Screen/user_list.dart';
 
 void main() {
@@ -29,11 +30,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Jewellery',
+      // locale: Locale('en','US'),
+      // locale: Locale('gu','IN'),
+      locale: Locale('hi','IN'),
+      translations: Languages(),
+      // fallbackLocale: Locale('en','US'),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(splashColor: Colors.white,useMaterial3: false),
-      home: const SplashScreen(),
+      // home: const SplashScreen(),
       // home: const ReportScreen(),
-      // home: const DocumentScreen(),
+      home: const UserHome(),
     );
   }
 }
