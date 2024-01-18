@@ -96,55 +96,49 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                     border: Border.all(color: ConstColour.primaryColor),
                     borderRadius: BorderRadius.circular(11),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image.asset("asset/images/jeweller.png",
-                              width: deviceWidth * 0.12),
+                  child: ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.white,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Image.asset(
+                            "asset/images/jeweller.png",
+                            width: deviceWidth * 0.12),
+                      ),
+                    ),
+                    title: Text(
+                      reportSearchController.reportlist[index].designCode,
+                      style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontFamily: ConstFont.poppinsRegular),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: deviceHeight * 0.015),
-                            child: Text(
-                            reportSearchController.reportlist[index].designCode,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: ConstFont.poppinsRegular),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: deviceHeight * 0.002),
-                            child: Text(
-                              reportSearchController.reportlist[index].date,
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 13,
-                                  fontFamily: ConstFont.poppinsRegular),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding:  EdgeInsets.only(top: deviceHeight * 0.05),
+                    subtitle: Text(
+                    reportSearchController.reportlist[index].date,
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                        fontFamily: ConstFont.poppinsRegular),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                    trailing: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(
+                            builder: (context) => ReportScreen(),));
+                        },
                         child: Text(
                           reportSearchController.reportlist[index].btnName,
                           style: TextStyle(
-                            color: reportbuttonColor,
-                              fontFamily: ConstFont.poppinsRegular),
+                              color: reportButtonColor,
+                              fontFamily: ConstFont.poppinsRegular
+                          ),
                         ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               );
