@@ -22,6 +22,7 @@ void main() {
   // ));
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -30,16 +31,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Jewellery',
-      // locale: Locale('en','US'),
+      locale: Locale('en','US'),
       // locale: Locale('gu','IN'),
-      locale: Locale('hi','IN'),
+      // locale: Locale('hi','IN'),
       translations: Languages(),
       // fallbackLocale: Locale('en','US'),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(splashColor: Colors.white,useMaterial3: false),
-      // home: const SplashScreen(),
+      home: const SplashScreen(),
       // home: const ReportScreen(),
-      home: const UserHome(),
+      // home: const UserHome(),
     );
   }
 }

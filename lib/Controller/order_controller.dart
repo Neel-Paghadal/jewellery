@@ -69,13 +69,16 @@ class OrderController extends GetxController{
   void uploadFileMulti(List<File> images) async {
     var url = Uri.parse('http://208.64.33.118:8558/api/File/Upload');
     var directory = 'Test';
-    var request;
+    var request = http.MultipartRequest('POST', url);
+
+
+
     for (var image in images) {
       var file = File(image.path);
-      request  = http.MultipartRequest('POST', url)..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
+      request..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
     }
 
-    // var request = http.MultipartRequest('POST', url)..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
+    debugPrint("REQUEST"+ request.toString());
 
     try {
       var response = await request.send();
@@ -123,6 +126,8 @@ class OrderController extends GetxController{
       "orderImages": imgListMulti
     };
 
+    debugPrint(imgListMulti.toString());
+
     // final Map<String, String> headers = {
     //   'Content-Type': 'application/json',
     // };
@@ -147,7 +152,7 @@ class OrderController extends GetxController{
         debugPrint('Response: ${response.body}');
         Utils().toastMessage("Order Successfull");
 
-        Utils().snackBar(response.body, '');
+        // Utils().snackBar(response.body, '');
         Get.to(() => const HomeScreen());
         clearController();
       } else {

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:photo_view/photo_view.dart';
-
 import '../Common/bottom_button_widget.dart';
 import '../ConstFile/constColors.dart';
 import '../ConstFile/constFonts.dart';
@@ -17,8 +16,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  TextEditingController _createDateController = TextEditingController();
-  TextEditingController _deliveryDateController = TextEditingController();
+
   ProductController productController = Get.put(ProductController());
   @override
   Widget build(BuildContext context) {
@@ -28,8 +26,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ConstColour.bgColor,
+        automaticallyImplyLeading: true,
         centerTitle: true,
-        title: Text(
+        title: const Text(
             "Product Detail",
             style: TextStyle(
                 color: Colors.white,
@@ -37,19 +36,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Image.asset("asset/icons/edit.png"),
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     onPressed: () {
+          //
+          //     },
+          //     icon: Image.asset("asset/icons/edit.png",width: deviceWidth * 0.06),
+          //   ),
+          // ],
         leading: IconButton(
             onPressed: () {},
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: NextButton(
           onPressed: () {},
           btnName: "Save",
@@ -89,7 +90,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               height: deviceHeight * 0.1,
               child: Row(
                 children: [
@@ -164,9 +165,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.none,
                   controller: productController.designT,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                       fontFamily: ConstFont.poppinsRegular,
@@ -175,17 +176,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(11),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                             color: ConstColour.primaryColor
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(11),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                             color: ConstColour.primaryColor
                         ),),
                     labelText: 'Design Name',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 17,
                         fontFamily: ConstFont.poppinsRegular),
@@ -195,9 +196,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.none,
                 controller: productController.partyT,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontFamily: ConstFont.poppinsRegular,
@@ -206,17 +207,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),),
                   labelText: 'Party Name',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontFamily: ConstFont.poppinsRegular),
@@ -232,8 +233,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       controller: productController.caratT,
+                      keyboardType: TextInputType.none,
 
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontFamily: ConstFont.poppinsRegular,
@@ -242,17 +244,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: ConstColour.primaryColor
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: ConstColour.primaryColor
                           ),),
                         labelText: 'Carat',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 17,
                             fontFamily: ConstFont.poppinsRegular),
@@ -265,8 +267,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       controller: productController.weightT,
+                      keyboardType: TextInputType.none,
 
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontFamily: ConstFont.poppinsRegular,
@@ -275,17 +278,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: ConstColour.primaryColor
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                               color: ConstColour.primaryColor
                           ),),
                         labelText: 'Weight',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 17,
                             fontFamily: ConstFont.poppinsRegular),
@@ -298,9 +301,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                controller: _createDateController,
+                controller: productController.createDateController,
                 readOnly: true,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontFamily: ConstFont.poppinsRegular,
@@ -309,55 +312,55 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),),
                   labelText: 'Create Date',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontFamily: ConstFont.poppinsRegular),
                 ),
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1950),
-                      lastDate: DateTime(2100),
-                    builder: (BuildContext context, picker) {
-                      return Theme(
-                          data: ThemeData.dark().copyWith(
-                            colorScheme: ColorScheme.dark(
-                              primary: Colors.white,
-                              onPrimary: Colors.black,
-                              surface: ConstColour.bgColor,
-                              onSurface: Colors.white
-                            ),
-                            dialogBackgroundColor: ConstColour.primaryColor
-                          ),
-                          child: picker!
-                      );
-                    },
-                  );
-                  if (pickedDate != null && pickedDate != DateTime.now()) {
-                    String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-                    _createDateController.text = formattedDate;
-                  }
-                },
+                // onTap: () async {
+                //   DateTime? pickedDate = await showDatePicker(
+                //       context: context,
+                //       initialDate: DateTime.now(),
+                //       firstDate: DateTime(1950),
+                //       lastDate: DateTime(2100),
+                //     builder: (BuildContext context, picker) {
+                //       return Theme(
+                //           data: ThemeData.dark().copyWith(
+                //             colorScheme: const ColorScheme.dark(
+                //               primary: Colors.white,
+                //               onPrimary: Colors.black,
+                //               surface: ConstColour.bgColor,
+                //               onSurface: Colors.white
+                //             ),
+                //             dialogBackgroundColor: ConstColour.primaryColor
+                //           ),
+                //           child: picker!
+                //       );
+                //     },
+                //   );
+                //   if (pickedDate != null && pickedDate != DateTime.now()) {
+                //     String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+                //     _createDateController.text = formattedDate;
+                //   }
+                // },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                controller: _deliveryDateController,
+                controller: productController.deliveryDateController,
                 readOnly: true,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontFamily: ConstFont.poppinsRegular,
@@ -366,48 +369,48 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),),
                   labelText: 'Delivery Date',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontFamily: ConstFont.poppinsRegular),
                 ),
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1950),
-                    lastDate: DateTime(2100),
-                    builder: (BuildContext context, picker) {
-                      return Theme(
-                          data: ThemeData.dark().copyWith(
-                              colorScheme: ColorScheme.dark(
-                                  primary: Colors.white,
-                                  onPrimary: Colors.black,
-                                  surface: ConstColour.bgColor,
-                                  onSurface: Colors.white
-                              ),
-                              dialogBackgroundColor: ConstColour.primaryColor
-                          ),
-                          child: picker!
-                      );
-                    },
-                  );
-
-                  if (pickedDate != null && pickedDate != DateTime.now()) {
-                    String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-                    _deliveryDateController.text = formattedDate;
-                  }
-                },
+                // onTap: () async {
+                //   DateTime? pickedDate = await showDatePicker(
+                //     context: context,
+                //     initialDate: DateTime.now(),
+                //     firstDate: DateTime(1950),
+                //     lastDate: DateTime(2100),
+                //     builder: (BuildContext context, picker) {
+                //       return Theme(
+                //           data: ThemeData.dark().copyWith(
+                //               colorScheme: const ColorScheme.dark(
+                //                   primary: Colors.white,
+                //                   onPrimary: Colors.black,
+                //                   surface: ConstColour.bgColor,
+                //                   onSurface: Colors.white
+                //               ),
+                //               dialogBackgroundColor: ConstColour.primaryColor
+                //           ),
+                //           child: picker!
+                //       );
+                //     },
+                //   );
+                //
+                //   if (pickedDate != null && pickedDate != DateTime.now()) {
+                //     String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+                //     _deliveryDateController.text = formattedDate;
+                //   }
+                // },
               ),
             ),
             Padding(
@@ -415,9 +418,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: TextFormField(
                 maxLines: 3,
                 controller: productController.descripT,
-
-                keyboardType: TextInputType.text,
-                style: TextStyle(
+                keyboardType: TextInputType.none,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontFamily: ConstFont.poppinsRegular,
@@ -426,17 +428,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(11),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                         color: ConstColour.primaryColor
                     ),),
                   labelText: 'Description',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontFamily: ConstFont.poppinsRegular),

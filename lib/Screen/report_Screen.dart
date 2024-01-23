@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../ConstFile/constColors.dart';
 import '../ConstFile/constFonts.dart';
@@ -19,7 +20,7 @@ class _ReportScreenState extends State<ReportScreen> {
       appBar: AppBar(
         backgroundColor: ConstColour.bgColor,
         centerTitle: true,
-        title: Text(
+        title: const Text(
             "Report",
             style: TextStyle(
                 color: Colors.white,
@@ -28,8 +29,10 @@ class _ReportScreenState extends State<ReportScreen> {
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
         leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
       backgroundColor: ConstColour.bgColor,
@@ -57,7 +60,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         width: deviceWidth * 0.12),
                   ),
                 ),
-                title: Text(
+                title: const Text(
                   "# 2352",
                   style: TextStyle(
                       color: Colors.white,
@@ -65,7 +68,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       fontFamily: ConstFont.poppinsRegular),
                   overflow: TextOverflow.ellipsis,
                 ),
-                subtitle: Text(
+                subtitle: const Text(
                   "Create Date: 02/01/2024",
                   style: TextStyle(
                       color: Colors.grey,
@@ -75,7 +78,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
                 trailing: TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     "completed",
                     style: TextStyle(
                         color: ConstColour.greenColor,
@@ -84,7 +87,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 color: ConstColour.primaryColor,
                 thickness: 1,
                 indent: 10,
@@ -99,7 +102,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Amaan Shaikh',
                           style: TextStyle(
                               color: Colors.white,
@@ -120,7 +123,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     padding: EdgeInsets.only(
                       left: deviceWidth * 0.05,
                     ),
-                    child: Text(
+                    child: const Text(
                       'Assign Date: 05/01/2024',
                       style: TextStyle(
                           color: ConstColour.btnHowerColor,
@@ -134,7 +137,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         top: deviceHeight * 0.002,
                         left: deviceWidth * 0.05,
                     ),
-                    child: Text(
+                    child: const Text(
                       'Complet Date: 09/01/2024',
                       style: TextStyle(
                           color: ConstColour.btnHowerColor,

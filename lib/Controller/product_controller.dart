@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:http/http.dart' as http;
 import '../Models/product_detail_model.dart';
@@ -12,8 +13,12 @@ class ProductController extends GetxController {
   TextEditingController caratT = TextEditingController();
   TextEditingController weightT = TextEditingController();
   TextEditingController descripT = TextEditingController();
-
+  TextEditingController createDateController = TextEditingController();
+  TextEditingController deliveryDateController = TextEditingController();
   RxList<Order> productDetail = <Order>[].obs;
+
+  var startDate;
+  var delviveryDate;
 
 
   getProductDetailCall(String id) async {
@@ -40,6 +45,8 @@ class ProductController extends GetxController {
       partyT.text = productDetail[0].party;
       caratT.text = productDetail[0].carat.toString();
       weightT.text = productDetail[0].weight.toString();
+      createDateController.text = productDetail[0].dateCreated.toString();
+      deliveryDateController.text = productDetail[0].deliveryDate.toString();
       descripT.text = productDetail[0].description.toString();
 
 
@@ -48,7 +55,8 @@ class ProductController extends GetxController {
       debugPrint('Response: ${response.body}');
       // Process the data as needed
     } else {
-      // Error in API call
+      // Error in API call.
+      Utils().toastMessage(response.body);
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }

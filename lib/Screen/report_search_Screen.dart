@@ -16,6 +16,7 @@ class ReportSearchScreen extends StatefulWidget {
 class _ReportSearchScreenState extends State<ReportSearchScreen> {
 
   ReportSearchController reportSearchController = Get.put(ReportSearchController());
+  Color reportbuttonColor = ConstColour.offerImageColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,10 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
         leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
       backgroundColor: ConstColour.bgColor,
@@ -78,7 +81,6 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
             shrinkWrap: true,
             itemCount: reportSearchController.reportlist.length,
             itemBuilder: (context, index) {
-              Color reportbuttonColor = ConstColour.offerImageColor;
 
               if(reportSearchController.reportlist[index].btnName == "Completed") {
                 reportbuttonColor = ConstColour.greenColor;
@@ -134,7 +136,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                         child: Text(
                           reportSearchController.reportlist[index].btnName,
                           style: TextStyle(
-                              color: reportButtonColor,
+                              color: reportbuttonColor,
                               fontFamily: ConstFont.poppinsRegular
                           ),
                         ),

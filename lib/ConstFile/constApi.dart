@@ -10,5 +10,7 @@ class ConstApi {
   static  String  assignOrder = '${baseUrl}Order/AssignOrder';
   static  String  getOrderDetails = '${baseUrl}Order/GetOrderDetails?orderId=1e4e44a1-910c-4e95-9ee3-cd5cb72b8b82';
   static  String  newUser = '${baseUrl}Auth/registerAdminUser';
+  static  String  orderComplete = '${baseUrl}Order/CompleteOrder';
+  static  String  orderCancel = '${baseUrl}Order/CancelOrder';
 
 }

@@ -10,10 +10,12 @@ import 'package:jewellery_user/Screen/auth_screen/login.dart';
 import '../ConstFile/constApi.dart';
 import '../ConstFile/constPreferences.dart';
 import 'home_Controller.dart';
+import 'login_controller.dart';
 
 
 class RegisterController extends GetxController{
   HomeController homeController = Get.put(HomeController());
+  LoginController loginController = Get.put(LoginController());
 
   var firstNames;
   var lastNames;
@@ -22,6 +24,7 @@ class RegisterController extends GetxController{
   var addr;
   var ref;
 
+  RxBool isLoading = false.obs;
   //register screen controller
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -65,7 +68,7 @@ class RegisterController extends GetxController{
     var file = File(image.path);
     var directory = 'Test';
 
-    var request = http.MultipartRequest('POST', url)..files.add(await http.MultipartFile.fromPath('file', file.path))..fields['Directory'] = directory;
+    var request = http.MultipartRequest('POST', url)..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
 
     try {
       var response = await request.send();
@@ -80,7 +83,7 @@ class RegisterController extends GetxController{
         // var filePath = json.decode(responseBody);
         debugPrint(imgList.toString());
         // Extract and store the filePath value
-        filePath = jsonResponse['filePath'];
+        filePath = imgList[0].path.toString();
         debugPrint("File Path "+filePath);
 
 
@@ -90,6 +93,7 @@ class RegisterController extends GetxController{
     } catch (error) {
       debugPrint('Error uploading file: $error');
     }
+    isLoading.value = false;
   }
 
 
@@ -98,6 +102,7 @@ class RegisterController extends GetxController{
   Future<void> userRegister(String firstName,String lastName,String password,String mobileNumber,String address,
       String referenceName,String name,String accountNumber,String ifsc,String brachName,String accountHolderName
       ) async {
+    debugPrint("Device id : ${loginController.deviceId}");
     Map<String, dynamic> requestData = {
       "firstName": firstName.toString(),
       "lastName": lastName.toString(),
@@ -105,7 +110,7 @@ class RegisterController extends GetxController{
       "mobileNumber": mobileNumber.toString(),
       "address": address.toString(),
       "referenceName": referenceName.toString(),
-      "DeviceId": "123",
+      "DeviceId": loginController.deviceId.toString(),
       "userDocuments": [
         {
           "document": filePath.toString(),
@@ -142,7 +147,7 @@ class RegisterController extends GetxController{
         Get.to(()=> const LoginScreen());
         Utils().toastMessage("Register Successfull");
 
-        Utils().snackBar(response.body, '');
+        // Utils().snackBar(response.body, '');
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
         Utils().errorsnackBar(response.reasonPhrase.toString(), '');

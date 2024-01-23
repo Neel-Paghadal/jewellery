@@ -8,102 +8,134 @@ import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Screen/home.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/Login_model.dart';
+import '../Screen/User_screen/user_home.dart';
 import 'home_Controller.dart';
 
-class LoginController extends GetxController{
+class LoginController extends GetxController {
 
-    HomeController homeController = Get.put(HomeController());
+  HomeController homeController = Get.put(HomeController());
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passController = TextEditingController();
 
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController passController = TextEditingController();
+  var deviceId;
+  Future<void> login(String mobileNo, String pass) async {
+    debugPrint("Device Id : $deviceId");
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
 
-    Future<void> login(String mobileNo,String pass) async {
+    final Map<String, dynamic> body = {
+      'mobileNo': mobileNo,
+      'password': pass,
+      'DeviceId': deviceId
+    };
 
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(ConstApi.userLogin),
+        headers: headers,
+        body: jsonEncode(body),
+      );
 
-        final Map<String, String> headers = {
-            'Content-Type': 'application/json',
-        };
+      if (response.statusCode == 200) {
+        // Successful login, handle the response accordingly
+        debugPrint('Login successful');
 
-        final Map<String, dynamic> body = {
-            'mobileNo': mobileNo,
-            'password': pass,
-        };
+        final responseData = loginFromJson(response.body);
+        debugPrint(responseData.toString());
+        ConstPreferences().setToken(responseData.token);
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setBool("login", true);
+        phoneController.clear();
+        passController.clear();
+        Utils().toastMessage("Login successful");
+        debugPrint(response.body);
 
-        try {
-            final http.Response response = await http.post(
-                Uri.parse(ConstApi.userLogin),
-                headers: headers,
-                body: jsonEncode(body),
-            );
+        debugPrint('Response: ${response.body}');
+      } else {
+        Utils().errorsnackBar("Login failed", '');
+        // Handle unsuccessful login
 
-            if (response.statusCode == 200) {
-                // Successful login, handle the response accordingly
-                debugPrint('Login successful');
-
-                final responseData = loginFromJson(response.body);
-                debugPrint(responseData.toString());
-                ConstPreferences().setToken(responseData.token);
-                final SharedPreferences pref = await SharedPreferences.getInstance();
-                pref.setBool("login", true);
-                Get.to(() => const HomeScreen());
-                phoneController.clear();
-                passController.clear();
-                Utils().toastMessage("Login successful");
-                debugPrint(response.body);
-
-                debugPrint('Response: ${response.body}');
-            } else {
-                Utils().errorsnackBar("Login failed", '');
-                // Handle unsuccessful login
-
-                // Handle error cases
-                debugPrint('Login failed. Status code: ${response.statusCode}');
-                debugPrint('Response: ${response.body}');
-            }
-        } catch (e) {
-            Utils().errorsnackBar("title", e.toString());
-            // Handle network or other errors
-            debugPrint('Error during login: $e');
-        }
-        homeController.loading.value = false;
+        // Handle error cases
+        debugPrint('Login failed. Status code: ${response.statusCode}');
+        debugPrint('Response: ${response.body}');
+      }
+    } catch (e) {
+      Utils().errorsnackBar("title", e.toString());
+      // Handle network or other errors
+      debugPrint('Error during login: $e');
     }
 
+    homeController.loading.value = false;
+    mainToken();
+  }
 
+  var role;
+  String jwtToken = '';
+  Future<void> mainToken() async {
+    // Replace 'your_token_here' with the actual JWT token you want to decode
+    jwtToken = (await ConstPreferences().getToken())!;
+    // String jwtToken = 'your_token_here';
+    debugPrint(jwtToken);
+    Map<String, dynamic>? decodedToken = Jwt.parseJwt(jwtToken);
 
-    // Future<void> loginUser(String mobileNo,String pass) async {
-    //     final Map<String, String> headers = {"Content-Type": "application/json"};
-    //     final Map<String, dynamic> body = {
-    //         "mobileNo": mobileNo,
-    //         "password": pass,
-    //     };
-    //
-    //     try {
-    //         final response = await http.post(Uri.parse(ConstApi.userLogin),
-    //             headers: headers, body: jsonEncode(body));
-    //
-    //         if (response.statusCode == 200) {
-    //             // Successful login, handle the response
-    //             debugPrint("Login successful");
-    //             final responseData = loginFromJson(response.body);
-    //             debugPrint(responseData.toString());
-    //             ConstPreferences().setToken(responseData.token);
-    //             Utils().toastMessage("Login successful");
-    //             debugPrint(response.body);
-    //         } else {
-    //             Utils().errorsnackBar("Login failed", '');
-    //             // Handle unsuccessful login
-    //             debugPrint("Login failed. Status code: ${response.statusCode}");
-    //             debugPrint(response.body);
-    //         }
-    //     } catch (error) {
-    //         // Handle potential network or server errors
-    //         Utils().errorsnackBar("title", error.toString());
-    //
-    //         debugPrint("Error during login request: $error");
-    //     }
-    // }
+    if (decodedToken != null) {
+      print('Decoded Token: $decodedToken');
+      // Access token claims
+      List newList = decodedToken.values.toList();
+      debugPrint(newList.toString());
+      role = newList[1];
+      debugPrint('Role value: ${newList[1]}');
 
+      ConstPreferences().setRole(role);
+
+      if (role == 'Admin') {
+        Get.to(() => const HomeScreen());
+      }else if(role == 'SuperAdmin') {
+        Get.to(() => const HomeScreen());
+      }
+      else {
+        Get.to(() => const UserHome());
+      }
+    } else {
+      print('Failed to decode token.');
+    }
+  }
+
+  // Future<void> loginUser(String mobileNo,String pass) async {
+  //     final Map<String, String> headers = {"Content-Type": "application/json"};
+  //     final Map<String, dynamic> body = {
+  //         "mobileNo": mobileNo,
+  //         "password": pass,
+  //     };
+  //
+  //     try {
+  //         final response = await http.post(Uri.parse(ConstApi.userLogin),
+  //             headers: headers, body: jsonEncode(body));
+  //
+  //         if (response.statusCode == 200) {
+  //             // Successful login, handle the response
+  //             debugPrint("Login successful");
+  //             final responseData = loginFromJson(response.body);
+  //             debugPrint(responseData.toString());
+  //             ConstPreferences().setToken(responseData.token);
+  //             Utils().toastMessage("Login successful");
+  //             debugPrint(response.body);
+  //         } else {
+  //             Utils().errorsnackBar("Login failed", '');
+  //             // Handle unsuccessful login
+  //             debugPrint("Login failed. Status code: ${response.statusCode}");
+  //             debugPrint(response.body);
+  //         }
+  //     } catch (error) {
+  //         // Handle potential network or server errors
+  //         Utils().errorsnackBar("title", error.toString());
+  //
+  //         debugPrint("Error during login request: $error");
+  //     }
+  // }
 }

@@ -6,9 +6,11 @@ import 'package:http/http.dart' as http;
 import '../Common/snackbar.dart';
 import '../ConstFile/constApi.dart';
 import 'home_Controller.dart';
+import 'login_controller.dart';
 
 class NewRegisterCon extends GetxController{
   HomeController homeController = Get.put(HomeController());
+  LoginController loginController = Get.put(LoginController());
 
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -34,6 +36,7 @@ class NewRegisterCon extends GetxController{
 
   Future<void> userRegister(String firstName,String lastName,String password,String mobileNumber,String address,
       String referenceName) async {
+    debugPrint("Device id : ${loginController.deviceId}");
     Map<String, dynamic> requestData = {
       "firstName": firstName,
       "lastName": lastName,
@@ -41,7 +44,7 @@ class NewRegisterCon extends GetxController{
       "mobileNumber": mobileNumber,
       "address": address,
       "referenceName": referenceName,
-      "DeviceId":"123"
+      "DeviceId": ''
     };
 
     debugPrint("Request Data : "+requestData.toString());

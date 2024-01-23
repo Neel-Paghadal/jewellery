@@ -1,15 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constApi.dart';
-import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Models/users_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/Screen/home.dart';
-
 import '../ConstFile/constPreferences.dart';
 import '../Models/userList_model.dart';
 import '../Screen/user_list.dart';
@@ -32,15 +29,16 @@ class UserListController extends GetxController {
     var url = Uri.parse(ConstApi.assignOrder);
 
     Map<String, String> requestBody = {
-      "userId": userId,
-      "Code": code,
-      "notes": notes,
-      "OrderId": orderId,
+      "userId": userId.toString(),
+      "Code": code.toString(),
+      "notes": notes.toString(),
+      "OrderId": orderId.toString(),
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
+    debugPrint("Request Body :$requestBody");
 
     try {
       var response = await http.post(
@@ -52,6 +50,7 @@ class UserListController extends GetxController {
       if (response.statusCode == 200) {
         // Successful API call
         var responseBody = json.decode(response.body);
+        notesCon.clear();
         Get.to(() => const HomeScreen());
         debugPrint('Response: $responseBody');
         Utils().toastMessage("Order assign Successfully");
@@ -67,25 +66,29 @@ class UserListController extends GetxController {
     homeController.loading.value = false;
   }
 
-  getUserCall() async {
+  getUserCall(String id) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     getUserDropCall(orderId.toString());
     // Set up headers with the token
     Map<String, String> headers = {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
 
-    final response =
-        await http.get(Uri.parse(ConstApi.getUser), headers: headers);
+    final response = await http.get(
+        Uri.parse(
+            'http://208.64.33.118:8558/api/Order/GetOrderUsers?orderId=$id'),
+        headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);
       final responseData = usersListFromJson(response.body);
-      debugPrint("HOME LIST " + responseData.toString());
-      Get.to(() => const UserListScreen());
+      debugPrint("HOME LIST $responseData");
+      // Get.to(() => const UserListScreen());
+      userList.clear();
       userList.addAll(responseData.users);
-      debugPrint("HOME LIST " + userList[0].userName.toString());
+      return userList;
+      debugPrint("HOME LIST ${userList[0].userName}");
 
       debugPrint('Response: ${response.body}');
       // Process the data as needed
@@ -113,10 +116,10 @@ class UserListController extends GetxController {
     if (response.statusCode == 200) {
       debugPrint(response.body);
       final responseData = usersFromJson(response.body);
-      debugPrint("HOME LIST " + responseData.toString());
+      debugPrint("HOME LIST $responseData");
       userListDrop.clear();
       userListDrop.addAll(responseData.users);
-      debugPrint("HOME LIST " + userList[0].userName.toString());
+      debugPrint("HOME LIST ${userList[0].userName}");
 
       debugPrint('Response: ${response.body}');
       // Process the data as needed

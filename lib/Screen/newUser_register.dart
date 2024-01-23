@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Controller/newRegister_controller.dart';
-import 'package:jewellery_user/Screen/home.dart';
 
 import '../ConstFile/constFonts.dart';
 
@@ -50,7 +49,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
             child: Column(
               children: [
 
-                Text("Create Account",style: TextStyle(
+                const Text("Create Account",style: TextStyle(
                     color: ConstColour.primaryColor,
                     fontWeight: FontWeight.w700,
                     fontFamily: ConstFont.poppinsRegular,
@@ -58,7 +57,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                 )),
                 Divider(height: deviceHeight * 0.01),
 
-                Text("Create an account so you can\nexplore all the existing jobs",style: TextStyle(
+                const Text("Create an account so you can\nexplore all the existing jobs",style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontFamily: ConstFont.poppinsRegular,
@@ -535,7 +534,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                     titleAlignment: ListTileTitleAlignment.center,
                     title: Padding(
                       padding: EdgeInsets.only(left: deviceWidth * 0.1),
-                      child: Text(
+                      child: const Text(
                         "Next",
                         style: TextStyle(
                             fontFamily: ConstFont.poppinsRegular,
@@ -546,7 +545,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    trailing: Icon(
+                    trailing: const Icon(
                       Icons.arrow_forward,
                       size: 24,
                     ),

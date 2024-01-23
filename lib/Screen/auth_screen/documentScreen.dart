@@ -35,6 +35,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
     final imageTemporary = File(image.path);
     setState(() {
       imageNotes = imageTemporary;
+      registerController.isLoading.value = true;
       registerController.uploadFile(imageNotes!);
       debugPrint(imageNotes.toString());
     });
@@ -47,6 +48,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
     final imageTemporary = File(image.path);
     setState(() {
       imageNotes = imageTemporary;
+    registerController.isLoading.value = true;
       registerController.uploadFile(imageNotes!);
 
       debugPrint(imageNotes.toString());
@@ -401,96 +403,102 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           child: Stack(
                             children: [
 
-                              Container(
-                                child: imageNotes != null
-                                    ?  Image.file(
-                                    imageNotes!,
-                                    // width: deviceWidth * 0.275,
-                                    // height: deviceHeight * 0.13,
-                                  )
-                                    : InkWell(
-                                  onTap: () {
-                                    showDialog<void>(
-                                      context: context,
-                                      builder: (BuildContext dialogContext) {
-                                        return AlertDialog(
-                                          content: SizedBox(
-                                            // height: deviceHeight * 0.17,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Card(
-                                                  child: ListTile(
-                                                    title: const Text("Camera"),
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                      getImageCamera();
-                                                    },
-                                                    leading: const Icon(
-                                                      Icons.camera_alt,
-                                                      color: Colors.black,
+                              Obx(
+                                () =>  Container(
+                                  child : registerController.isLoading.value == true ? CircularProgressIndicator() :
+                                   Container(
+                                    child: imageNotes != null
+                                        ?  Image.file(
+                                        imageNotes!,
+                                        // width: deviceWidth * 0.275,
+                                        // height: deviceHeight * 0.13,
+                                      )
+                                        : InkWell(
+                                      onTap: () {
+                                        showDialog<void>(
+                                          context: context,
+                                          builder: (BuildContext dialogContext) {
+                                            return AlertDialog(
+                                              content: SizedBox(
+                                                // height: deviceHeight * 0.17,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Card(
+                                                      child: ListTile(
+                                                        title: const Text("Camera"),
+                                                        onTap: () {
+                                                          Navigator.pop(context);
+                                                          getImageCamera();
+                                                        },
+                                                        leading: const Icon(
+                                                          Icons.camera_alt,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                                Card(
-                                                  child: ListTile(
-                                                    title: const Text("Gallery"),
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                      getImageGallery();
-                                                    },
-                                                    leading: const Icon(
-                                                      Icons.photo_library_rounded,
-                                                      color: Colors.black,
+                                                    Card(
+                                                      child: ListTile(
+                                                        title: const Text("Gallery"),
+                                                        onTap: () {
+                                                          Navigator.pop(context);
+                                                          getImageGallery();
+                                                        },
+                                                        leading: const Icon(
+                                                          Icons.photo_library_rounded,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          ),
+                                              ),
+                                            );
+                                          },
                                         );
                                       },
-                                    );
-                                  },
-                                  child: (userProfileImage == null || userProfileImage!.isEmpty)
-                                      ?
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                     mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.asset('asset/icons/image.png',width: deviceWidth * 0.2),
-                                      Padding(
-                                        padding:  EdgeInsets.all(8.0),
-                                        child: Text("Upload Aadhaar Card",style: TextStyle(color: Colors.grey,fontFamily: ConstFont.poppinsMedium,fontSize: 14,),overflow: TextOverflow.ellipsis,),
+                                      child: (userProfileImage == null || userProfileImage!.isEmpty)
+                                          ?
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                         mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.asset('asset/icons/image.png',width: deviceWidth * 0.2),
+                                          Padding(
+                                            padding:  EdgeInsets.all(8.0),
+                                            child: Text("Upload Aadhaar Card",style: TextStyle(color: Colors.grey,fontFamily: ConstFont.poppinsMedium,fontSize: 14,),overflow: TextOverflow.ellipsis,),
+                                          )
+                                        ],
                                       )
-                                    ],
-                                  )
 
-                                      : CircleAvatar(
-                                    radius: 55,
-                                    backgroundImage: NetworkImage(userProfileImage!),
+                                          : CircleAvatar(
+                                        radius: 55,
+                                        backgroundImage: NetworkImage(userProfileImage!),
+                                      ),
+                                    ),
                                   ),
+
+                                // Positioned(
+                                //     left: deviceWidth * 0.16,
+                                //     // bottom: deviceHeight * 0.08,
+                                //     top: deviceHeight * 0.08,
+                                //     child: imageNotes != null
+                                //         ? IconButton(
+                                //         onPressed: () {
+                                //           setState(() {
+                                //             imageNotes = null;
+                                //           });
+                                //         },
+                                //         icon: const Icon(
+                                //           CupertinoIcons.minus_circle_fill,
+                                //           color: Colors.red,
+                                //           size: 24,
+                                //         ))
+                                //         : const SizedBox())
                                 ),
-                              ),
-                              // Positioned(
-                              //     left: deviceWidth * 0.16,
-                              //     // bottom: deviceHeight * 0.08,
-                              //     top: deviceHeight * 0.08,
-                              //     child: imageNotes != null
-                              //         ? IconButton(
-                              //         onPressed: () {
-                              //           setState(() {
-                              //             imageNotes = null;
-                              //           });
-                              //         },
-                              //         icon: const Icon(
-                              //           CupertinoIcons.minus_circle_fill,
-                              //           color: Colors.red,
-                              //           size: 24,
-                              //         ))
-                              //         : const SizedBox())
+                              )
                             ],
                           ),
                         ),
@@ -500,6 +508,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           onPressed: () {
                             setState(() {
                               imageNotes = null;
+                              registerController.imgList.clear();
                             });
                           },
                           icon: const Icon(
@@ -513,41 +522,45 @@ class _DocumentScreenState extends State<DocumentScreen> {
                 ),
               ),
 
-              Padding(
-                padding: EdgeInsets.only(top: deviceHeight * 0.05),
-                child: NextButton(
-                  btnName: "Register",
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (registerController.filePath == null) {
-                          Utils().toastMessage("Please enter the image");
-                      } else {
+               Obx(
+                 () =>  Padding(
+                      padding: EdgeInsets.only(top: deviceHeight * 0.05),
+                      child:  registerController.isLoading.value == true ? SizedBox() :  NextButton(
+                        btnName: "Register",
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (registerController.filePath == null) {
+                                Utils().toastMessage("Please enter the image");
+                            } else {
 
-                        homeController.loading.value = true;
-                        registerController.userRegister(
-                            registerController.firstNames,
-                            registerController.lastNames,
-                            registerController.pass,
-                            registerController.phone,
-                            registerController.addr,
-                            registerController.ref,
-                            registerController.bankName.text,
-                            registerController.accNo.text,
-                            registerController.ifsc.text,
-                            registerController.branchName.text,
-                            registerController.accHolName.text
-                        );
+                              homeController.loading.value = true;
+                              registerController.userRegister(
+                                  registerController.firstNames,
+                                  registerController.lastNames,
+                                  registerController.pass,
+                                  registerController.phone,
+                                  registerController.addr,
+                                  registerController.ref,
+                                  registerController.bankName.text,
+                                  registerController.accNo.text,
+                                  registerController.ifsc.text,
+                                  registerController.branchName.text,
+                                  registerController.accHolName.text
+                              );
 
-                        // loginController.login(mobileNo!, password!);
-                      }
-
-
+                              // loginController.login(mobileNo!, password!);
+                            }
 
 
-                    }
-                  },
-                ),
-              ),
+
+
+                          }
+                        },
+                      ),
+                    ),
+               ),
+
+
             ],
           ),
         ),

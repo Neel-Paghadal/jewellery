@@ -91,6 +91,12 @@ class _OrderScreenState extends State<OrderScreen> {
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+            color: ConstColour.primaryColor),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -386,75 +392,81 @@ class _OrderScreenState extends State<OrderScreen> {
                     left: deviceWidth * 0.02,
                     right: deviceWidth * 0.02,
                     top: deviceHeight * 0.005),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: const BorderSide(color: Colors.white)),
-                  color: ConstColour.bgColor,
-                  child: Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Text("Select Delivery Date :",
-                          style: TextStyle(
-                              fontFamily: ConstFont.poppinsRegular,
-                              fontSize: 16,
-                              color: Colors.white)),
-                      IconButton(
-                          splashColor: ConstColour.btnHowerColor,
-                          onPressed: () async {
-                            final DateTime? pickedDate = await showDatePicker(
-                              context: Get.context!,
-                              initialDate: _startDate,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2050),
-                              builder: (context, child) {
-                                return Theme(
-                                  data: Theme.of(context).copyWith(
-                                    colorScheme: const ColorScheme.light(
-                                      primary: ConstColour.primaryColor,
-                                      // header background color
-                                      onPrimary: Colors.black,
-                                      // header text color
-                                      onSurface:
-                                          Colors.black, // body text color
-                                    ),
-                                    // textButtonTheme: TextButtonThemeData(
-                                    //   style: TextButton.styleFrom(
-                                    //     foregroundColor: Colors.red, // button text color
-                                    //   ),
-                                    // ),
-                                  ),
-                                  child: child!,
-                                );
-                              },
-                            );
-                            if (pickedDate != null) {
-                              startdate.value =
-                                  pickedDate.millisecondsSinceEpoch;
-                              setState(() {
-                                _startDate = pickedDate;
-                              });
-                            }
-                            debugPrint(
-                                DateFormat('yyyy-MM-dd').format(_startDate));
-                            debugPrint("millisecond$startDate");
-                          },
-                          icon: const Icon(
-                            Icons.calendar_month_rounded,
-                            color: Colors.white,
-                          )),
-                      Text(
-                          DateFormat('dd-MM-yyyy').format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                  startdate.value)),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: ConstFont.poppinsRegular,
+                child: InkWell(
+                  splashColor: ConstColour.btnHowerColor,
+                  onTap: () async {
+                    final DateTime? pickedDate = await showDatePicker(
+                      context: Get.context!,
+                      initialDate: _startDate,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2050),
+                      builder: (context, child) {
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: const ColorScheme.light(
+                              primary: ConstColour.primaryColor,
+                              // header background color
+                              onPrimary: Colors.black,
+                              // header text color
+                              onSurface:
+                              Colors.black, // body text color
+                            ),
+                            // textButtonTheme: TextButtonThemeData(
+                            //   style: TextButton.styleFrom(
+                            //     foregroundColor: Colors.red, // button text color
+                            //   ),
+                            // ),
                           ),
-                          overflow: TextOverflow.ellipsis),
-                    ],
+                          child: child!,
+                        );
+                      },
+                    );
+                    if (pickedDate != null) {
+                      startdate.value =
+                          pickedDate.millisecondsSinceEpoch;
+                      setState(() {
+                        _startDate = pickedDate;
+                      });
+                    }
+                    debugPrint(
+                        DateFormat('yyyy-MM-dd').format(_startDate));
+                    debugPrint("millisecond$startDate");
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: const BorderSide(color: Colors.white)),
+                    color: ConstColour.bgColor,
+                    child: Row(
+                      // mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text("Select Delivery Date :",
+                            style: TextStyle(
+                                fontFamily: ConstFont.poppinsRegular,
+                                fontSize: 16,
+                                color: Colors.white)),
+                        IconButton(
+                            splashColor: ConstColour.btnHowerColor,
+                           onPressed: () {
+
+                           },
+                            icon: const Icon(
+                              Icons.calendar_month_rounded,
+                              color: Colors.white,
+                            )),
+                        Text(
+                            DateFormat('dd-MM-yyyy').format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    startdate.value)),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: ConstFont.poppinsRegular,
+                            ),
+                            overflow: TextOverflow.ellipsis),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -468,7 +480,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   textAlign: TextAlign.start,
                   keyboardType: TextInputType.text,
                   autocorrect: true,
-                  // controller:  registerController.firstName,
+                  controller:  orderController.descripT,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please Enter FirsName";

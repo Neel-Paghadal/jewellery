@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
+import 'package:jewellery_user/Models/userList_model.dart';
+import 'package:jewellery_user/Screen/loader.dart';
 
 import '../Common/bottom_button_widget.dart';
 import '../ConstFile/constColors.dart';
@@ -61,7 +63,9 @@ class _UserListScreenState extends State<UserListScreen> {
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.back();
+            },
             icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
@@ -317,77 +321,215 @@ class _UserListScreenState extends State<UserListScreen> {
         controller: ScrollController(),
         scrollDirection: Axis.vertical,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment:  CrossAxisAlignment.center,
           children: [
-            Obx(
-              () => ListView.builder(
-                controller: ScrollController(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: userListController.userList.length,
-                itemBuilder: (BuildContext context, index) {
-                  Color buttonColor = ConstColour.offerImageColor;
+            FutureBuilder<dynamic>(
+                future: userListController.getUserCall(userListController.orderId.toString()),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Display shimmer effect while waiting for the response
+                    return Loaders(
+                      items: 6,
+                      direction: LoaderDirection.ltr,
+                      baseColor: Colors.grey,
+                      highLightColor: Colors.white,
+                      builder: Padding(
+                        padding: EdgeInsets.only(
+                            right: deviceWidth * 0.01),
+                        child: Column(
+                          mainAxisAlignment:
+                          MainAxisAlignment.start,
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                           Padding(
+                             padding: const EdgeInsets.all(8.0),
+                             child: ListTile(
+                               shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.circular(8),
+                                 side: BorderSide(color: Colors.grey,),
+                               ),
+                               title: Row(
+                                 mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                 children: [
+                                   Container(
+                                     width: deviceWidth * 0.4,
+                                     height: deviceHeight * 0.01,
+                                     color: Colors.grey,
+                                   ),Container(
+                                     width: deviceWidth * 0.2,
+                                     height: deviceHeight * 0.01,
+                                     color: Colors.grey,
+                                   ),
+                                 ],
+                               ),
+                             ),
+                           )
 
-                  if (userListController.userList[index].status ==
-                      "In Progress") {
-                    buttonColor = ConstColour.offerImageColor;
-                  } else if (userListController.userList[index].status ==
-                      "Completed") {
-                    buttonColor = ConstColour.greenColor;
-                  } else if (userListController.userList[index].status ==
-                      "Cancelled") {
-                    buttonColor = ConstColour.quantityRemove;
-                  } else if (userListController.userList[index].status ==
-                      "Pending") {
-                    buttonColor = Colors.yellow;
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    // Display an error message if the API call fails
+                    return Center(
+                      child: Text('Error fetching users. Please try again.',style: TextStyle(fontFamily: ConstFont.poppinsRegular,fontSize: 16,color: Colors.white),overflow: TextOverflow.ellipsis),
+                    );
+                  } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                    // Display a message if no users are found
+                    return Center(
+                      child: Text('No users found',style: TextStyle(fontFamily: ConstFont.poppinsRegular,fontSize: 16,color: Colors.white),overflow: TextOverflow.ellipsis),
+                    );
+                  } else {
+                    // Display the list of users
+                    return ListView.builder(
+                      controller: ScrollController(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: userListController.userList.length,
+                      itemBuilder: (BuildContext context, index) {
+                        Color buttonColor = ConstColour.offerImageColor;
+
+                        if (userListController.userList[index].status ==
+                            "In Progress") {
+                          buttonColor = ConstColour.offerImageColor;
+                        } else if (userListController.userList[index].status ==
+                            "Completed") {
+                          buttonColor = ConstColour.greenColor;
+                        } else if (userListController.userList[index].status ==
+                            "Cancelled") {
+                          buttonColor = ConstColour.quantityRemove;
+                        } else if (userListController.userList[index].status ==
+                            "Pending") {
+                          buttonColor = Colors.yellow;
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              border: Border.all(color: ConstColour.primaryColor),
+                              borderRadius: BorderRadius.circular(11),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(21),
+                                    ),
+                                    child: Text(
+                                      userListController.userList[index].userName,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontFamily: ConstFont.poppinsRegular),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: deviceWidth * 0.02),
+                                  child: TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      userListController.userList[index].status,
+                                      style: TextStyle(
+                                          color: buttonColor,
+                                          fontFamily: ConstFont.poppinsRegular),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   }
-
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        border: Border.all(color: ConstColour.primaryColor),
-                        borderRadius: BorderRadius.circular(11),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(21),
-                              ),
-                              child: Text(
-                                userListController.userList[index].userName,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: ConstFont.poppinsRegular),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: deviceWidth * 0.02),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                userListController.userList[index].status,
-                                style: TextStyle(
-                                    color: buttonColor,
-                                    fontFamily: ConstFont.poppinsRegular),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
                 },
-              ),
             ),
+            // Obx(
+            //   () => userListController.userList.isEmpty  ?
+            //       Text("No data found",
+            //       style: TextStyle(
+            //         color: Colors.white,fontFamily: ConstFont.poppinsBold,
+            //         fontSize: 16,
+            //       ),overflow: TextOverflow.ellipsis,)
+            //       :   ListView.builder(
+            //     controller: ScrollController(),
+            //     scrollDirection: Axis.vertical,
+            //     shrinkWrap: true,
+            //     itemCount: userListController.userList.length,
+            //     itemBuilder: (BuildContext context, index) {
+            //       Color buttonColor = ConstColour.offerImageColor;
+            //
+            //       if (userListController.userList[index].status ==
+            //           "In Progress") {
+            //         buttonColor = ConstColour.offerImageColor;
+            //       } else if (userListController.userList[index].status ==
+            //           "Completed") {
+            //         buttonColor = ConstColour.greenColor;
+            //       } else if (userListController.userList[index].status ==
+            //           "Cancelled") {
+            //         buttonColor = ConstColour.quantityRemove;
+            //       } else if (userListController.userList[index].status ==
+            //           "Pending") {
+            //         buttonColor = Colors.yellow;
+            //       }
+            //
+            //       return Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: Container(
+            //           decoration: BoxDecoration(
+            //             color: Colors.black,
+            //             border: Border.all(color: ConstColour.primaryColor),
+            //             borderRadius: BorderRadius.circular(11),
+            //           ),
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             crossAxisAlignment: CrossAxisAlignment.start,
+            //             children: [
+            //               Padding(
+            //                 padding: const EdgeInsets.all(15.0),
+            //                 child: Container(
+            //                   decoration: BoxDecoration(
+            //                     borderRadius: BorderRadius.circular(21),
+            //                   ),
+            //                   child: Text(
+            //                     userListController.userList[index].userName,
+            //                     style: const TextStyle(
+            //                         color: Colors.white,
+            //                         fontSize: 16,
+            //                         fontFamily: ConstFont.poppinsRegular),
+            //                     overflow: TextOverflow.ellipsis,
+            //                   ),
+            //                 ),
+            //               ),
+            //               Padding(
+            //                 padding: EdgeInsets.only(right: deviceWidth * 0.02),
+            //                 child: TextButton(
+            //                   onPressed: () {},
+            //                   child: Text(
+            //                     userListController.userList[index].status,
+            //                     style: TextStyle(
+            //                         color: buttonColor,
+            //                         fontFamily: ConstFont.poppinsRegular),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),
