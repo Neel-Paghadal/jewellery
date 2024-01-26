@@ -25,20 +25,24 @@ class Users {
 }
 
 class User {
+  String id;
   String userName;
   String status;
 
   User({
+    required this.id,
     required this.userName,
     required this.status,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
+    id: json["id"],
     userName: json["userName"],
     status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "userName": userName,
     "status": status,
   };

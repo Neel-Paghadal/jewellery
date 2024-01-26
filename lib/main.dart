@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:jewellery_user/Common/checkInternet.dart';
 import 'package:jewellery_user/Screen/User_screen/user_home.dart';
 import 'package:jewellery_user/Screen/languages.dart';
 import 'package:jewellery_user/Screen/splashScreen.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
       // fallbackLocale: Locale('en','US'),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(splashColor: Colors.white,useMaterial3: false),
-      home: const SplashScreen(),
+      // home: const SplashScreen(),
+      home :  InternetStatus(child: SplashScreen(),)
       // home: const ReportScreen(),
       // home: const UserHome(),
     );

@@ -50,9 +50,11 @@ class RegisterController extends GetxController{
     firstName.clear();
     lastName.clear();
     password.clear();
+    cPassword.clear();
     address.clear();
     mobile.clear();
-    ref.clear();
+    reference.clear();
+
 
     accHolName.clear();
     bankName.clear();
@@ -163,57 +165,6 @@ class RegisterController extends GetxController{
 
 
 
-
-  void registerUser() async {
-    final String url = 'http://208.64.33.118:8558/api/Auth/Register';
-
-    Map<String, dynamic> requestData = {
-      "firstName": "kartiess",
-      "lastName": "patel",
-      "password": "123456",
-      "mobileNumber": "9999988832",
-      "address": "Surat",
-      "referenceName": "",
-      "role": 1,
-      "DeviceId": "123",
-      "userDocuments": [
-        {
-          "document": "Test\\18be83d3-c57b-4cee-bad5-5d58d301d209_1000082114.jpg",
-          "documentType": 1
-        }
-      ],
-      "bankDetails": {
-        "name": "HDFC",
-        "accountNumber": "789456",
-        "ifsc": "HDFC001",
-        "brachName": "SARTHANA",
-        "accountHolderName": "789456"
-      }
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(requestData),
-      );
-
-      if (response.statusCode == 200) {
-        // Successful API call, handle the response accordingly
-        debugPrint("API call successful");
-        debugPrint("Response: ${response.body}");
-      } else {
-        // Handle errors, e.g., server errors, invalid data, etc.
-        debugPrint("API call failed with status code: ${response.statusCode}");
-        debugPrint("Error response: ${response.body}");
-      }
-    } catch (error) {
-      // Handle network errors
-      debugPrint("Error making API call: $error");
-    }
-  }
 
 
 

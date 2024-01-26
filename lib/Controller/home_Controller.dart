@@ -11,7 +11,7 @@ import 'package:jewellery_user/Models/dashboard_model.dart';
 class HomeController extends GetxController {
   RxBool loading = false.obs;
   RxList<Order> homeList = <Order>[].obs;
-
+  RxBool isLoaderShow = false.obs;
   RxBool isShow = false.obs;
   void checkUser() async {
     var role = await ConstPreferences().getRole();
@@ -23,6 +23,7 @@ class HomeController extends GetxController {
   }
 
   getOrderCall(int pageIndex, int pageSize) async {
+    isLoaderShow.value = true;
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
 
@@ -33,10 +34,10 @@ class HomeController extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse(
-            "http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
+        Uri.parse("http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
         headers: headers);
     if (response.statusCode == 200) {
+      isLoaderShow.value = false;
       final responseData = dashboardFromJson(response.body);
       debugPrint("HOME LIST " + responseData.toString());
       homeList.addAll(responseData.orders);
@@ -44,10 +45,12 @@ class HomeController extends GetxController {
       debugPrint('Response: ${response.body}');
       // Process the data as needed
     } else {
+      isLoaderShow.value = false;
       // Error in API call
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
+    isLoaderShow.value = false;
   }
 
   // getOrderCall(int pageIndex, int pageSize) async {

@@ -24,6 +24,7 @@ class ProductController extends GetxController {
   getProductDetailCall(String id) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
+    productDetail.clear();
 
     // Set up headers with the token
     Map<String, String> headers = {
@@ -38,7 +39,7 @@ class ProductController extends GetxController {
       debugPrint(response.body);
       final responseData = productDetailFromJson(response.body);
       debugPrint("HOME LIST " + responseData.toString());
-      Get.to(const ProductDetailScreen());
+      // Get.to(const ProductDetailScreen());
       productDetail.clear();
       productDetail.add(responseData.order);
       designT.text = productDetail[0].name;
@@ -50,7 +51,6 @@ class ProductController extends GetxController {
       descripT.text = productDetail[0].description.toString();
 
 
-      // debugPrint("HOME LIST " + userList[0].userName.toString());
 
       debugPrint('Response: ${response.body}');
       // Process the data as needed

@@ -405,7 +405,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
                               Obx(
                                 () =>  Container(
-                                  child : registerController.isLoading.value == true ? CircularProgressIndicator() :
+                                  child : registerController.isLoading.value == true ? CircularProgressIndicator(
+                                    color: ConstColour.primaryColor,
+                                  ) :
                                    Container(
                                     child: imageNotes != null
                                         ?  Image.file(
@@ -529,7 +531,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                         btnName: "Register",
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            if (registerController.filePath == null) {
+                            if (registerController.imgList.isEmpty) {
                                 Utils().toastMessage("Please enter the image");
                             } else {
 
@@ -548,7 +550,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                   registerController.accHolName.text
                               );
 
-                              // loginController.login(mobileNo!, password!);
                             }
 
 

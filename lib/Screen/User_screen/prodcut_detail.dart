@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,7 +59,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: NextButton(
                 onPressed: () {
                   homeController.loading.value = true;
-                  userProductController.assignComplete(userProductController.orderUserId, userProductController.reasonController.text);
+                  userProductController.assignComplete(
+                      userProductController.orderUserId,
+                      userProductController.reasonController.text
+                  );
 
                 },
                 btnName: "complete".tr,
@@ -211,6 +215,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                   userProductController.orderUserId,
                                                 userProductController.reasonController.text
                                               );
+
                                           }
 
                                         },
@@ -260,18 +265,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                        errorBuilder:
-                            (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          // Custom error widget to display when image fails to load
-                          return  Icon(
-                            Icons.image,
-                            size: 150,
-                            color: Colors.grey,
-                          );
-                        },
-                        userProductController.productDetail[0].image),
+                    child:
+                    // Image.network(
+                    //     errorBuilder:
+                    //         (BuildContext context, Object exception,
+                    //         StackTrace? stackTrace) {
+                    //       Custom error widget to display when image fails to load
+                          // return  Icon(
+                          //   Icons.image,
+                          //   size: 150,
+                          //   color: Colors.grey,
+                          // );
+                        // },
+                        // userProductController.productDetail[0].image),
+                    CachedNetworkImage(
+                      width: double.infinity,
+                      imageUrl: userProductController.productDetail[0].image.toString(),
+                      fadeInCurve: Curves.easeInOutQuad,
+                      placeholder: (context, url) => Icon(Icons.image,size: 100,color : ConstColour.loadImageColor),
+                      errorWidget: (context, url, error) => Icon(Icons.error,size: 100),
+                    )
                   ),
                 ),
               ),
@@ -321,19 +334,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
-                                child: Image.network(
-                                    errorBuilder:
-                                        (BuildContext context, Object exception,
-                                        StackTrace? stackTrace) {
+                                child:
+                                // Image.network(
+                                //     errorBuilder:
+                                //         (BuildContext context, Object exception,
+                                //         StackTrace? stackTrace) {
                                       // Custom error widget to display when image fails to load
-                                      return const Icon(
-                                        Icons.image,
-                                        size: 60,
-                                        color: Colors.grey,
-                                      );
-                                    },
-                                    userProductController.productDetail[0].orderImages[index].path,
-                                    width: deviceWidth * 0.16
+                                      // return const Icon(
+                                      //   Icons.image,
+                                      //   size: 60,
+                                      //   color: Colors.grey,
+                                      // );
+                                    // },
+                                    // userProductController.productDetail[0].orderImages[index].path,
+                                    // width: deviceWidth * 0.16
+                                CachedNetworkImage(
+                                  width: deviceWidth * 0.16,
+                                  imageUrl: userProductController.productDetail[0].orderImages[index].path,
+                                  fadeInCurve: Curves.easeInOutQuad,
+                                  placeholder: (context, url) => Icon(Icons.image,size: 65,color : ConstColour.loadImageColor),
+                                  errorWidget: (context, url, error) => Icon(Icons.error,size: 45),
                                 ),
                               ),
                             ),

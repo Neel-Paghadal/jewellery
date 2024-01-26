@@ -5,6 +5,7 @@ import 'package:jewellery_user/Screen/home.dart';
 import 'package:http/http.dart' as http;
 import '../Common/snackbar.dart';
 import '../ConstFile/constApi.dart';
+import '../ConstFile/constPreferences.dart';
 import 'home_Controller.dart';
 import 'login_controller.dart';
 
@@ -36,6 +37,9 @@ class NewRegisterCon extends GetxController{
 
   Future<void> userRegister(String firstName,String lastName,String password,String mobileNumber,String address,
       String referenceName) async {
+    String? token = await ConstPreferences().getToken();
+    debugPrint("Token : "+token.toString());
+
     debugPrint("Device id : ${loginController.deviceId}");
     Map<String, dynamic> requestData = {
       "firstName": firstName,
@@ -44,7 +48,7 @@ class NewRegisterCon extends GetxController{
       "mobileNumber": mobileNumber,
       "address": address,
       "referenceName": referenceName,
-      "DeviceId": ''
+      "DeviceId": ""
     };
 
     debugPrint("Request Data : "+requestData.toString());
@@ -67,7 +71,7 @@ class NewRegisterCon extends GetxController{
         Get.to(() => const HomeScreen());
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
-        Utils().errorsnackBar(response.reasonPhrase.toString(), '');
+        Utils().errorsnackBar(response.body.toString(), '');
       }
     } catch (e) {
       debugPrint('Error: $e');

@@ -26,6 +26,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   loginController.clearController();
+  }
+
+
+
+
+  @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
@@ -78,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       left: deviceWidth * 0.03,
                       right: deviceWidth * 0.03),
                   child: TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     autocorrect: true,
@@ -145,7 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       right: deviceWidth * 0.03,
                       bottom: deviceHeight * 0.02),
                   child: TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,

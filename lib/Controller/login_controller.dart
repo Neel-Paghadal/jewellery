@@ -21,6 +21,13 @@ class LoginController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passController = TextEditingController();
 
+
+
+  void clearController(){
+   phoneController.clear();
+   passController.clear();
+  }
+
   var deviceId;
   Future<void> login(String mobileNo, String pass) async {
     debugPrint("Device Id : $deviceId");
@@ -50,8 +57,8 @@ class LoginController extends GetxController {
         ConstPreferences().setToken(responseData.token);
         final SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setBool("login", true);
-        phoneController.clear();
-        passController.clear();
+        clearController();
+
         Utils().toastMessage("Login successful");
         debugPrint(response.body);
 
@@ -72,6 +79,7 @@ class LoginController extends GetxController {
 
     homeController.loading.value = false;
     mainToken();
+    clearController();
   }
 
   var role;

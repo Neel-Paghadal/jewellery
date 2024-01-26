@@ -12,8 +12,8 @@ class Utils{
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.redAccent,
-        textColor: Colors.white,
+        backgroundColor: ConstColour.primaryColor,
+        textColor: Colors.black,
         fontSize: 16.0
     );
   }

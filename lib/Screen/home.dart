@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -5,19 +6,20 @@ import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
+import 'package:jewellery_user/Controller/newRegister_controller.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
+import 'package:jewellery_user/Screen/productdetail.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-
 import '../ConstFile/constPreferences.dart';
 import '../Models/dashboard_model.dart';
 import 'auth_screen/login.dart';
-import 'loader.dart';
 import 'newUser_register.dart';
 import 'order.dart';
-import 'productdetail.dart';
 import 'report_search_Screen.dart';
 import 'user_list.dart';
+
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController _scrollController = ScrollController();
   UserListController userListController = Get.put(UserListController());
   ProductController productController = Get.put(ProductController());
+  NewRegisterCon  newRegisterCon = Get.put(NewRegisterCon());
+
   int _pageIndex = 0;
   int _pageSize = 5;
   bool _loading = false;
@@ -42,6 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadProducts();
     _scrollController.addListener(_onScroll);
     homeController.checkUser();
+    newRegisterCon.clearController();
+
   }
 
   Future<void> _handleRefresh() async {
@@ -94,6 +100,86 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)
+          ),
+          shadowColor: Colors.white,
+          elevation: 8.0,
+          backgroundColor: Colors.white,
+
+          title: const Text('Logout',style: TextStyle(
+            fontSize: 22,fontFamily: ConstFont.poppinsMedium,
+            color: Colors.black,
+          ),
+            overflow: TextOverflow.ellipsis,
+
+          ),
+          content: const Text('Are you sure, want to logout?',
+          style: TextStyle(
+            fontFamily: ConstFont.poppinsRegular,
+            fontSize: 16,
+            color: Colors.black,
+          ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          actions: [
+            InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: Container(
+                decoration: BoxDecoration(
+                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.red
+
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text('Cancel',style: TextStyle(
+                    fontFamily: ConstFont.poppinsRegular,
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                    overflow: TextOverflow.ellipsis,),
+                ),
+              ),
+            ),
+           InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: TextButton(
+                onPressed: () {
+
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: const Text('Logout',style: TextStyle(
+                    fontFamily: ConstFont.poppinsMedium,
+                    fontSize: 13,
+                    color: Colors.black,
+                  ),
+                    overflow: TextOverflow.ellipsis,),
+                ),
+              ),
+            ),
+
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -109,6 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: ConstColour.black,
           centerTitle: true,
           actions: [
+
             TextButton(
                 onPressed: () {
                   Get.to(() => const ReportSearchScreen());
@@ -132,15 +219,45 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: Drawer(
             backgroundColor: ConstColour.primaryColor,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: deviceHeight * 0.1,
-                  ),
-                  Obx(
-                    () => Visibility(
-                      visible: homeController.isShow.value,
-                      child: Padding(
+
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: deviceHeight * 0.07,bottom: deviceHeight *  0.02),
+                        child: Image.asset("asset/images/men_chair.png",width: deviceWidth * 0.5),
+                      ),
+                      Obx(
+                        () => Visibility(
+                          visible: homeController.isShow.value,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              tileColor: ConstColour.bgColor,
+                              splashColor: ConstColour.btnHowerColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: const BorderSide(
+                                      color: ConstColour.primaryColor)),
+                              onTap: () {
+                                Get.to(() => const NewUserRegister());
+                              },
+                              trailing: const Icon(Icons.arrow_forward,
+                                  size: 24, color: ConstColour.primaryColor),
+                              title: const Text("Add New Admin",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontFamily: ConstFont.poppinsRegular,
+                                  ),
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
                           tileColor: ConstColour.bgColor,
@@ -150,11 +267,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               side: const BorderSide(
                                   color: ConstColour.primaryColor)),
                           onTap: () {
-                            Get.to(() => const NewUserRegister());
+                            _showLogoutDialog(context);
+                            // ConstPreferences().clearPreferences();
+                            //
+                            // Get.to(() => const LoginScreen());
                           },
-                          trailing: const Icon(Icons.arrow_forward,
+                          trailing: const Icon(Icons.exit_to_app,
                               size: 24, color: ConstColour.primaryColor),
-                          title: const Text("Add New User",
+                          title: const Text("Log out",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -162,34 +282,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               overflow: TextOverflow.ellipsis),
                         ),
-                      ),
-                    ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      tileColor: ConstColour.bgColor,
-                      splashColor: ConstColour.btnHowerColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: const BorderSide(
-                              color: ConstColour.primaryColor)),
-                      onTap: () {
-                        ConstPreferences().clearPreferences();
-
-                        Get.to(() => const LoginScreen());
-                      },
-                      trailing: const Icon(Icons.exit_to_app,
-                          size: 24, color: ConstColour.primaryColor),
-                      title: const Text("Log out",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: ConstFont.poppinsRegular,
-                          ),
-                          overflow: TextOverflow.ellipsis),
-                    ),
-                  )
+                  const Text("Version 1.0.0",style: TextStyle(color: Colors.black,fontSize: 14,fontFamily: ConstFont.poppinsMedium),)
                 ])),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -201,215 +297,216 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         backgroundColor: ConstColour.bgColor,
-        body: LiquidPullToRefresh(
-          color: Colors.black,
-          height: deviceHeight * 0.08,
-          onRefresh: _handleRefresh,
-          showChildOpacityTransition: false,
-          backgroundColor: ConstColour.primaryColor,
-          springAnimationDurationInMilliseconds: 1,
-          child: Obx(
-            () => homeController.homeList.isEmpty
-                ? Loaders(
-                    items: 6,
-                    direction: LoaderDirection.ltr,
-                    baseColor: Colors.grey,
-                    highLightColor: Colors.white,
-                    builder: Padding(
-                      padding: EdgeInsets.only(right: deviceWidth * 0.01),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: ConstColour.primaryColor),
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
+        body: Obx(
+          () => LiquidPullToRefresh(
+            color: Colors.black,
+            height: deviceHeight * 0.08,
+            onRefresh: _handleRefresh,
+            showChildOpacityTransition: false,
+            backgroundColor: ConstColour.primaryColor,
+            springAnimationDurationInMilliseconds: 1,
+            child:
+            // homeController.isLoaderShow.value == true ?
+            // Loaders(
+            //           items: 6,
+            //           direction: LoaderDirection.ltr,
+            //           baseColor: Colors.grey,
+            //           highLightColor: Colors.white,
+            //           builder: Padding(
+            //             padding: EdgeInsets.only(right: deviceWidth * 0.01),
+            //             child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.start,
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 Padding(
+            //                   padding: const EdgeInsets.all(8.0),
+            //                   child: Container(
+            //                     decoration: BoxDecoration(
+            //                       border:
+            //                           Border.all(color: ConstColour.primaryColor),
+            //                       borderRadius: BorderRadius.circular(11),
+            //                     ),
+            //                     child: Row(
+            //                       crossAxisAlignment: CrossAxisAlignment.start,
+            //                       children: [
+            //                         Padding(
+            //                           padding: const EdgeInsets.all(8.0),
+            //                           child: Icon(
+            //                             Icons.image,
+            //                             size: 100,
+            //                             color: Colors.grey.shade400,
+            //                           ),
+            //                         ),
+            //                         Column(
+            //                           crossAxisAlignment:
+            //                               CrossAxisAlignment.start,
+            //                           children: [
+            //                             Padding(
+            //                               padding: EdgeInsets.only(
+            //                                   top: deviceHeight * 0.035),
+            //                               child: Container(
+            //                                 height: deviceHeight * 0.01,
+            //                                 width: deviceWidth * 0.5,
+            //                                 color: Colors.grey,
+            //                               ),
+            //                             ),
+            //                             Padding(
+            //                               padding: EdgeInsets.only(
+            //                                   top: deviceHeight * 0.01),
+            //                               child: Container(
+            //                                 height: deviceHeight * 0.01,
+            //                                 width: deviceWidth * 0.5,
+            //                                 color: Colors.grey,
+            //                               ),
+            //                             ),
+            //                             Padding(
+            //                               padding: EdgeInsets.only(
+            //                                   left: deviceWidth * 0.37,
+            //                                   top: deviceHeight * 0.035),
+            //                               child: Container(
+            //                                 width: deviceWidth * 0.2,
+            //                                 height: deviceHeight * 0.01,
+            //                                 color: Colors.grey,
+            //                               ),
+            //                             )
+            //                           ],
+            //                         )
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 )
+            //               ],
+            //             ),
+            //           ),
+            //         )
+                   Container(
+                    child: homeController.homeList.isEmpty ? const Center(child: Text("No Data Found",style: TextStyle(color: Colors.white,fontSize: 16,
+                      fontFamily: ConstFont.poppinsRegular,
+                    ),)): ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount:
+                            homeController.homeList.length + (_loading ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index == homeController.homeList.length) {
+                            // Loading indicator
+                            return _loading
+                                ? Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.image,
-                                      size: 100,
-                                      color: Colors.grey.shade400,
+                                    child: Center(
+                                      child: const CircularProgressIndicator(
+                                          color: ConstColour.primaryColor),
+                                      widthFactor: deviceWidth * 0.1,
                                     ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: deviceHeight * 0.035),
-                                        child: Container(
-                                          height: deviceHeight * 0.01,
-                                          width: deviceWidth * 0.5,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: deviceHeight * 0.01),
-                                        child: Container(
-                                          height: deviceHeight * 0.01,
-                                          width: deviceWidth * 0.5,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: deviceWidth * 0.37,
-                                            top: deviceHeight * 0.035),
-                                        child: Container(
-                                          width: deviceWidth * 0.2,
-                                          height: deviceHeight * 0.01,
-                                          color: Colors.grey,
-                                        ),
-                                      )
-                                    ],
                                   )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount:
-                        homeController.homeList.length + (_loading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index == homeController.homeList.length) {
-                        // Loading indicator
-                        return _loading
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: const CircularProgressIndicator(
-                                      color: ConstColour.primaryColor),
-                                  widthFactor: deviceWidth * 0.1,
-                                ),
-                              )
-                            : Container();
-                      }
+                                : Container();
+                          }
 
-                      final product = homeController.homeList[index];
+                          final product = homeController.homeList[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            productController.getProductDetailCall(
-                                homeController.homeList[index].id);
-                          },
-                          splashColor: ConstColour.btnHowerColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              border:
-                                  Border.all(color: ConstColour.primaryColor),
-                              borderRadius: BorderRadius.circular(11),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: deviceHeight * 0.13,
-                                    width: deviceWidth * 0.28,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(21),
-                                    ),
-                                    child: Image.network(errorBuilder:
-                                            (BuildContext context,
-                                                Object exception,
-                                                StackTrace? stackTrace) {
-                                      // Custom error widget to display when image fails to load
-                                      return const Icon(
-                                        Icons.image,
-                                        size: 80,
-                                        color: Colors.grey,
-                                      );
-                                    },
-                                        homeController.homeList[index].image
-                                            .toString(),
-                                        width: deviceWidth * 0.1),
-                                  ),
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(const ProductDetailScreen());
+
+                                productController.getProductDetailCall(
+                                    homeController.homeList[index].id);
+                              },
+                              splashColor: ConstColour.btnHowerColor,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  border:
+                                      Border.all(color: ConstColour.primaryColor),
+                                  borderRadius: BorderRadius.circular(11),
                                 ),
-                                Column(
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(
-                                        top: deviceHeight * 0.01,
-                                      ),
-                                      child: Text(
-                                        homeController.homeList[index].name,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontFamily:
-                                                ConstFont.poppinsRegular),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: deviceHeight * 0.015,
-                                          bottom: deviceHeight * 0.01),
-                                      child: Text(
-                                        homeController
-                                            .homeList[index].dateCreated,
-                                        style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 14,
-                                            fontFamily:
-                                                ConstFont.poppinsRegular),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: deviceWidth * 0.4),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          userListController.orderId =
-                                              homeController.homeList[index].id;
-                                          Get.to(() => const UserListScreen());
-                                          // userListController.getUserCall(userListController.orderId.toString());
-                                        },
-                                        child: const Text(
-                                          "User",
-                                          style: TextStyle(
-                                              color: ConstColour.primaryColor,
-                                              fontSize: 16,
-                                              fontFamily:
-                                                  ConstFont.poppinsMedium),
-                                          overflow: TextOverflow.ellipsis,
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        height: deviceHeight * 0.13,
+                                        width: deviceWidth * 0.28,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          color: Colors.white
+                                        ),
+                                      child : CachedNetworkImage(
+                                          width: double.infinity,
+                                          imageUrl: homeController.homeList[index].image.toString(),
+                                        fadeInCurve: Curves.easeInOutQuad,
+                                          placeholder: (context, url) => const Icon(Icons.image,size: 65,color : ConstColour.loadImageColor),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error,size: 45),
                                         ),
                                       ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: deviceHeight * 0.01,
+                                          ),
+                                          child: Text(
+                                            homeController.homeList[index].name,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontFamily:
+                                                    ConstFont.poppinsRegular),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: deviceHeight * 0.015,
+                                              bottom: deviceHeight * 0.01),
+                                          child: Text(
+                                            homeController
+                                                .homeList[index].dateCreated,
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14,
+                                                fontFamily:
+                                                    ConstFont.poppinsRegular),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: deviceWidth * 0.4),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              userListController.orderId =
+                                                  homeController.homeList[index].id;
+                                              Get.to(() => const UserListScreen());
+                                              // userListController.getUserCall(userListController.orderId.toString());
+                                            },
+                                            child: const Text(
+                                              "User",
+                                              style: TextStyle(
+                                                  color: ConstColour.primaryColor,
+                                                  fontSize: 16,
+                                                  fontFamily:
+                                                      ConstFont.poppinsMedium),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     )
                                   ],
-                                )
-                              ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    },
-                    controller: _scrollController,
+                          );
+                        },
+                        controller: _scrollController,
+                      ),
                   ),
-          ),
+            ),
         ),
       ),
     );

@@ -23,7 +23,9 @@ class NextButton extends StatelessWidget {
            maximumSize: Size(deviceWidth * 1.0, deviceHeight * 0.07),
           backgroundColor: ConstColour.primaryColor
       ),
-      onPressed: onPressed, child:  homeController.loading.value.obs == true
+      onPressed: homeController.loading.value.obs == true ? null : onPressed,
+
+          child:  homeController.loading.value.obs == true
           ? const CircularProgressIndicator(
         color: Colors.white,
       ) : Text(btnName,style: const TextStyle(fontFamily: ConstFont.poppinsRegular,fontWeight: FontWeight.w600, fontSize: 20,color: Colors.black),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),

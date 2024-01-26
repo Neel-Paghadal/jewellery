@@ -22,6 +22,9 @@ class OrderController extends GetxController{
   RxList<FileElement> imgList = <FileElement>[].obs;
   RxList<FileElement> imgListMulti = <FileElement>[].obs;
 
+  RxBool isLoading = false.obs;
+  RxBool isLoadingSec = false.obs;
+
 
   void clearController(){
     designT.clear();
@@ -65,6 +68,7 @@ class OrderController extends GetxController{
     } catch (error) {
       debugPrint('Error uploading file: $error');
     }
+    isLoading.value = false;
   }
   void uploadFileMulti(List<File> images) async {
     var url = Uri.parse('http://208.64.33.118:8558/api/File/Upload');
@@ -84,6 +88,7 @@ class OrderController extends GetxController{
       var response = await request.send();
       var responseBody = await response.stream.bytesToString();
       if (response.statusCode == 200) {
+        isLoadingSec.value = false;
         debugPrint('Files uploaded successfully');
         debugPrint(response.toString());
         debugPrint('Response: $responseBody');
@@ -104,6 +109,7 @@ class OrderController extends GetxController{
     } catch (error) {
       debugPrint('Error uploading file: $error');
     }
+    isLoadingSec.value = false;
   }
 
 
@@ -154,6 +160,7 @@ class OrderController extends GetxController{
 
         // Utils().snackBar(response.body, '');
         Get.to(() => const HomeScreen());
+        homeController.homeList.clear();
         clearController();
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
@@ -164,7 +171,7 @@ class OrderController extends GetxController{
       Utils().errorsnackBar(e.toString(), '');
 
     }
-
+      debugPrint("Request Data : $requestData");
     homeController.loading.value = false;
   }
 

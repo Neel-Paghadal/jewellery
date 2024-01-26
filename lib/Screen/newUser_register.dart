@@ -20,6 +20,14 @@ class _NewUserRegisterState extends State<NewUserRegister> {
   final _formKey = GlobalKey<FormState>();
   NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  newRegisterCon.clearController();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -507,8 +515,6 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                     splashColor: ConstColour.btnHowerColor,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-
-
                         if (newRegisterCon.mobile.text.isEmpty && newRegisterCon.password.text.isEmpty) {
                           setState(() {
                             Utils().toastMessage(

@@ -18,7 +18,7 @@ class ConstColour {
   static const Color textFieldBorder = Colors.white;
   static const Color searchColor = Color(0xffE8E8E8);
   static const Color textColor = Color(0xffE6E6E6);
-
+  static const Color loadImageColor = Color(0xFFE0E0E0);
 
 
 }
