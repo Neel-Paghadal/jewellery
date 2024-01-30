@@ -13,6 +13,7 @@ class HomeController extends GetxController {
   RxList<Order> homeList = <Order>[].obs;
   RxBool isLoaderShow = false.obs;
   RxBool isShow = false.obs;
+
   void checkUser() async {
     var role = await ConstPreferences().getRole();
     debugPrint("Role : $role");
@@ -23,7 +24,11 @@ class HomeController extends GetxController {
   }
 
   getOrderCall(int pageIndex, int pageSize) async {
-    isLoaderShow.value = true;
+    if(homeList.isEmpty){
+      isLoaderShow.value = true;
+    }else{
+      isLoaderShow.value = false;
+    }
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
 

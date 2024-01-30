@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -60,7 +62,7 @@ class UserHomeCon extends GetxController {
       // Process the data as needed
     } else {
       // Error in API call.
-      Utils().toastMessage(response.body);
+      Utils().toastMessage(json.decode(response.body)['error']);
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }

@@ -142,7 +142,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
                   }
                 },
-                btnName: "Add Design"),
+                btnName: "Submit"),
           ),
         ),
         body: SingleChildScrollView(
@@ -423,7 +423,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         final DateTime? pickedDate = await showDatePicker(
                           context: Get.context!,
                           initialDate: _startDate,
-                          firstDate: DateTime(2000),
+                          firstDate: DateTime.now(),
                           lastDate: DateTime(2050),
                           builder: (context, child) {
                             return Theme(
@@ -689,7 +689,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         padding:
                                                             EdgeInsets.all(8.0),
                                                         child: Text(
-                                                          "Upload identity document",
+                                                          "Upload Main Image",
                                                           style: TextStyle(
                                                             color: Colors.grey,
                                                             fontFamily: ConstFont
@@ -748,6 +748,26 @@ class _OrderScreenState extends State<OrderScreen> {
                         ],
                       ),
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                        EdgeInsets.only(left: deviceWidth * 0.04,top: deviceHeight * 0.01),
+                        child: Text(
+                          "Upload Sub Images :",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontFamily: ConstFont
+                                .poppinsMedium,
+                            fontSize: 14,
+                          ),
+                          overflow:
+                          TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: EdgeInsets.only(

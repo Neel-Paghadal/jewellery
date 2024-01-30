@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
+import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/newRegister_controller.dart';
 
 import '../ConstFile/constFonts.dart';
@@ -19,7 +21,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
   final mobileRegex = RegExp(r'^[0-9]{10}$');
   final _formKey = GlobalKey<FormState>();
   NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
-
+  HomeController homeController = Get.put(HomeController());
 
   @override
   void initState() {
@@ -507,13 +509,9 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: deviceHeight * 0.1,
-                      left: deviceWidth * 0.03,
-                      right: deviceWidth * 0.03),
-                  child: ListTile(
-                    splashColor: ConstColour.btnHowerColor,
-                    onTap: () {
+                  padding:  EdgeInsets.only(top: deviceHeight * 0.05),
+                  child: NextButton(
+                    onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         if (newRegisterCon.mobile.text.isEmpty && newRegisterCon.password.text.isEmpty) {
                           setState(() {
@@ -521,42 +519,76 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                                 "Enter valid Username & password");
                           });
                         } else {
-                       newRegisterCon.userRegister(
-                           newRegisterCon.firstName.text,
-                           newRegisterCon.lastName.text,
-                           newRegisterCon.password.text,
-                           newRegisterCon.mobile.text,
-                           newRegisterCon.address.text,
-                           newRegisterCon.reference.text
-                       );
+                          homeController.loading.value = true;
+                          newRegisterCon.userRegister(
+                              newRegisterCon.firstName.text,
+                              newRegisterCon.lastName.text,
+                              newRegisterCon.password.text,
+                              newRegisterCon.mobile.text,
+                              newRegisterCon.address.text,
+                              newRegisterCon.reference.text
+                          );
 
                           // loginController.login(mobileNo!, password!);
                         }
                       }
+
                     },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    tileColor: ConstColour.primaryColor,
-                    titleAlignment: ListTileTitleAlignment.center,
-                    title: Padding(
-                      padding: EdgeInsets.only(left: deviceWidth * 0.1),
-                      child: const Text(
-                        "Next",
-                        style: TextStyle(
-                            fontFamily: ConstFont.poppinsRegular,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                            color: Colors.black),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    trailing: const Icon(
-                      Icons.arrow_forward,
-                      size: 24,
-                    ),
+                    btnName: "Submit",
                   ),
                 ),
+
+                // Padding(
+                //   padding: EdgeInsets.only(
+                //       top: deviceHeight * 0.1,
+                //       left: deviceWidth * 0.03,
+                //       right: deviceWidth * 0.03),
+                //   child: ListTile(
+                //     splashColor: ConstColour.btnHowerColor,
+                //     onTap: () {
+                //       if (_formKey.currentState!.validate()) {
+                //         if (newRegisterCon.mobile.text.isEmpty && newRegisterCon.password.text.isEmpty) {
+                //           setState(() {
+                //             Utils().toastMessage(
+                //                 "Enter valid Username & password");
+                //           });
+                //         } else {
+                //        newRegisterCon.userRegister(
+                //            newRegisterCon.firstName.text,
+                //            newRegisterCon.lastName.text,
+                //            newRegisterCon.password.text,
+                //            newRegisterCon.mobile.text,
+                //            newRegisterCon.address.text,
+                //            newRegisterCon.reference.text
+                //        );
+                //
+                //           // loginController.login(mobileNo!, password!);
+                //         }
+                //       }
+                //     },
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(10)),
+                //     tileColor: ConstColour.primaryColor,
+                //     titleAlignment: ListTileTitleAlignment.center,
+                //     title: Padding(
+                //       padding: EdgeInsets.only(left: deviceWidth * 0.1),
+                //       child: const Text(
+                //         "Next",
+                //         style: TextStyle(
+                //             fontFamily: ConstFont.poppinsRegular,
+                //             fontWeight: FontWeight.w500,
+                //             fontSize: 20,
+                //             color: Colors.black),
+                //         overflow: TextOverflow.ellipsis,
+                //         textAlign: TextAlign.center,
+                //       ),
+                //     ),
+                //     trailing: const Icon(
+                //       Icons.arrow_forward,
+                //       size: 24,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

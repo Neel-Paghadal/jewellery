@@ -120,7 +120,7 @@ class _UserHomeState extends State<UserHome> {
                     controller: userHomeCon.codeController,
                     style: TextStyle(
                       height: deviceHeight * 0.001,
-                      color: ConstColour.errorImage,
+                      color: ConstColour.black,
                       fontSize: 15,
                       fontFamily: ConstFont.poppinsRegular,
                       overflow: TextOverflow.ellipsis,
@@ -201,6 +201,7 @@ class _UserHomeState extends State<UserHome> {
                                       userHomeCon.userHome[index].orderUserId;
                                   debugPrint("Order userId : " +
                                       userProductController.orderUserId);
+                                  Get.to(const ProductDetailPage());
                                   userProductController.getProductDetailCall(
                                       userHomeCon.userHome[index].id);
                                 },

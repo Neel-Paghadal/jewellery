@@ -9,6 +9,9 @@ import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/newRegister_controller.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
+import 'package:jewellery_user/Screen/User_screen/List%20Screen/adminList_screen.dart';
+import 'package:jewellery_user/Screen/User_screen/List%20Screen/userlist_screen.dart';
+import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/productdetail.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import '../ConstFile/constPreferences.dart';
@@ -18,8 +21,6 @@ import 'newUser_register.dart';
 import 'order.dart';
 import 'report_search_Screen.dart';
 import 'user_list.dart';
-
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController _scrollController = ScrollController();
   UserListController userListController = Get.put(UserListController());
   ProductController productController = Get.put(ProductController());
-  NewRegisterCon  newRegisterCon = Get.put(NewRegisterCon());
+  NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
 
   int _pageIndex = 0;
   int _pageSize = 5;
@@ -47,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController.addListener(_onScroll);
     homeController.checkUser();
     newRegisterCon.clearController();
-
   }
 
   Future<void> _handleRefresh() async {
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     _pageIndex++;
 
-    debugPrint("Page Order index" + _pageIndex.toString());
+    debugPrint("Page Order index$_pageIndex");
     try {
       final RxList<Order> products = await homeController.getOrderCall(
         _pageIndex,
@@ -88,10 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
-
-
-
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
@@ -105,26 +101,27 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           shadowColor: Colors.white,
           elevation: 8.0,
           backgroundColor: Colors.white,
-
-          title: const Text('Logout',style: TextStyle(
-            fontSize: 22,fontFamily: ConstFont.poppinsMedium,
-            color: Colors.black,
-          ),
+          title: const Text(
+            'Logout',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: ConstFont.poppinsMedium,
+              color: Colors.black,
+            ),
             overflow: TextOverflow.ellipsis,
-
           ),
-          content: const Text('Are you sure, want to logout?',
-          style: TextStyle(
-            fontFamily: ConstFont.poppinsRegular,
-            fontSize: 16,
-            color: Colors.black,
-          ),
+          content: const Text(
+            'Are you sure, want to logout?',
+            style: TextStyle(
+              fontFamily: ConstFont.poppinsRegular,
+              fontSize: 16,
+              color: Colors.black,
+            ),
             overflow: TextOverflow.ellipsis,
           ),
           actions: [
@@ -136,50 +133,54 @@ class _HomeScreenState extends State<HomeScreen> {
               splashColor: ConstColour.btnHowerColor,
               child: Container(
                 decoration: BoxDecoration(
-                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
                     borderRadius: BorderRadius.circular(5),
-                    color: Colors.red
-
-                ),
+                    color: Colors.red),
                 child: const Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: Text('Cancel',style: TextStyle(
-                    fontFamily: ConstFont.poppinsRegular,
-                    fontSize: 12,
-                    color: Colors.white,
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsRegular,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                    overflow: TextOverflow.ellipsis,),
                 ),
               ),
             ),
-           InkWell(
+            InkWell(
               borderRadius: BorderRadius.circular(5),
               onTap: () {
                 Get.back();
-
               },
               splashColor: ConstColour.btnHowerColor,
               child: TextButton(
                 onPressed: () {
-
+                  ConstPreferences().clearPreferences();
+                  Get.to(() => const LoginScreen());
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: const Text('Logout',style: TextStyle(
-                    fontFamily: ConstFont.poppinsMedium,
-                    fontSize: 13,
-                    color: Colors.black,
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsMedium,
+                      fontSize: 13,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                    overflow: TextOverflow.ellipsis,),
                 ),
               ),
             ),
-
           ],
         );
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -195,7 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: ConstColour.black,
           centerTitle: true,
           actions: [
-
             TextButton(
                 onPressed: () {
                   Get.to(() => const ReportSearchScreen());
@@ -221,13 +221,15 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: deviceHeight * 0.07,bottom: deviceHeight *  0.02),
-                        child: Image.asset("asset/images/men_chair.png",width: deviceWidth * 0.5),
+                        padding: EdgeInsets.only(
+                            top: deviceHeight * 0.07,
+                            bottom: deviceHeight * 0.02),
+                        child: Image.asset("asset/images/men_chair.png",
+                            width: deviceWidth * 0.5),
                       ),
                       Obx(
                         () => Visibility(
@@ -242,7 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   side: const BorderSide(
                                       color: ConstColour.primaryColor)),
                               onTap: () {
-                                Get.to(() => const NewUserRegister());
+                                Get.back();
+                                Get.to(() => const AdminListScreen());
                               },
                               trailing: const Icon(Icons.arrow_forward,
                                   size: 24, color: ConstColour.primaryColor),
@@ -267,10 +270,33 @@ class _HomeScreenState extends State<HomeScreen> {
                               side: const BorderSide(
                                   color: ConstColour.primaryColor)),
                           onTap: () {
+                            Get.back();
+
+                            Get.to(() => UserList());
+                          },
+                          trailing: const Icon(Icons.arrow_forward,
+                              size: 24, color: ConstColour.primaryColor),
+                          title: const Text("User Directory",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: ConstFont.poppinsRegular,
+                              ),
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          tileColor: ConstColour.bgColor,
+                          splashColor: ConstColour.btnHowerColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: const BorderSide(
+                                  color: ConstColour.primaryColor)),
+                          onTap: () {
+                            Get.back();
                             _showLogoutDialog(context);
-                            // ConstPreferences().clearPreferences();
-                            //
-                            // Get.to(() => const LoginScreen());
                           },
                           trailing: const Icon(Icons.exit_to_app,
                               size: 24, color: ConstColour.primaryColor),
@@ -285,7 +311,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
-                  const Text("Version 1.0.0",style: TextStyle(color: Colors.black,fontSize: 14,fontFamily: ConstFont.poppinsMedium),)
+                  const Text(
+                    "Version 1.0.0",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontFamily: ConstFont.poppinsMedium),
+                  )
                 ])),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -306,83 +338,92 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: ConstColour.primaryColor,
             springAnimationDurationInMilliseconds: 1,
             child:
-            // homeController.isLoaderShow.value == true ?
-            // Loaders(
-            //           items: 6,
-            //           direction: LoaderDirection.ltr,
-            //           baseColor: Colors.grey,
-            //           highLightColor: Colors.white,
-            //           builder: Padding(
-            //             padding: EdgeInsets.only(right: deviceWidth * 0.01),
-            //             child: Column(
-            //               mainAxisAlignment: MainAxisAlignment.start,
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 Padding(
-            //                   padding: const EdgeInsets.all(8.0),
-            //                   child: Container(
-            //                     decoration: BoxDecoration(
-            //                       border:
-            //                           Border.all(color: ConstColour.primaryColor),
-            //                       borderRadius: BorderRadius.circular(11),
-            //                     ),
-            //                     child: Row(
-            //                       crossAxisAlignment: CrossAxisAlignment.start,
-            //                       children: [
-            //                         Padding(
-            //                           padding: const EdgeInsets.all(8.0),
-            //                           child: Icon(
-            //                             Icons.image,
-            //                             size: 100,
-            //                             color: Colors.grey.shade400,
-            //                           ),
-            //                         ),
-            //                         Column(
-            //                           crossAxisAlignment:
-            //                               CrossAxisAlignment.start,
-            //                           children: [
-            //                             Padding(
-            //                               padding: EdgeInsets.only(
-            //                                   top: deviceHeight * 0.035),
-            //                               child: Container(
-            //                                 height: deviceHeight * 0.01,
-            //                                 width: deviceWidth * 0.5,
-            //                                 color: Colors.grey,
-            //                               ),
-            //                             ),
-            //                             Padding(
-            //                               padding: EdgeInsets.only(
-            //                                   top: deviceHeight * 0.01),
-            //                               child: Container(
-            //                                 height: deviceHeight * 0.01,
-            //                                 width: deviceWidth * 0.5,
-            //                                 color: Colors.grey,
-            //                               ),
-            //                             ),
-            //                             Padding(
-            //                               padding: EdgeInsets.only(
-            //                                   left: deviceWidth * 0.37,
-            //                                   top: deviceHeight * 0.035),
-            //                               child: Container(
-            //                                 width: deviceWidth * 0.2,
-            //                                 height: deviceHeight * 0.01,
-            //                                 color: Colors.grey,
-            //                               ),
-            //                             )
-            //                           ],
-            //                         )
-            //                       ],
-            //                     ),
-            //                   ),
-            //                 )
-            //               ],
-            //             ),
-            //           ),
-            //         )
-                   Container(
-                    child: homeController.homeList.isEmpty ? const Center(child: Text("No Data Found",style: TextStyle(color: Colors.white,fontSize: 16,
-                      fontFamily: ConstFont.poppinsRegular,
-                    ),)): ListView.builder(
+              homeController.homeList.isEmpty ?
+                Container(
+                  child: homeController.isLoaderShow.value == true ?
+                  Loaders(
+                            items: 6,
+                            direction: LoaderDirection.ltr,
+                            baseColor: Colors.grey,
+                            highLightColor: Colors.white,
+                            builder: Padding(
+                              padding: EdgeInsets.only(right: deviceWidth * 0.01),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border:
+                                            Border.all(color: ConstColour.primaryColor),
+                                        borderRadius: BorderRadius.circular(11),
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.image,
+                                              size: 100,
+                                              color: Colors.grey.shade400,
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: deviceHeight * 0.035),
+                                                child: Container(
+                                                  height: deviceHeight * 0.01,
+                                                  width: deviceWidth * 0.5,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: deviceHeight * 0.01),
+                                                child: Container(
+                                                  height: deviceHeight * 0.01,
+                                                  width: deviceWidth * 0.5,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: deviceWidth * 0.37,
+                                                    top: deviceHeight * 0.035),
+                                                child: Container(
+                                                  width: deviceWidth * 0.2,
+                                                  height: deviceHeight * 0.01,
+                                                  color: Colors.grey,
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                                  :    const Center(
+                        child: Text(
+                        "No Data Found",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: ConstFont.poppinsRegular,
+                        ),
+                      )),
+                )
+                    : ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount:
@@ -394,15 +435,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ? Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Center(
+                                      widthFactor: deviceWidth * 0.1,
                                       child: const CircularProgressIndicator(
                                           color: ConstColour.primaryColor),
-                                      widthFactor: deviceWidth * 0.1,
                                     ),
                                   )
                                 : Container();
                           }
-
-                          final product = homeController.homeList[index];
 
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -430,20 +469,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                         height: deviceHeight * 0.13,
                                         width: deviceWidth * 0.28,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: Colors.white
-                                        ),
-                                      child : CachedNetworkImage(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: Colors.white),
+                                        child: CachedNetworkImage(
                                           width: double.infinity,
-                                          imageUrl: homeController.homeList[index].image.toString(),
-                                        fadeInCurve: Curves.easeInOutQuad,
-                                          placeholder: (context, url) => const Icon(Icons.image,size: 65,color : ConstColour.loadImageColor),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error,size: 45),
+                                          imageUrl: homeController
+                                              .homeList[index].image
+                                              .toString(),
+                                          fadeInCurve: Curves.easeInOutQuad,
+                                          placeholder: (context, url) =>
+                                              const Icon(Icons.image,
+                                                  size: 65,
+                                                  color:
+                                                      ConstColour.loadImageColor),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error, size: 45),
                                         ),
                                       ),
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.only(
@@ -464,8 +511,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               top: deviceHeight * 0.015,
                                               bottom: deviceHeight * 0.01),
                                           child: Text(
-                                            homeController
-                                                .homeList[index].dateCreated,
+                                            "Create Date : ${homeController.homeList[index].dateCreated}",
                                             style: const TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: 14,
@@ -480,8 +526,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: TextButton(
                                             onPressed: () {
                                               userListController.orderId =
-                                                  homeController.homeList[index].id;
-                                              Get.to(() => const UserListScreen());
+                                                  homeController
+                                                      .homeList[index].id;
+                                              Get.to(
+                                                  () => const UserListScreen());
                                               // userListController.getUserCall(userListController.orderId.toString());
                                             },
                                             child: const Text(
@@ -505,8 +553,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         controller: _scrollController,
                       ),
-                  ),
-            ),
+
+          ),
         ),
       ),
     );

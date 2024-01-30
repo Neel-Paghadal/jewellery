@@ -128,13 +128,9 @@ class RegisterController extends GetxController{
       }
     };
 
-    // final Map<String, String> headers = {
-    //   'Content-Type': 'application/json',
-    // };
-    // var requestBodyNew = await jsonEncode(requestData);
 
     try {
-      final http.Response response = await http.post(
+      final  response = await http.post(
           Uri.parse(ConstApi.userRegister),
           headers: <String, String>{
             'Content-Type': 'application/json',
@@ -152,7 +148,8 @@ class RegisterController extends GetxController{
         // Utils().snackBar(response.body, '');
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
-        Utils().errorsnackBar(response.reasonPhrase.toString(), '');
+        debugPrint('Error: ${response.body}');
+        Utils().errorsnackBar(response.reasonPhrase.toString(), json.decode(response.body)['error']);
       }
     } catch (e) {
       debugPrint('Error: $e');

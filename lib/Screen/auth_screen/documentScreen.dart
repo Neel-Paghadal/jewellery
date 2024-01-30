@@ -28,6 +28,13 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
   String? userProfileImage;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    registerController.imgList.clear();
+  }
+
   Future getImageCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return;

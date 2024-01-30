@@ -54,7 +54,6 @@ class UserProductController extends GetxController{
       debugPrint(response.body);
       final responseData = productDetailFromJson(response.body);
       debugPrint("HOME LIST " + responseData.toString());
-      Get.to(const ProductDetailPage());
       productDetail.clear();
       productDetail.add(responseData.order);
       design = productDetail[0].name;

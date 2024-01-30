@@ -19,11 +19,12 @@ class UserListController extends GetxController {
   String? orderId;
   String? userId;
 
+
   RxList<User> userList = <User>[].obs;
   RxList<UsersData> userListDrop = <UsersData>[].obs;
   TextEditingController notesCon = TextEditingController();
 
-
+   RxBool isCall = false.obs;
   // Assign order to new user
   Future<void> assignOrder(String userId, String code, String notes, String orderId) async {
     String? token = await ConstPreferences().getToken();
@@ -69,8 +70,9 @@ class UserListController extends GetxController {
     }
     homeController.loading.value = false;
     userListDrop.clear();
+    userList.clear();
+    getUserCall(orderId.toString());
   }
-
 
 
   // Assign order cancel
@@ -112,7 +114,9 @@ class UserListController extends GetxController {
       debugPrint('Error making API call: $error');
     }
     homeController.loading.value = false;
+    userList.clear();
     getUserCall(orderId.toString());
+
   }
 
   // Assign order Complete
@@ -153,13 +157,16 @@ class UserListController extends GetxController {
     } catch (error) {
       debugPrint('Error making API call: $error');
     }
+    userListDrop.clear();
+    getUserDropCall(orderId.toString());
+    userList.clear();
     getUserCall(orderId.toString());
     homeController.loading.value = false;
   }
 
  // getUserOrderList
   getUserCall(String id) async {
-    userList.clear();
+    isCall.value = true;
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     getUserDropCall(orderId.toString());
@@ -177,18 +184,20 @@ class UserListController extends GetxController {
       debugPrint(response.body);
       final responseData = usersListFromJson(response.body);
       debugPrint("HOME LIST $responseData");
-      // Get.to(() => const UserListScreen());
+      userList.clear();
       userList.addAll(responseData.users);
-      return userList;
-      debugPrint("HOME LIST ${userList[0].userName}");
-
       debugPrint('Response: ${response.body}');
+      isCall.value = false;
+      return userList;
       // Process the data as needed
     } else {
       // Error in API call
+      isCall.value = false;
+
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
+    isCall.value = false;
     getUserDropCall(orderId.toString());
   }
 
@@ -213,7 +222,6 @@ class UserListController extends GetxController {
       debugPrint("HOME LIST $responseData");
       userListDrop.clear();
       userListDrop.addAll(responseData.users);
-      debugPrint("HOME LIST ${userList[0].userName}");
       if(userListDrop.isEmpty){
         Utils().toastMessage("No Users Found");
       }
