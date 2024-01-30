@@ -39,6 +39,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return;
 
+
     final imageTemporary = File(image.path);
     setState(() {
       imageNotes = imageTemporary;
