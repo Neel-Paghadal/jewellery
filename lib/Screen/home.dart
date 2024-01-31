@@ -44,10 +44,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loadProducts();
-    _scrollController.addListener(_onScroll);
+
+    if(homeController.homeList.isEmpty){
+      _loadProducts();
+      _scrollController.addListener(_onScroll);
+    }
     homeController.checkUser();
-    newRegisterCon.clearController();
+    // newRegisterCon.clearController();
   }
 
   Future<void> _handleRefresh() async {

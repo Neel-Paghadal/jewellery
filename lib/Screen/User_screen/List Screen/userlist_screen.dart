@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
+import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/userlistScreen_controller.dart';
 import 'package:jewellery_user/Models/userDetail_model.dart';
+import 'package:jewellery_user/Screen/home.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -16,8 +18,8 @@ class UserList extends StatefulWidget {
 
 class _UserListState extends State<UserList> {
   ScrollController _scrollController = ScrollController();
-  UserListScreenController userListScreenController =
-      Get.put(UserListScreenController());
+  UserListScreenController userListScreenController = Get.put(UserListScreenController());
+  HomeController homeController = Get.put(HomeController());
   int _pageIndex = 0;
   int _pageSize = 10;
   bool _loading = false;
@@ -31,7 +33,7 @@ class _UserListState extends State<UserList> {
   }
 
   Future<void> _handleRefresh() async {
-    _pageIndex = 1;
+    _pageIndex = 0;
     _pageSize = 10;
 
     userListScreenController.usersList.clear();
@@ -93,7 +95,14 @@ class _UserListState extends State<UserList> {
                   fontFamily: ConstFont.poppinsRegular,
                   fontSize: 22,
                   fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis))),
+                  overflow: TextOverflow.ellipsis)),
+        leading: IconButton(
+            onPressed: () {
+              Get.to(() => HomeScreen());
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+            color: ConstColour.primaryColor),
+      ),
       body: Obx(
         () =>  LiquidPullToRefresh(
           color: Colors.black,
@@ -169,10 +178,24 @@ class _UserListState extends State<UserList> {
             )
                 : ListView.builder(
                     controller: _scrollController,
-                    itemCount: userListScreenController.usersList.length,
+                    itemCount: userListScreenController.usersList.length + (_loading ? 1 : 0),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
+                      if (index == userListScreenController.usersList.length) {
+                        // Loading indicator
+                        return _loading
+                            ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            widthFactor: deviceWidth * 0.1,
+                            child: const CircularProgressIndicator(
+                                color: ConstColour.primaryColor),
+                          ),
+                        )
+                            : Container();
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(

@@ -4,6 +4,7 @@ import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
+import 'package:jewellery_user/Screen/home.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/newUser_register.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -30,6 +31,7 @@ class _AdminListScreenState extends State<AdminListScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    adminListController.adminList.clear();
     _loadProducts();
     _scrollController.addListener(_onScroll);
   }
@@ -104,7 +106,15 @@ class _AdminListScreenState extends State<AdminListScreen> {
                   fontFamily: ConstFont.poppinsRegular,
                   fontSize: 22,
                   fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis))),
+                  overflow: TextOverflow.ellipsis)),
+        leading: IconButton(
+            onPressed: () {
+
+              Get.to(() => HomeScreen());
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+            color: ConstColour.primaryColor),
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: NextButton(
@@ -187,10 +197,26 @@ class _AdminListScreenState extends State<AdminListScreen> {
           )
               : ListView.builder(
             controller: _scrollController,
-            itemCount: adminListController.adminList.length,
+            itemCount: adminListController.adminList.length + (_loading ? 1 : 0),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
+
+
+              if (index == adminListController.adminList.length) {
+                // Loading indicator
+                return _loading
+                    ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    widthFactor: deviceWidth * 0.1,
+                    child: const CircularProgressIndicator(
+                        color: ConstColour.primaryColor),
+                  ),
+                )
+                    : Container();
+              }
+
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(

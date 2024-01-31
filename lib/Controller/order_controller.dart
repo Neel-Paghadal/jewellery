@@ -18,6 +18,7 @@ class OrderController extends GetxController{
   TextEditingController caratT = TextEditingController();
   TextEditingController weightT = TextEditingController();
   TextEditingController descripT = TextEditingController();
+  TextEditingController dateCon = TextEditingController();
 
   RxList<FileElement> imgList = <FileElement>[].obs;
   RxList<FileElement> imgListMulti = <FileElement>[].obs;
@@ -32,6 +33,7 @@ class OrderController extends GetxController{
     caratT.clear();
     weightT.clear();
     descripT.clear();
+    dateCon.clear();
     imgList.clear();
     imgListMulti.clear();
   }

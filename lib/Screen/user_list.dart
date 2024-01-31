@@ -12,55 +12,6 @@ import '../ConstFile/constColors.dart';
 import '../ConstFile/constFonts.dart';
 
 
-class CustomDropdown extends StatefulWidget {
-  @override
-  _CustomDropdownState createState() => _CustomDropdownState();
-}
-
-class _CustomDropdownState extends State<CustomDropdown> {
-  String? selectedOption;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        color: Colors.grey[200],
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: selectedOption,
-          hint: Text('Select an option'),
-          icon: Icon(Icons.arrow_drop_down),
-          iconSize: 32.0,
-          elevation: 16,
-          style: TextStyle(color: Colors.black, fontSize: 16.0),
-          onChanged: (String? newValue) {
-            setState(() {
-              selectedOption = newValue;
-              if (selectedOption == 'Complete') {
-                // Handle "Complete" option
-                print('Complete option selected');
-              } else if (selectedOption == 'Cancel') {
-                // Handle "Cancel" option
-                print('Cancel option selected');
-              }
-            });
-          },
-          items: <String>['Complete', 'Cancel']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-}
-
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
 
@@ -75,7 +26,7 @@ class _UserListScreenState extends State<UserListScreen> {
 
   String generateUniqueCode(int length) {
     final random = Random();
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     String code = '';
 
     for (int i = 0; i < length; i++) {
@@ -140,36 +91,56 @@ class _UserListScreenState extends State<UserListScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: deviceHeight * 0.01),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              uniqueCode,
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Assign Order",style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: ConstFont.poppinsMedium,
+                        ),overflow: TextOverflow.ellipsis,
+                         ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                             "CODE : $uniqueCode",
                               style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: ConstFont.poppinsBold,
                                   color: Colors.white),
                               overflow: TextOverflow.ellipsis,
                             ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: ConstColour.primaryColor),
-                              onPressed: () {
-                                FlutterClipboard.copy(uniqueCode);
-                              },
-                              child: const Text(
-                                "Copy Code",
-                                style: TextStyle(
-                                    fontFamily: ConstFont.poppinsBold,
-                                    fontSize: 14,
-                                    color: Colors.black),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          InkWell(
+                            splashColor: ConstColour.btnHowerColor,
+                            onTap: () {
+                              FlutterClipboard.copy(uniqueCode);
+                            },
+                            borderRadius: BorderRadius.circular(51),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Icon(Icons.copy,size: 24,color: ConstColour.primaryColor,),
+                            ),
+                          ),
+
+                          // ElevatedButton(
+                          //   style: ElevatedButton.styleFrom(
+                          //       backgroundColor: ConstColour.primaryColor),
+                          //   onPressed: () {
+                          //     FlutterClipboard.copy(uniqueCode);
+                          //   },
+                          //   child: const Text(
+                          //     "Copy Code",
+                          //     style: TextStyle(
+                          //         fontFamily: ConstFont.poppinsBold,
+                          //         fontSize: 14,
+                          //         color: Colors.black),
+                          //   ),
+                          // )
+                        ],
                       ),
                       Padding(
                         padding: EdgeInsets.only(
@@ -188,14 +159,14 @@ class _UserListScreenState extends State<UserListScreen> {
                             dropdownColor: Colors.white,
                             autofocus: true,
                             elevation: 5,
-                            alignment: Alignment.bottomCenter,
+                            alignment: Alignment.centerLeft,
                             iconSize: 30,
                             focusColor: Colors.white,
                             underline: const DropdownButtonHideUnderline(
                                 child: SizedBox()),
-                            hint: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
+                            hint: Padding(
+                              padding:  EdgeInsets.only(left: deviceWidth * 0.05),
+                              child: const Text(
                                 'Select username',
                                 style: TextStyle(
                                     fontFamily: ConstFont.poppinsRegular,
@@ -251,12 +222,12 @@ class _UserListScreenState extends State<UserListScreen> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: const BorderSide(
-                                  color: ConstColour.textFieldBorder),
+                                  color: ConstColour.primaryColor),
                             ),
                             disabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: const BorderSide(
-                                  color: ConstColour.textFieldBorder),
+                                  color: ConstColour.primaryColor),
                             ),
                             focusedErrorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -276,7 +247,9 @@ class _UserListScreenState extends State<UserListScreen> {
                             ),
                             border: InputBorder.none,
                             filled: true,
-                            labelText: "Note",
+                            labelText: "Reason",
+                            alignLabelWithHint: true,
+                            floatingLabelAlignment: FloatingLabelAlignment.start,
                             hintText: "Enter your note",
                             floatingLabelStyle:
                                 const TextStyle(color: Colors.white),
@@ -326,6 +299,8 @@ class _UserListScreenState extends State<UserListScreen> {
       },
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -1302,3 +1277,229 @@ class _UserListScreenState extends State<UserListScreen> {
     );
   }
 }
+
+
+// Future<void> showUserDialouge(String uniqueCode) async {
+//   var deviceHeight = MediaQuery.of(context).size.height;
+//   var deviceWidth = MediaQuery.of(context).size.width;
+//   dropdownvalue = null;
+//   userListController.userId = null;
+//   showDialog(
+//     context: context,
+//     useSafeArea: true,
+//     builder: (context) {
+//       return StatefulBuilder(
+//         builder: (context, setState) {
+//           return Dialog(
+//             insetAnimationDuration: const Duration(seconds: 1),
+//             insetAnimationCurve: Curves.linear,
+//             shadowColor: ConstColour.primaryColor,
+//             backgroundColor: Colors.black45,
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 color: ConstColour.bgColor,
+//                 borderRadius: BorderRadius.circular(8),
+//                 border: Border.all(
+//                   color: ConstColour.primaryColor,
+//                 ),
+//                 boxShadow: [
+//                   BoxShadow(
+//                     color: Colors.grey.withOpacity(0.4),
+//                     spreadRadius: 2,
+//                     blurRadius: 2,
+//                     offset: const Offset(0, 2),
+//                   ),
+//                 ],
+//               ),
+//               child: SingleChildScrollView(
+//                 scrollDirection: Axis.vertical,
+//                 controller: ScrollController(),
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     Padding(
+//                       padding:
+//                       EdgeInsets.symmetric(vertical: deviceHeight * 0.01),
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                         children: [
+//                           Text(
+//                             uniqueCode,
+//                             style: const TextStyle(
+//                                 fontSize: 16,
+//                                 fontFamily: ConstFont.poppinsBold,
+//                                 color: Colors.white),
+//                             overflow: TextOverflow.ellipsis,
+//                           ),
+//                           ElevatedButton(
+//                             style: ElevatedButton.styleFrom(
+//                                 backgroundColor: ConstColour.primaryColor),
+//                             onPressed: () {
+//                               FlutterClipboard.copy(uniqueCode);
+//                             },
+//                             child: const Text(
+//                               "Copy Code",
+//                               style: TextStyle(
+//                                   fontFamily: ConstFont.poppinsBold,
+//                                   fontSize: 14,
+//                                   color: Colors.black),
+//                             ),
+//                           )
+//                         ],
+//                       ),
+//                     ),
+//                     Padding(
+//                       padding: EdgeInsets.only(
+//                           top: deviceHeight * 0.02,
+//                           left: deviceWidth * 0.03,
+//                           right: deviceWidth * 0.03),
+//                       child: Container(
+//                         decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(8),
+//                             border:
+//                             Border.all(color: ConstColour.primaryColor)),
+//                         child: DropdownButton(
+//                           isExpanded: true,
+//                           borderRadius: BorderRadius.circular(8),
+//                           iconEnabledColor: ConstColour.primaryColor,
+//                           dropdownColor: Colors.white,
+//                           autofocus: true,
+//                           elevation: 5,
+//                           alignment: Alignment.bottomCenter,
+//                           iconSize: 30,
+//                           focusColor: Colors.white,
+//                           underline: const DropdownButtonHideUnderline(
+//                               child: SizedBox()),
+//                           hint: const Padding(
+//                             padding: EdgeInsets.all(8.0),
+//                             child: Text(
+//                               'Select username',
+//                               style: TextStyle(
+//                                   fontFamily: ConstFont.poppinsRegular,
+//                                   fontSize: 14,
+//                                   color: Colors.white),
+//                             ),
+//                           ),
+//                           value: dropdownvalue,
+//                           items: userListController.userListDrop.map((item) {
+//                             return DropdownMenuItem(
+//                                 value: item.id.toString(),
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.all(8.0),
+//                                   child: Text(
+//                                     item.name.toString(),
+//                                     style: const TextStyle(
+//                                         fontFamily: ConstFont.poppinsRegular,
+//                                         fontSize: 14,
+//                                         color: ConstColour.primaryColor),
+//                                   ),
+//                                 ));
+//                           }).toList(),
+//                           onChanged: (newVal) {
+//                             setState(() {
+//                               dropdownvalue = newVal;
+//                               userListController.userId = newVal.toString();
+//                               debugPrint(dropdownvalue.toString());
+//                             });
+//                           },
+//                         ),
+//                       ),
+//                     ),
+//                     Padding(
+//                       padding: EdgeInsets.only(
+//                           top: deviceHeight * 0.02,
+//                           left: deviceWidth * 0.03,
+//                           right: deviceWidth * 0.03),
+//                       child: TextFormField(
+//                         autovalidateMode: AutovalidateMode.onUserInteraction,
+//                         textAlign: TextAlign.start,
+//                         keyboardType: TextInputType.text,
+//                         autocorrect: true,
+//                         controller: userListController.notesCon,
+//                         // validator: (value) {
+//                         //   if (value!.isEmpty) {
+//                         //     return "Please Enter Note";
+//                         //   } else {
+//                         //     return null;
+//                         //   }
+//                         // },
+//                         decoration: InputDecoration(
+//                           labelStyle: const TextStyle(color: Colors.grey),
+//                           enabledBorder: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(8),
+//                             borderSide: const BorderSide(
+//                                 color: ConstColour.textFieldBorder),
+//                           ),
+//                           disabledBorder: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(8),
+//                             borderSide: const BorderSide(
+//                                 color: ConstColour.textFieldBorder),
+//                           ),
+//                           focusedErrorBorder: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(8),
+//                             borderSide: const BorderSide(
+//                                 color: ConstColour.primaryColor),
+//                           ),
+//                           focusedBorder: const OutlineInputBorder(
+//                             borderSide:
+//                             BorderSide(color: ConstColour.primaryColor),
+//                             borderRadius:
+//                             BorderRadius.all(Radius.circular(8)),
+//                           ),
+//                           errorBorder: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(8),
+//                             borderSide: const BorderSide(
+//                                 color: ConstColour.textFieldBorder),
+//                           ),
+//                           border: InputBorder.none,
+//                           filled: true,
+//                           labelText: "Note",
+//                           hintText: "Enter your note",
+//                           floatingLabelStyle:
+//                           const TextStyle(color: Colors.white),
+//                           hintStyle: const TextStyle(
+//                               color: Colors.grey,
+//                               fontFamily: ConstFont.poppinsRegular,
+//                               fontSize: 16,
+//                               overflow: TextOverflow.ellipsis),
+//                         ),
+//                         minLines: 3,
+//                         maxLines: 4,
+//                         style: const TextStyle(
+//                             color: Colors.white,
+//                             fontSize: 16,
+//                             fontFamily: ConstFont.poppinsRegular),
+//                       ),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: NextButton(
+//                         btnName: "Assign",
+//                         onPressed: () {
+//                           debugPrint("UserId :${userListController.userId}");
+//
+//                           if (userListController.userId == "") {
+//                             Utils().toastMessage("Please select username");
+//                           } else {
+//                             debugPrint("ELSE");
+//                             homeController.loading.value = true;
+//                             userListController.assignOrder(
+//                                 userListController.userId.toString(),
+//                                 uniqueCode,
+//                                 userListController.notesCon.text,
+//                                 userListController.orderId.toString());
+//                             Get.back();
+//                           }
+//                         },
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           );
+//         },
+//       );
+//     },
+//   );
+// }
