@@ -4,6 +4,7 @@ import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
+import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Screen/home.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/newUser_register.dart';
@@ -22,6 +23,7 @@ class _AdminListScreenState extends State<AdminListScreen> {
 
   ScrollController _scrollController = ScrollController();
   AdminListController adminListController = Get.put(AdminListController());
+  HomeController homeController = Get.put(HomeController());
 
   int _pageIndex = 0;
   int _pageSize = 10;
@@ -108,9 +110,10 @@ class _AdminListScreenState extends State<AdminListScreen> {
                   fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis)),
         leading: IconButton(
+            tooltip: "Back",
             onPressed: () {
 
-              Get.to(() => HomeScreen());
+              Get.back();
             },
             icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),

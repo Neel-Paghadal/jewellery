@@ -132,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
                       ),
+                      errorStyle: TextStyle(color: ConstColour.errorHint),
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Mobile No",
@@ -191,6 +192,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
+                      errorStyle: TextStyle(color: ConstColour.errorHint),
+
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Password",
@@ -206,22 +209,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontFamily: ConstFont.poppinsRegular),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Forgot your password? ",
-                          style: TextStyle(
-                              fontFamily: ConstFont.poppinsRegular,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
-                              color: ConstColour.primaryColor),
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     TextButton(
+                //         onPressed: () {},
+                //         child: const Text(
+                //           "Forgot your password? ",
+                //           style: TextStyle(
+                //               fontFamily: ConstFont.poppinsRegular,
+                //               fontWeight: FontWeight.w800,
+                //               fontSize: 14,
+                //               color: ConstColour.primaryColor),
+                //           overflow: TextOverflow.ellipsis,
+                //         )),
+                //   ],
+                // ),
                 Padding(
                   padding: EdgeInsets.only(top: deviceHeight * 0.08),
                   child: NextButton(

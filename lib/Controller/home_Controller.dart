@@ -14,6 +14,13 @@ class HomeController extends GetxController {
   RxBool isLoaderShow = false.obs;
   RxBool isShow = false.obs;
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    checkUser();
+  }
+
   void checkUser() async {
     var role = await ConstPreferences().getRole();
     debugPrint("Role : $role");
@@ -46,7 +53,6 @@ class HomeController extends GetxController {
       final responseData = dashboardFromJson(response.body);
       debugPrint("HOME LIST " + responseData.toString());
       homeList.addAll(responseData.orders);
-      debugPrint("HOME LIST " + homeList[0].name.toString());
       debugPrint('Response: ${response.body}');
       // Process the data as needed
     } else {

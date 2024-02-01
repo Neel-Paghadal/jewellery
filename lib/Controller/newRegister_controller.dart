@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jewellery_user/Screen/User_screen/List%20Screen/adminList_screen.dart';
 import 'package:jewellery_user/Screen/home.dart';
 import 'package:http/http.dart' as http;
 import '../Common/snackbar.dart';
@@ -64,7 +63,7 @@ class NewRegisterCon extends GetxController {
         Utils().toastMessage("Register Successfull");
         clearController();
         homeController.loading.value = false;
-        Get.to(() => const AdminListScreen());
+        Get.back();
       } else {
         homeController.loading.value = false;
 

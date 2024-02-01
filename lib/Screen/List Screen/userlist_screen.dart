@@ -33,7 +33,7 @@ class _UserListState extends State<UserList> {
   }
 
   Future<void> _handleRefresh() async {
-    _pageIndex = 0;
+    _pageIndex = 1;
     _pageSize = 10;
 
     userListScreenController.usersList.clear();
@@ -97,8 +97,9 @@ class _UserListState extends State<UserList> {
                   fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis)),
         leading: IconButton(
+            tooltip: "Back",
             onPressed: () {
-              Get.to(() => HomeScreen());
+              Get.back();
             },
             icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
@@ -161,20 +162,15 @@ class _UserListState extends State<UserList> {
                 ),
               )
 
-                  : Padding(
-                padding: EdgeInsets.only(
-                  top: deviceHeight * 0.35,
-                ),
-                child: const Center(
-                  child: Text(
-                    "No User Found",
-                    style: TextStyle(
-                        fontFamily: ConstFont.poppinsMedium,
-                        color: Colors.white,
-                        fontSize: 16),
+                  : const Center(
+                    child: Text(
+                      "No User Found",
+                      style: TextStyle(
+                          fontFamily: ConstFont.poppinsMedium,
+                          color: Colors.white,
+                          fontSize: 16),
+                    ),
                   ),
-                ),
-              ),
             )
                 : ListView.builder(
                     controller: _scrollController,

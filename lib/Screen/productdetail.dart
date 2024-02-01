@@ -45,6 +45,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         //   ),
         // ],
         leading: IconButton(
+            tooltip: "Back",
             onPressed: () {
               Get.back();
             },
@@ -185,95 +186,99 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: deviceHeight * 0.1,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                              controller: ScrollController(),
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: productController
-                                  .productDetail[0].orderImages.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Dialog(
-                                          child: Container(
-                                            color: Colors.transparent,
-                                            child: PhotoView(
-                                              tightMode: true,
-                                              backgroundDecoration:
-                                                  const BoxDecoration(
-                                                      color:
-                                                          Colors.transparent),
-                                              imageProvider: NetworkImage(
-                                                productController
-                                                    .productDetail[0]
-                                                    .orderImages[index]
-                                                    .path,
+                    Container(
+                      child: productController
+                          .productDetail[0].orderImages.isEmpty ? SizedBox() :
+                      SizedBox(
+                        height: deviceHeight * 0.1,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                controller: ScrollController(),
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount: productController
+                                    .productDetail[0].orderImages.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Dialog(
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              child: PhotoView(
+                                                tightMode: true,
+                                                backgroundDecoration:
+                                                    const BoxDecoration(
+                                                        color:
+                                                            Colors.transparent),
+                                                imageProvider: NetworkImage(
+                                                  productController
+                                                      .productDetail[0]
+                                                      .orderImages[index]
+                                                      .path,
+                                                ),
+                                                heroAttributes:
+                                                    const PhotoViewHeroAttributes(
+                                                        tag: "someTag"),
                                               ),
-                                              heroAttributes:
-                                                  const PhotoViewHeroAttributes(
-                                                      tag: "someTag"),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(6.0),
+                                            child: CachedNetworkImage(
+                                              imageUrl: productController
+                                                  .productDetail[0]
+                                                  .orderImages[index]
+                                                  .path,
+                                              fadeInCurve: Curves.easeInOutQuad,
+                                              width: deviceWidth * 0.16,
+                                              placeholder: (context, url) =>
+                                                  const Icon(Icons.image,
+                                                      size: 65,
+                                                      color: ConstColour
+                                                          .loadImageColor),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error,
+                                                          size: 45),
+                                            )
+                                            // Image.network(
+                                            //     errorBuilder:
+                                            //         (BuildContext context, Object exception,
+                                            //         StackTrace? stackTrace) {
+                                            //       // Custom error widget to display when image fails to load
+                                            //       return const Icon(
+                                            //         Icons.image,
+                                            //         size: 60,
+                                            //         color: Colors.grey,
+                                            //       );
+                                            //     },
+                                            //     productController.productDetail[0].orderImages[index].path,
+                                            //     width: deviceWidth * 0.16
+                                            // ),
+                                            ),
                                       ),
-                                      child: Padding(
-                                          padding: const EdgeInsets.all(6.0),
-                                          child: CachedNetworkImage(
-                                            imageUrl: productController
-                                                .productDetail[0]
-                                                .orderImages[index]
-                                                .path,
-                                            fadeInCurve: Curves.easeInOutQuad,
-                                            width: deviceWidth * 0.16,
-                                            placeholder: (context, url) =>
-                                                const Icon(Icons.image,
-                                                    size: 65,
-                                                    color: ConstColour
-                                                        .loadImageColor),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error,
-                                                        size: 45),
-                                          )
-                                          // Image.network(
-                                          //     errorBuilder:
-                                          //         (BuildContext context, Object exception,
-                                          //         StackTrace? stackTrace) {
-                                          //       // Custom error widget to display when image fails to load
-                                          //       return const Icon(
-                                          //         Icons.image,
-                                          //         size: 60,
-                                          //         color: Colors.grey,
-                                          //       );
-                                          //     },
-                                          //     productController.productDetail[0].orderImages[index].path,
-                                          //     width: deviceWidth * 0.16
-                                          // ),
-                                          ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Divider(

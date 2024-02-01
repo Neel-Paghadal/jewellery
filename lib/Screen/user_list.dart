@@ -100,12 +100,12 @@ class _UserListScreenState extends State<UserListScreen> {
                         ),overflow: TextOverflow.ellipsis,
                          ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: deviceWidth * 0.04),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
                              "CODE : $uniqueCode",
                               style: const TextStyle(
                                   fontSize: 16,
@@ -113,34 +113,18 @@ class _UserListScreenState extends State<UserListScreen> {
                                   color: Colors.white),
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          InkWell(
-                            splashColor: ConstColour.btnHowerColor,
-                            onTap: () {
-                              FlutterClipboard.copy(uniqueCode);
-                            },
-                            borderRadius: BorderRadius.circular(51),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
+                            InkWell(
+                              splashColor: ConstColour.btnHowerColor,
+                              onTap: () {
+                                FlutterClipboard.copy(uniqueCode);
+                                Utils().toastMessage("Copied");
+                              },
+                              borderRadius: BorderRadius.circular(51),
                               child: Icon(Icons.copy,size: 24,color: ConstColour.primaryColor,),
                             ),
-                          ),
 
-                          // ElevatedButton(
-                          //   style: ElevatedButton.styleFrom(
-                          //       backgroundColor: ConstColour.primaryColor),
-                          //   onPressed: () {
-                          //     FlutterClipboard.copy(uniqueCode);
-                          //   },
-                          //   child: const Text(
-                          //     "Copy Code",
-                          //     style: TextStyle(
-                          //         fontFamily: ConstFont.poppinsBold,
-                          //         fontSize: 14,
-                          //         color: Colors.black),
-                          //   ),
-                          // )
-                        ],
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(
@@ -311,7 +295,7 @@ class _UserListScreenState extends State<UserListScreen> {
       appBar: AppBar(
         backgroundColor: ConstColour.bgColor,
         centerTitle: true,
-        title: const Text("User List",
+        title: const Text("Assign Order",
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: ConstFont.poppinsRegular,
@@ -319,6 +303,7 @@ class _UserListScreenState extends State<UserListScreen> {
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
         leading: IconButton(
+          tooltip: "Back",
             onPressed: () {
               Get.back();
             },
@@ -363,7 +348,7 @@ class _UserListScreenState extends State<UserListScreen> {
                   ? Container(
                       child: userListController.isCall.value == true
                           ? Loaders(
-                              items: 6,
+                              items: 12,
                               direction: LoaderDirection.ltr,
                               baseColor: Colors.grey,
                               highLightColor: Colors.white,

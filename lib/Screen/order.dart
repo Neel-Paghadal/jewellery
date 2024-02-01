@@ -108,6 +108,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis)),
           leading: IconButton(
+              tooltip: "Back",
               onPressed: () {
                 Get.back();
               },
@@ -123,8 +124,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 : NextButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        if (orderController.imgList.isEmpty &&
-                            orderController.imgListMulti.isEmpty) {
+                        if (orderController.imgList.isEmpty && orderController.imgListMulti.isEmpty) {
                           Utils().snackBar("Image", "Please select the images");
                         } else {
                           String date =
@@ -214,11 +214,14 @@ class _OrderScreenState extends State<OrderScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                       ),
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                           fontFamily: ConstFont.poppinsRegular),
+
                     ),
                   ),
                   Padding(
@@ -278,6 +281,8 @@ class _OrderScreenState extends State<OrderScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                       ),
                       style: const TextStyle(
                           color: Colors.white,
@@ -350,6 +355,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: ConstFont.poppinsRegular,
                                   fontSize: 16,
                                   overflow: TextOverflow.ellipsis),
+                              errorStyle: TextStyle(color: ConstColour.errorHint),
+
                             ),
                             style: const TextStyle(
                                 color: Colors.white,
@@ -416,6 +423,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: ConstFont.poppinsRegular,
                                   fontSize: 16,
                                   overflow: TextOverflow.ellipsis),
+                              errorStyle: TextStyle(color: ConstColour.errorHint),
+
                             ),
                             style: const TextStyle(
                                 color: Colors.white,
@@ -505,7 +514,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             borderSide: const BorderSide(
                                 color: ConstColour.textFieldBorder),
                           ),
-                          errorStyle: TextStyle(color: Colors.redAccent),
+                          errorStyle: TextStyle(color: ConstColour.errorHint),
                           border: InputBorder.none,
                           filled: true,
                           enabled: true,
@@ -630,7 +639,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       controller: orderController.descripT,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Please Enter FirsName";
+                          return "Please Enter Description";
                         } else {
                           return null;
                         }
@@ -662,6 +671,8 @@ class _OrderScreenState extends State<OrderScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                         border: InputBorder.none,
                         filled: true,
                         labelText: "Description",
@@ -895,6 +906,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     onPressed: () {
                                       setState(() {
                                         imageNotes = null;
+                                        orderController.imgList.clear();
                                       });
                                     },
                                     icon: const Icon(

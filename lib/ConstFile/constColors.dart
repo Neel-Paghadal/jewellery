@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ConstColour {
-  static const Color greenColor  = Color(0xff378b29);
+  static const Color greenColor  = Color(0xff3bcb24);
   static const Color primaryColor  = Color(0xffD9A56B);
   static const Color greenBgColor  = Color(0xffeef5dc);
   static const Color cardBgColor  = Color(0xffF3F4F4);
@@ -19,6 +19,7 @@ class ConstColour {
   static const Color searchColor = Color(0xffE8E8E8);
   static const Color textColor = Color(0xffE6E6E6);
   static const Color loadImageColor = Color(0xFFE0E0E0);
+  static const Color errorHint = Colors.redAccent;
 
 
 }

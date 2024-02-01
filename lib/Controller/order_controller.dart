@@ -161,9 +161,8 @@ class OrderController extends GetxController{
         Utils().toastMessage("Order Successfull");
 
         // Utils().snackBar(response.body, '');
-        Get.to(() => const HomeScreen());
-        homeController.homeList.clear();
         clearController();
+        Get.to(() => const HomeScreen());
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
         Utils().errorsnackBar(response.reasonPhrase.toString(), '');

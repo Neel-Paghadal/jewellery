@@ -132,6 +132,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderSide: const BorderSide(
                                     color: ConstColour.textFieldBorder),
                               ),
+                              errorStyle: TextStyle(color: ConstColour.errorHint),
+
                               border: InputBorder.none,
                               filled: true,
                               hintText: "Enter Firstname",
@@ -190,6 +192,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderSide: const BorderSide(
                                     color: ConstColour.textFieldBorder),
                               ),
+                              errorStyle: TextStyle(color: ConstColour.errorHint),
+
                               border: InputBorder.none,
                               filled: true,
                               hintText: "Enter Lastname",
@@ -264,6 +268,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                       ),
                       style: const TextStyle(
                           color: Colors.white,
@@ -318,6 +324,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                         border: InputBorder.none,
                         filled: true,
                         hintText: "Enter Address",
@@ -381,6 +389,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                         border: InputBorder.none,
                         filled: true,
                         hintText: "Password",
@@ -442,6 +452,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                         border: InputBorder.none,
                         filled: true,
                         hintText: "Confirm Password",
@@ -502,6 +514,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
+                        errorStyle: TextStyle(color: ConstColour.errorHint),
+
                         border: InputBorder.none,
                         filled: true,
                         hintText: "Reference Name",

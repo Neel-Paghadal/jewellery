@@ -44,6 +44,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
         leading: IconButton(
+            tooltip: "Back",
             onPressed: () {
               Get.back();
             },

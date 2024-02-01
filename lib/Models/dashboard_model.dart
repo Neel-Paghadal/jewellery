@@ -30,6 +30,7 @@ class Order {
   String party;
   String image;
   String dateCreated;
+  int orderId;
 
   Order({
     required this.id,
@@ -37,6 +38,7 @@ class Order {
     required this.party,
     required this.image,
     required this.dateCreated,
+    required this.orderId
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -45,6 +47,7 @@ class Order {
     party: json["party"],
     image: json["image"],
     dateCreated: json["dateCreated"],
+    orderId: json['orderId']
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +56,6 @@ class Order {
     "party": party,
     "image": image,
     "dateCreated": dateCreated,
+    "orderId" : orderId
   };
 }

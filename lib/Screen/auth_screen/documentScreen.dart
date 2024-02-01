@@ -89,7 +89,15 @@ class _DocumentScreenState extends State<DocumentScreen> {
                 fontFamily: ConstFont.poppinsRegular,
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis)),
+                overflow: TextOverflow.ellipsis),),
+          leading: IconButton(
+              tooltip: "Back",
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+              color: ConstColour.primaryColor),
+
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -141,6 +149,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
+                    errorStyle: TextStyle(color: ConstColour.errorHint),
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Bank",
@@ -166,6 +175,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   keyboardType: TextInputType.number,
                   autocorrect: true,
                   controller: registerController.accNo,
+                  inputFormatters: [LengthLimitingTextInputFormatter(16 ),],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter Account Number";
@@ -199,6 +209,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
+                    errorStyle: TextStyle(color: ConstColour.errorHint),
+
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Account Number",
@@ -262,6 +274,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
+                    errorStyle: TextStyle(color: ConstColour.errorHint),
+
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter IFSC",
@@ -320,6 +334,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
+                    errorStyle: TextStyle(color: ConstColour.errorHint),
+
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Branch Name",
@@ -378,6 +394,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
+                    errorStyle: TextStyle(color: ConstColour.errorHint),
+
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Account Holder Name",

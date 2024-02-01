@@ -48,6 +48,13 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
+        leading: IconButton(
+            tooltip: "Back",
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+            color: ConstColour.primaryColor),
       ),
       body: SingleChildScrollView(
         controller: ScrollController(),
@@ -130,12 +137,15 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                                 fontFamily: ConstFont.poppinsRegular,
                                 fontSize: 16,
                                 overflow: TextOverflow.ellipsis),
+                            errorStyle: TextStyle(color: ConstColour.errorHint),
+
                           ),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontFamily: ConstFont.poppinsRegular),
                         ),
+
                       ),
                       SizedBox(width: deviceWidth * 0.03),
                       Expanded(
@@ -180,6 +190,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                               borderSide: const BorderSide(
                                   color: ConstColour.textFieldBorder),
                             ),
+                            errorStyle: TextStyle(color: ConstColour.errorHint),
+
                             border: InputBorder.none,
                             filled: true,
                             hintText: "Enter Lastname",
@@ -254,6 +266,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                           fontFamily: ConstFont.poppinsRegular,
                           fontSize: 16,
                           overflow: TextOverflow.ellipsis),
+                      errorStyle: TextStyle(color: ConstColour.errorHint),
+
                     ),
                     style: const TextStyle(
                         color: Colors.white,
@@ -307,7 +321,11 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
+
                       ),
+
+                      errorStyle: TextStyle(color: ConstColour.errorHint),
+
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Enter Address",
@@ -371,6 +389,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
                       ),
+                      errorStyle: TextStyle(color: ConstColour.errorHint),
+
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Password",
@@ -440,7 +460,10 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                           fontFamily: ConstFont.poppinsRegular,
                           fontSize: 16,
                           overflow: TextOverflow.ellipsis),
+                      errorStyle: TextStyle(color: ConstColour.errorHint),
+
                     ),
+
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -492,6 +515,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
                       ),
+                      errorStyle: TextStyle(color: ConstColour.errorHint),
+
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Reference Name",

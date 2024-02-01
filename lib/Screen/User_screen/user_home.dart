@@ -21,6 +21,93 @@ class _UserHomeState extends State<UserHome> {
   UserHomeCon userHomeCon = Get.put(UserHomeCon());
   UserProductController userProductController =
       Get.put(UserProductController());
+
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shadowColor: Colors.white,
+          elevation: 8.0,
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Logout',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: ConstFont.poppinsMedium,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          content: const Text(
+            'Are you sure, want to logout?',
+            style: TextStyle(
+              fontFamily: ConstFont.poppinsRegular,
+              fontSize: 16,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          actions: [
+            InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: Container(
+                decoration: BoxDecoration(
+                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.red),
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsRegular,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: TextButton(
+                onPressed: () {
+                  ConstPreferences().clearPreferences();
+                  SystemNavigator.pop();
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsMedium,
+                      fontSize: 13,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -38,8 +125,7 @@ class _UserHomeState extends State<UserHome> {
           centerTitle: true,
           leading: IconButton(
               onPressed: () {
-                ConstPreferences().clearPreferences();
-                Get.to(() => LoginScreen());
+                _showLogoutDialog(context);
               },
               icon: Icon(Icons.exit_to_app)),
           title: Text('dashboard'.tr,
