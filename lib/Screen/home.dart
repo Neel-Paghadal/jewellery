@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
@@ -12,14 +11,11 @@ import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
 import 'package:jewellery_user/Screen/List%20Screen/adminList_screen.dart';
 import 'package:jewellery_user/Screen/List%20Screen/userlist_screen.dart';
-
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/productdetail.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import '../ConstFile/constPreferences.dart';
 import '../Models/dashboard_model.dart';
-import 'auth_screen/login.dart';
-import 'newUser_register.dart';
 import 'order.dart';
 import 'report_search_Screen.dart';
 import 'user_list.dart';
@@ -336,11 +332,11 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: ConstColour.primaryColor,
           splashColor: ConstColour.btnHowerColor,
-            icon: Icon(Icons.add,color: Colors.black),
+            icon: const Icon(Icons.add,color: Colors.black),
             onPressed: () {
               Get.to(() => const OrderScreen());
 
-        }, label: Text("Add Design",style: TextStyle(fontFamily: ConstFont.poppinsMedium,color: Colors.black,fontSize: 16),)),
+        }, label: const Text("Add Design",style: TextStyle(fontFamily: ConstFont.poppinsMedium,color: Colors.black,fontSize: 16),)),
         backgroundColor: ConstColour.bgColor,
         body: Obx(
           () => LiquidPullToRefresh(
@@ -461,9 +457,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
+                          borderRadius: BorderRadius.circular(11),
                           onTap: () {
-
-                            Get.to(const ProductDetailScreen());
+                            productController.isFilterApplyed.value = false;
+                            Get.to(() => const ProductDetailScreen());
+                          productController.productIndex = index;
                             productController.getProductDetailCall(homeController.homeList[index].id);
                           },
                           splashColor: ConstColour.btnHowerColor,
@@ -489,10 +487,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             color: Colors.white),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(3.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
                                           child: CachedNetworkImage(
                                             width: double.infinity,
+                                            fit: BoxFit.cover,
                                             imageUrl: homeController
                                                 .homeList[index].image
                                                 .toString(),
@@ -510,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     Expanded(
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.all(0),
+                                        contentPadding: const EdgeInsets.all(0),
                                         title: Text(
                                           homeController.homeList[index].name,
                                           style: const TextStyle(
@@ -607,7 +606,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Get.to(() => const UserListScreen());
                                     },
                                     icon: const Icon(
-                                      Icons.assignment_ind,
+                                      // Icons.assignment_ind,
+                                      CupertinoIcons.person_add_solid,
                                       size: 30,
                                       color: ConstColour.primaryColor,
                                     )),

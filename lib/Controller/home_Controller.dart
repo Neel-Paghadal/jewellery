@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -60,6 +62,11 @@ class HomeController extends GetxController {
       // Error in API call
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
+    }
+    if(response.statusCode == 401){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
     }
     isLoaderShow.value = false;
   }

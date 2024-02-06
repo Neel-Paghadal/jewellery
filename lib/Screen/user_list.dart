@@ -317,8 +317,7 @@ class _UserListScreenState extends State<UserListScreen> {
             setState(() {
               String uniqueCode = generateUniqueCode(12);
               debugPrint('Generated Unique Code: $uniqueCode');
-              userListController
-                  .getUserDropCall(userListController.orderId.toString());
+              userListController.getUserDropCall(userListController.orderId.toString());
               showUserDialouge(uniqueCode);
               // if (userListController.userListDrop.isEmpty) {
               //   Future.delayed(

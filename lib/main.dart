@@ -18,8 +18,7 @@ void main() {
   ]);
   runApp(const MyApp());
   // runApp(DevicePreview(
-  //   builder: (context) => const MyApp(),
-  //   enabled: true,
+  //   enabled: true, builder: (context) => MyApp(),
   // ));
 }
 

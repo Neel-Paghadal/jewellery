@@ -39,6 +39,10 @@ class OrderController extends GetxController{
   }
 
   var filePath;
+
+
+
+
   void uploadFile(File image) async {
     var url = Uri.parse('http://208.64.33.118:8558/api/File/Upload');
     var file = File(image.path);

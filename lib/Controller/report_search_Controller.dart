@@ -1,32 +1,28 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Models/ordersReport_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:jewellery_user/Models/party_model.dart';
+import '../Common/snackbar.dart';
+import '../Models/users_model.dart';
 
 class ReportSearchController extends GetxController {
-  List<Report> reportlist = <Report>[
-    Report(designCode: '# 2352', date: 'Create Date : 02/01/2024', btnName: 'Completed'),
-    Report(designCode: '# 2354', date: 'Create Date : 01/01/2024', btnName: 'Completed'),
-    Report(designCode: '# 4563', date: 'Create Date : 29/12/2023', btnName: 'Pending'),
-    Report(designCode: '# 2564', date: 'Create Date : 29/12/2023', btnName: 'Completed'),
-    Report(designCode: '# 5648', date: 'Create Date : 20/12/2023', btnName: 'Cancelled'),
-
-  ];
 
 
   RxBool isLoaderShow = false.obs;
-
+  RxBool isFilterApplyed = false.obs;
+  RxBool isDropLoader = false.obs;
   RxList<OrderReport> orderReportList = <OrderReport>[].obs;
+  RxList<String> userListDrop = <String>[].obs;
 
+  String? partyName;
 
-  getReportCall(int pageIndex, int pageSize) async {
-    if(orderReportList.isEmpty){
-      isLoaderShow.value = true;
-    }else{
-      isLoaderShow.value = false;
-    }
+  getPartyCall() async {
+    isDropLoader.value = true;
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
 
@@ -37,8 +33,100 @@ class ReportSearchController extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse("http://208.64.33.118:8558/api/Report/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
+        Uri.parse(ConstApi.getParty),
         headers: headers);
+    if (response.statusCode == 200) {
+      isDropLoader.value = false;
+
+      debugPrint(response.body);
+      final responseData = partyModelFromJson(response.body);
+      debugPrint("PARTY LIST $responseData");
+      userListDrop.clear();
+      userListDrop.addAll(responseData.parties);
+      if(userListDrop.isEmpty){
+        Utils().toastMessage("No Party Found");
+      }
+      debugPrint('Response: ${response.body}');
+      // Process the data as needed
+      isDropLoader.value = false;
+
+    } else {
+      // Error in API call
+      isDropLoader.value = false;
+      debugPrint('Error: ${response.statusCode}');
+      debugPrint('Error body: ${response.body}');
+    }
+    isDropLoader.value = false;
+  }
+
+
+  getReportCall(String partyName,var startD,var endD,int pageIndex, int pageSize) async {
+    if (orderReportList.isEmpty) {
+      isLoaderShow.value = true;
+    } else {
+      isLoaderShow.value = false;
+    }
+    String? token = await ConstPreferences().getToken();
+    debugPrint(token);
+
+    Map<String, dynamic> requestData = {
+      "partyName": partyName,
+      "startDate": startD,
+      "endDate": endD,
+      "pageNumber": pageIndex,
+      "pageSize": pageSize
+    };
+
+    // Set up headers with the token
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final response = await http.post(Uri.parse(ConstApi.getReport),
+        headers: headers, body: jsonEncode(requestData));
+    if (response.statusCode == 200) {
+      isLoaderShow.value = false;
+      final responseData = ordersReportModelFromJson(response.body);
+      debugPrint("ADMIN LIST " + responseData.toString());
+      orderReportList.addAll(responseData.orders);
+      debugPrint('Response: ${response.body}');
+      // Process the data as needed
+    } else {
+      isLoaderShow.value = false;
+      // Error in API call
+      debugPrint('Error: ${response.statusCode}');
+      debugPrint('Error body: ${response.body}');
+    }
+    isLoaderShow.value = false;
+  }
+
+  getFilterReportCall(String partyName,var startD,var endD,int pageIndex, int pageSize) async {
+    if (orderReportList.isEmpty) {
+      isLoaderShow.value = true;
+    } else {
+      isLoaderShow.value = false;
+    }
+    String? token = await ConstPreferences().getToken();
+    debugPrint(token);
+
+    Map<String, dynamic> requestData = {
+      "partyName": partyName,
+      "startDate": startD,
+      "endDate": endD,
+      "pageNumber": pageIndex,
+      "pageSize": pageSize
+    };
+
+    debugPrint(requestData.toString());
+    // Set up headers with the token
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final response = await http.post(Uri.parse(ConstApi.getReport),
+        headers: headers, body: jsonEncode(requestData));
     if (response.statusCode == 200) {
       isLoaderShow.value = false;
       final responseData = ordersReportModelFromJson(response.body);
@@ -56,15 +144,5 @@ class ReportSearchController extends GetxController {
   }
 
 
-
-
-
-
 }
 
-class Report {
-  Report({required this.btnName, required this.designCode, required this.date});
-  final String designCode;
-  final String date;
-  final String btnName;
-}

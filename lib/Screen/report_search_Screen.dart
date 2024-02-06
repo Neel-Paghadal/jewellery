@@ -5,12 +5,13 @@ import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/reportScreen_controller.dart';
 import 'package:jewellery_user/Controller/report_search_Controller.dart';
 import 'package:jewellery_user/Models/ordersReport_model.dart';
+import 'package:jewellery_user/Models/users_model.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/report_Screen.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-
 import '../ConstFile/constColors.dart';
 import '../ConstFile/constFonts.dart';
+import 'package:intl/intl.dart';
 
 class ReportSearchScreen extends StatefulWidget {
   const ReportSearchScreen({super.key});
@@ -25,15 +26,360 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
   Color reportbuttonColor = ConstColour.offerImageColor;
   ScrollController _scrollController = ScrollController();
   HomeController homeController = Get.put(HomeController());
-
   ReportScreenController reportScreenController = Get.put(ReportScreenController());
 
+  DateTime _startDate = DateTime.now();
+  DateTime _endDate = DateTime.now();
+
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
+
+  var startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
+  DateTime now = DateTime.now();
+  var enddate = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch.obs;
+
+  var dropdownvalue;
 
 
+  void _showDialog(context) {
+    dropdownvalue = null;
+    var deviceHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    var deviceWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+
+    showDialog(
+      useSafeArea: true,
+      barrierDismissible: true,
+      context: context,
+      builder: (context) =>
+          StatefulBuilder(
+            builder: (context, setState) =>
+                Dialog(
+                    child: Obx(
+                      () =>  Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("   Select Filter", style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontFamily: ConstFont.poppinsMedium)),
+                              IconButton(onPressed: () {
+                                Get.back();
+                              },
+                                  icon: const Icon(
+                                    Icons.cancel, color: Colors.black, size: 24,))
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: deviceHeight * 0.02,
+                                left: deviceWidth * 0.03,
+                                right: deviceWidth * 0.03),
+                            child: reportSearchController.isDropLoader.value == true ? CircularProgressIndicator(color: ConstColour.primaryColor,) : Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border:
+                                  Border.all(color: ConstColour.primaryColor)),
+                              child:  DropdownButton(
+                                isExpanded: true,
+                                borderRadius: BorderRadius.circular(8),
+                                iconEnabledColor: ConstColour.primaryColor,
+                                dropdownColor: Colors.white,
+                                autofocus: true,
+                                elevation: 5,
+                                alignment: Alignment.centerLeft,
+                                iconSize: 30,
+                                focusColor: Colors.white,
+                                underline: const DropdownButtonHideUnderline(
+                                    child: SizedBox()),
+                                hint: Padding(
+                                  padding:  EdgeInsets.only(left: deviceWidth * 0.05),
+                                  child: const Text(
+                                    'Select username',
+                                    style: TextStyle(
+                                        fontFamily: ConstFont.poppinsRegular,
+                                        fontSize: 14,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                                value: dropdownvalue,
+                                items: reportSearchController.userListDrop.map((item) {
+                                  return DropdownMenuItem(
+                                      value: item.toString(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          item.toString(),
+                                          style: const TextStyle(
+                                              fontFamily: ConstFont.poppinsRegular,
+                                              fontSize: 14,
+                                              color: ConstColour.primaryColor),
+                                        ),
+                                      ));
+                                }).toList(),
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    dropdownvalue = newVal;
+                                    reportSearchController.partyName = newVal.toString();
+                                    debugPrint(dropdownvalue.toString());
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Divider(height: deviceHeight * 0.01,
+                              color: Colors.grey.shade200),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: deviceWidth * 0.05,
+                                    right: deviceWidth * 0.12),
+                                child: Text(
+                                  "From Date :     ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: ConstFont.poppinsMedium,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                              ),
+                              Text(
+                                "To Date :     ",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: ConstFont.poppinsMedium,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+
+                              Card(
+                                color: ConstColour.cardBgColor,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right: deviceWidth * 0.02,),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+
+                                    children: [
+
+                                      IconButton(
+                                          onPressed: () async {
+                                            final DateTime? pickedDate = await showDatePicker(
+                                              context: Get.context!,
+                                              initialDate: _startDate,
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2050),
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: Theme.of(context)
+                                                      .copyWith(
+                                                    colorScheme: const ColorScheme
+                                                        .light(
+                                                      primary: ConstColour
+                                                          .primaryColor,
+                                                      // header background color
+                                                      onPrimary: Colors.black,
+                                                      // header text color
+                                                      onSurface: Colors
+                                                          .black, // body text color
+                                                    ),
+                                                    // textButtonTheme: TextButtonThemeData(
+                                                    //   style: TextButton.styleFrom(
+                                                    //     foregroundColor: Colors.red, // button text color
+                                                    //   ),
+                                                    // ),
+                                                  ),
+                                                  child: child!,
+                                                );
+                                              },
+                                            );
+                                            if (pickedDate != null) {
+                                              startdate.value = pickedDate
+                                                  .millisecondsSinceEpoch;
+                                              setState(() {
+                                                _startDate = pickedDate;
+                                                endDate = startDate;
+                                              });
+                                            }
+                                            debugPrint(
+                                                DateFormat('yyyy-MM-dd').format(
+                                                    _startDate));
+                                            debugPrint("millisecond$startDate");
+                                          },
+                                          icon: const Icon(
+                                              Icons.calendar_month_rounded)),
+                                      Text(DateFormat('dd-MM-yyyy').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              startdate.value))),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Card(
+                                color: ConstColour.cardBgColor,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right: deviceWidth * 0.02,),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+
+                                      IconButton(
+                                          onPressed: () async {
+                                            final DateTime? pickedDate = await showDatePicker(
+                                              context: Get.context!,
+                                              initialDate: _endDate,
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2050),
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: Theme.of(context)
+                                                      .copyWith(
+                                                    colorScheme: const ColorScheme
+                                                        .light(
+                                                      primary: ConstColour
+                                                          .primaryColor,
+                                                      // header background color
+                                                      onPrimary: Colors.black,
+                                                      // header text color
+                                                      onSurface: Colors
+                                                          .black, // body text color
+                                                    ),
+                                                    // textButtonTheme: TextButtonThemeData(
+                                                    //   style: TextButton.styleFrom(
+                                                    //     foregroundColor: Colors.red, // button text color
+                                                    //   ),
+                                                    // ),
+                                                  ),
+                                                  child: child!,
+                                                );
+                                              },
+                                            );
+                                            if (pickedDate != null) {
+                                              enddate.value = pickedDate
+                                                  .add(const Duration(
+                                                  hours: 23, minutes: 59))
+                                                  .millisecondsSinceEpoch;
+                                              setState(() {
+                                                _endDate = pickedDate;
+                                              });
+                                            }
+                                            debugPrint(
+                                                DateFormat('yyyy-MM-dd').format(
+                                                    _endDate));
+                                            debugPrint("millisecond$enddate");
+                                            // getDateFromUser();
+                                          },
+                                          icon: const Icon(
+                                              Icons.calendar_month_rounded)),
+                                      Text(DateFormat('dd-MM-yyyy').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              enddate.value)))
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+
+                          SizedBox(height: deviceHeight * 0.01,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: ConstColour.primaryColor,
+                                    maximumSize: Size(
+                                        deviceWidth * 0.4, deviceHeight * 0.055),
+                                    minimumSize: Size(
+                                        deviceWidth * 0.3, deviceHeight * 0.05),
+                                    // backgroundColor: Colors.white
+                                  ),
+                                  onPressed: () {
+                                    reportSearchController.orderReportList.clear();
+                                    reportSearchController.isFilterApplyed.value = true;
+                                    setState(() {});
+                                    reportSearchController.getFilterReportCall(
+                                      reportSearchController.partyName.toString(),DateFormat('yyyy-MM-dd').format(_startDate).toString(),
+                                      DateFormat('yyyy-MM-dd').format(_endDate).toString(),
+                                      1,
+                                      20,
+                                    );
+                                    Get.back();
+                                  },
+                                  child: const Text(
+                                    "Apply",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontFamily: ConstFont.poppinsMedium,
+                                        fontSize: 17
+                                    ),
+                                  )),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: ConstColour.primaryColor,
+                                    maximumSize:
+                                    Size(deviceWidth * 0.4, deviceHeight * 0.055),
+                                    minimumSize: Size(
+                                        deviceWidth * 0.3, deviceHeight * 0.05),
+                                    // backgroundColor: Colors.white
+                                  ),
+                                  onPressed: () {
+                                    enddate = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch.obs;
+                                    startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
+                                    reportSearchController.isFilterApplyed.value = false;
+                                    _startDate = DateTime.now();
+                                    _endDate = DateTime.now();
+                                    setState(() {});
+                                    Get.back();
+                                  },
+                                  child: const Text(
+                                    "Clear All",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontFamily: ConstFont.poppinsMedium,
+                                        fontSize: 17
+                                    ),
+                                  ))
+                            ],
+                          ),
+
+                          SizedBox(height: deviceHeight * 0.01,),
+
+                        ],
+                      ),
+                    )),
+          ),
+    ).whenComplete(() {
+      if(reportSearchController.isFilterApplyed.value == false){
+        _handleRefresh();
+      }
+      setState(() {});
+    });
+  }
 
   int _pageIndex = 0;
   int _pageSize = 10;
   bool _loading = false;
+
 
   @override
   void initState() {
@@ -50,6 +396,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
 
     reportSearchController.orderReportList.clear();
     reportSearchController.getReportCall(
+      "",null,null,
       _pageIndex,
       _pageSize,
     );
@@ -67,6 +414,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
     try {
       final RxList<OrderReport> products =
           await reportSearchController.getReportCall(
+            "",null,null,
         _pageIndex,
         _pageSize,
       );
@@ -106,13 +454,37 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
                 overflow: TextOverflow.ellipsis)),
-        leading: IconButton(
+        leading:
+        IconButton(
             tooltip: "Back",
             onPressed: () {
               Get.back();
             },
             icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
+        actions: [
+          Obx(
+          () =>
+            IconButton(
+            onPressed: () {
+
+                    reportSearchController.userListDrop.clear();
+                reportSearchController.getPartyCall();
+                _showDialog(context);
+
+              },
+                icon:   Icon(
+                    reportSearchController.isFilterApplyed.value == true ?
+                    Icons.filter_alt_off_rounded
+                        : Icons.filter_alt_rounded,
+
+
+                color: ConstColour.primaryColor,
+                size: 25),
+
+                )
+          ),
+        ],
       ),
       backgroundColor: ConstColour.bgColor,
       body: LiquidPullToRefresh(

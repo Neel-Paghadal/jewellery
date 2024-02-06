@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
+import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/userlistScreen_controller.dart';
 import 'package:jewellery_user/Models/userDetail_model.dart';
@@ -19,6 +20,7 @@ class UserList extends StatefulWidget {
 class _UserListState extends State<UserList> {
   ScrollController _scrollController = ScrollController();
   UserListScreenController userListScreenController = Get.put(UserListScreenController());
+  AdminListController adminListController = Get.put(AdminListController());
   HomeController homeController = Get.put(HomeController());
   int _pageIndex = 0;
   int _pageSize = 10;
@@ -32,6 +34,99 @@ class _UserListState extends State<UserList> {
     _scrollController.addListener(_onScroll);
   }
 
+
+
+  void releaseDeviceDialog(BuildContext context,String userID) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shadowColor: Colors.white,
+          elevation: 8.0,
+          // backgroundColor: Colors.white,
+          backgroundColor: Colors.orange.shade100,
+          title: const Text(
+            'Release Device',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: ConstFont.poppinsMedium,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          content: const Text(
+            'Are you sure, want to release device?',
+            style: TextStyle(
+              fontFamily: ConstFont.poppinsRegular,
+              fontSize: 16,
+              color: Colors.black,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          actions: [
+            InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: Container(
+                decoration: BoxDecoration(
+                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.red),
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsRegular,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ) ,
+            InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: TextButton(
+                onPressed: () {
+                  adminListController.releaseDeviceCall(userID);
+                  Get.back();
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    'Release',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsMedium,
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+  
+  
+  
+  
+  
   Future<void> _handleRefresh() async {
     _pageIndex = 1;
     _pageSize = 10;
@@ -195,17 +290,17 @@ class _UserListState extends State<UserList> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
+
+                          splashColor: ConstColour.btnHowerColor,
+
                           shape: RoundedRectangleBorder(
                               side: const BorderSide(
                                   color: ConstColour.primaryColor),
                               borderRadius: BorderRadius.circular(21)),
                           title: Text(
-                            "👤 " +
-                                userListScreenController
-                                    .usersList[index].firstName +
-                                " " +
-                                userListScreenController
-                                    .usersList[index].lastName,
+                            "👤 ${userListScreenController
+                                    .usersList[index].firstName} ${userListScreenController
+                                    .usersList[index].lastName}",
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -220,7 +315,46 @@ class _UserListState extends State<UserList> {
                                 fontFamily: ConstFont.poppinsMedium),
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
+                            trailing: PopupMenuButton(
+                              tooltip: 'Options',
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: const BorderSide(
+                                    color: ConstColour.primaryColor
+                                ),
+                              ),
+                              elevation: 5.0,
+                              enableFeedback: true,
+                              shadowColor: ConstColour.primaryColor,
+                              iconSize: 24,
+                              color: Colors.white,
+                              iconColor: ConstColour.primaryColor,
+                              onSelected: (value) {
+                                // your logic
+                                debugPrint(value);
+                              },
+                              itemBuilder: (BuildContext bc) {
+                                return [
+                                  PopupMenuItem(
+                                    enabled: true,
+                                    onTap: () {
+                                      debugPrint(userListScreenController.usersList[index].firstName);
+                                      releaseDeviceDialog(context,userListScreenController.usersList[index].id);
+                                    },
+                                    value: '/Release',
+                                    child: const Text("Release",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                  ),
+                                  PopupMenuItem(
+                                    enabled: false,
+                                    onTap: () {
+
+                                    },
+                                    value: '/Forgot Password',
+                                    child: const Text("Forgot Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                  ),
+                                ];
+                              },
+                            )),
                       );
                     },
                   ),

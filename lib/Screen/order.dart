@@ -20,6 +20,9 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+
+  var _startDate;
+
   OrderController orderController = Get.put(OrderController());
   HomeController homeController = Get.put(HomeController());
 
@@ -35,14 +38,9 @@ class _OrderScreenState extends State<OrderScreen> {
     orderController.clearController();
   }
 
-  var startdate = DateTime.now()
-      .add(Duration(
-          hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute))
-      .millisecondsSinceEpoch
-      .obs;
-  DateTime _startDate = DateTime.now();
-  DateTime startDate = DateTime.now();
-
+  var startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
+  // DateTime startDate = DateTime.now();
+  //
   Future getImageCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return;
@@ -127,8 +125,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         if (orderController.imgList.isEmpty && orderController.imgListMulti.isEmpty) {
                           Utils().snackBar("Image", "Please select the images");
                         } else {
-                          String date =
-                              DateFormat('yyyy-MM-dd').format(_startDate);
+                          String date = DateFormat('yyyy-MM-dd').format(_startDate!);
 
                           debugPrint(date);
 
@@ -214,7 +211,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                       ),
                       style: const TextStyle(
@@ -281,7 +278,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                       ),
                       style: const TextStyle(
@@ -299,8 +296,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
                             autocorrect: true,
@@ -355,7 +351,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: ConstFont.poppinsRegular,
                                   fontSize: 16,
                                   overflow: TextOverflow.ellipsis),
-                              errorStyle: TextStyle(color: ConstColour.errorHint),
+                              errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                             ),
                             style: const TextStyle(
@@ -367,8 +363,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         SizedBox(width: deviceWidth * 0.02),
                         Expanded(
                           child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
                             autocorrect: true,
@@ -423,7 +418,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: ConstFont.poppinsRegular,
                                   fontSize: 16,
                                   overflow: TextOverflow.ellipsis),
-                              errorStyle: TextStyle(color: ConstColour.errorHint),
+                              errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                             ),
                             style: const TextStyle(
@@ -444,7 +439,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       onTap: () async {
                         final DateTime? pickedDate = await showDatePicker(
                           context: Get.context!,
-                          initialDate: _startDate,
+                          initialDate: DateTime.now(),
                           firstDate: DateTime.now(),
                           lastDate: DateTime(2050),
                           builder: (context, child) {
@@ -473,11 +468,10 @@ class _OrderScreenState extends State<OrderScreen> {
                             _startDate = pickedDate;
                           });
                         }
-                        debugPrint(DateFormat('yyyy-MM-dd').format(_startDate));
+                        debugPrint(DateFormat('dd-MM-yyyy').format(_startDate!));
                         orderController.dateCon.text = DateFormat('dd-MM-yyyy')
-                            .format(_startDate)
+                            .format(_startDate!)
                             .toString();
-                        debugPrint("millisecond$startDate");
                       },
                       textAlign: TextAlign.start,
                       enableInteractiveSelection: false,
@@ -514,18 +508,16 @@ class _OrderScreenState extends State<OrderScreen> {
                             borderSide: const BorderSide(
                                 color: ConstColour.textFieldBorder),
                           ),
-                          errorStyle: TextStyle(color: ConstColour.errorHint),
+                          errorStyle: const TextStyle(color: ConstColour.errorHint),
                           border: InputBorder.none,
                           filled: true,
                           enabled: true,
                           labelText: "Delivery Date",
-                          hintText: DateFormat('dd-MM-yyyy').format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                  startdate.value)),
-                          hintStyle: TextStyle(color: Colors.white),
+                          hintText: _startDate == null ? "Select Date" :DateFormat('dd-MM-yyyy').format(_startDate).toString(),
+                          hintStyle: const TextStyle(color: Colors.white),
                           floatingLabelStyle:
                               const TextStyle(color: Colors.white),
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.calendar_month_rounded,
                             color: Colors.white,
                             size: 24,
@@ -671,7 +663,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                         border: InputBorder.none,
                         filled: true,
@@ -704,7 +696,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                              color: ConstColour.primaryColor,
+                              color:orderController.imgList.isNotEmpty ?  ConstColour.primaryColor : Colors.white,
                               strokeAlign: BorderSide.strokeAlignInside,
                               style: BorderStyle.solid)),
                       child: Stack(
@@ -901,7 +893,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             ),
                           ),
                           Container(
-                            child: imageNotes != null
+                            child: orderController.imgList.isNotEmpty
                                 ? IconButton(
                                     onPressed: () {
                                       setState(() {
@@ -942,7 +934,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     padding: EdgeInsets.only(
                         left: deviceWidth * 0.03, right: deviceWidth * 0.03),
                     child: SizedBox(
-                      height: deviceHeight * 0.09,
+                      height: deviceHeight * 0.1,
                       child: Row(
                         children: [
                           Padding(
@@ -1013,17 +1005,18 @@ class _OrderScreenState extends State<OrderScreen> {
                                             },
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.all(8.0),
+                                                  EdgeInsets.only(top: deviceHeight * 0.014,left:deviceWidth * 0.02 ,right: deviceWidth * 0.02),
                                               child: Container(
                                                 width: deviceWidth * 0.15,
-                                                height: deviceHeight * 0.09,
+                                                height: deviceHeight * 0.075,
                                                 decoration: BoxDecoration(
+                                                    shape: BoxShape.rectangle,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             8),
                                                     border: Border.all(
                                                         color: ConstColour
-                                                            .primaryColor,
+                                                            .offWhiteColor,
                                                         strokeAlign: BorderSide
                                                             .strokeAlignInside,
                                                         style:
@@ -1033,6 +1026,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       BorderRadius.circular(8),
                                                   child: Image.file(
                                                     _imageList[index],
+                                                    height: deviceHeight * 0.1,
                                                     fit: BoxFit.cover,
                                                     errorBuilder:
                                                         (BuildContext context,
@@ -1054,7 +1048,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                           ),
                                           Positioned(
                                             left: deviceWidth * 0.1,
-                                            bottom: deviceHeight * 0.05,
+                                            bottom: deviceHeight * 0.055,
                                             child: Container(
                                               child: _imageList[index] != null
                                                   ? IconButton(
