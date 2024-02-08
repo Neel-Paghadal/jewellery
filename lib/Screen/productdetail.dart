@@ -68,8 +68,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
 
     setState(() {
-      productController.imageList
-          .addAll(pickedImages.map((image) => File(image.path)));
+      productController.imageList.addAll(pickedImages.map((image) => File(image.path)));
       productController.isLoadingSec.value = true;
       productController.uploadFileMulti(productController.imageList);
     });
@@ -174,26 +173,51 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 overflow: TextOverflow.ellipsis)),
         actions: [
           Obx(
-            () => IconButton(
-              onPressed: () {
-                if (productController.isFilterApplyed.value == false) {
-                  debugPrint("If calls");
-                  productController.isFilterApplyed.value = true;
-                } else {
-                  debugPrint("Else calls");
-                  productController.isFilterApplyed.value = false;
-                }
-                setState(() {});
-              },
-              icon: productController.isFilterApplyed.value == true
-                  ? const Icon(Icons.filter_alt_off_rounded,
-                      color: ConstColour.primaryColor, size: 25)
-                  : Image.asset(
-                      "asset/icons/edit.png",
-                      width: deviceWidth * 0.06,
-                    ),
-            ),
-          ),
+            () =>  (productController.isLoading.value == true || productController.isLoadingSec.value == true) ? const SizedBox(): IconButton(
+                onPressed: () {
+                  // if (productController.isFilterApplyed.value == false) {
+                  //   debugPrint("If calls");
+                  //   productController.isFilterApplyed.value = true;
+                  // } else {
+                    if(_formKey.currentState!.validate()) {
+                      String date;
+                      if (_startDate == null) {
+                        var dates;
+                        dates = DateFormat('dd/MM/yyyy')
+                            .parse(productController.deliveryDateController.text);
+                        debugPrint(dates.toString());
+
+                        date = DateFormat('yyyy-MM-dd').format(dates);
+                      } else {
+                        date = DateFormat('yyyy-MM-dd').format(_startDate);
+                      }
+
+                      debugPrint(date);
+
+                      productController.updateProductCall(
+                          productController.productDetail[0].id,
+                          productController.designT.text,
+                          productController.partyT.text,
+                          double.parse(productController.caratT.text),
+                          double.parse(productController.weightT.text),
+                          date,
+                          productController.descripT.text);
+
+                      productController.isFilterApplyed.value = false;
+                    }
+                    debugPrint("Else calls");
+                  // }
+                  // setState(() {});
+                },
+                // icon: productController.isFilterApplyed.value == true
+                //     ?
+               icon : const Icon(Icons.done,color: ConstColour.primaryColor, size: 25)
+                    // : Image.asset(
+                    //     "asset/icons/edit.png",
+                    //     width: deviceWidth * 0.06,
+                    //   ),
+              )  ,
+          )
         ],
         leading: IconButton(
             tooltip: "Back",
@@ -203,42 +227,42 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
-      bottomNavigationBar: productController.isFilterApplyed.value == true
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: NextButton(
-                onPressed: () {
-                  if(_formKey.currentState!.validate()) {
-                    String date;
-                    if (_startDate == null) {
-                      var dates;
-                      dates = DateFormat('dd/MM/yyyy')
-                          .parse(productController.deliveryDateController.text);
-                      debugPrint(dates.toString());
-
-                      date = DateFormat('yyyy-MM-dd').format(dates);
-                    } else {
-                      date = DateFormat('yyyy-MM-dd').format(_startDate);
-                    }
-
-                    debugPrint(date);
-
-                    productController.updateProductCall(
-                        productController.productDetail[0].id,
-                        productController.designT.text,
-                        productController.partyT.text,
-                        double.parse(productController.caratT.text),
-                        double.parse(productController.weightT.text),
-                        date,
-                        productController.descripT.text);
-
-                    productController.isFilterApplyed.value = false;
-                  }
-                },
-                btnName: "Save",
-              ),
-            )
-          : const SizedBox(),
+      // bottomNavigationBar: productController.isFilterApplyed.value == true
+      //     ? Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: NextButton(
+      //           onPressed: () {
+      //             if(_formKey.currentState!.validate()) {
+      //               String date;
+      //               if (_startDate == null) {
+      //                 var dates;
+      //                 dates = DateFormat('dd/MM/yyyy')
+      //                     .parse(productController.deliveryDateController.text);
+      //                 debugPrint(dates.toString());
+      //
+      //                 date = DateFormat('yyyy-MM-dd').format(dates);
+      //               } else {
+      //                 date = DateFormat('yyyy-MM-dd').format(_startDate);
+      //               }
+      //
+      //               debugPrint(date);
+      //
+      //               productController.updateProductCall(
+      //                   productController.productDetail[0].id,
+      //                   productController.designT.text,
+      //                   productController.partyT.text,
+      //                   double.parse(productController.caratT.text),
+      //                   double.parse(productController.weightT.text),
+      //                   date,
+      //                   productController.descripT.text);
+      //
+      //               productController.isFilterApplyed.value = false;
+      //             }
+      //           },
+      //           btnName: "Save",
+      //         ),
+      //       )
+      //     : const SizedBox(),
       backgroundColor: ConstColour.bgColor,
       body: SingleChildScrollView(
         controller: ScrollController(),
@@ -356,9 +380,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                 )
-              : productController.isFilterApplyed.value == true
-                  ? Obx(
-                      () => Form(
+              :
+          // productController.isFilterApplyed.value == true
+          //         ?
+
+          Obx(
+                () => Form(
                         key: _formKey,
                         child: Column(
                           children: [
@@ -382,11 +409,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                               ),
                                             )
                                           : ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
+                                              borderRadius:  BorderRadius.circular(16),
                                               child: CachedNetworkImage(
                                                 width: double.infinity,
-                                                fit: BoxFit.cover,
+                                                fit: BoxFit.contain,
                                                 progressIndicatorBuilder:
                                                     (context, url,
                                                             downloadProgress) =>
@@ -436,7 +462,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   ))
                                               : const SizedBox(),
                                         ),
-                                        Padding(
+                                        productController.imgList.isEmpty ?   Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
                                             decoration: const BoxDecoration(
@@ -458,13 +484,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   color: ConstColour.primaryColor,
                                                 )),
                                           ),
-                                        ),
+                                        ) : const SizedBox()
                                       ],
                                     )
                                   ],
                                 ),
                               ),
                             ),
+
+
                             Container(
                               child:
                                   // productController
@@ -535,14 +563,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                   const BoxDecoration(
                                                                       color: Colors
                                                                           .transparent),
-                                                              imageProvider:
-                                                                  NetworkImage(
-                                                                productController
-                                                                    .productDetail[
-                                                                        0]
-                                                                    .orderImages[
-                                                                        index]
-                                                                    .path,
+                                                              imageProvider: productController.productDetail[0].orderImages[index].path.startsWith('http://') ?
+                                                              NetworkImage(
+                                                                productController.productDetail[0].orderImages[index].path,
+                                                              ) : NetworkImage(
+                                                                "http://208.64.33.118:8558/Files/" +  productController.productDetail[0].orderImages[index].path,
                                                               ),
                                                               heroAttributes:
                                                                   const PhotoViewHeroAttributes(
@@ -576,40 +601,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                       .circular(
                                                                           8),
                                                             ),
-                                                            child: productController
-                                                                    .productDetail[
-                                                                        0]
-                                                                    .orderImages[
-                                                                        index]
-                                                                    .path
-                                                                    .startsWith(
-                                                                        'http://')
+                                                            child: productController.productDetail[0].orderImages[index].path.startsWith('http://')
                                                                 ? CachedNetworkImage(
-                                                                    imageUrl: productController
-                                                                        .productDetail[
-                                                                            0]
-                                                                        .orderImages[
-                                                                            index]
-                                                                        .path,
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                    fadeInCurve:
-                                                                        Curves
-                                                                            .easeInOutQuad,
-                                                                    width:
-                                                                        deviceWidth *
-                                                                            0.16,
-                                                                    placeholder: (context,
-                                                                            url) =>
+                                                                    imageUrl: productController.productDetail[0].orderImages[index].path,
+                                                                    fit: BoxFit.contain,
+                                                                    fadeInCurve: Curves.easeInOutQuad,
+                                                                    width: deviceWidth * 0.16,
+                                                                    placeholder: (context, url) =>
                                                                         const Icon(
-                                                                            Icons
-                                                                                .image,
-                                                                            size:
-                                                                                65,
-                                                                            color:
-                                                                                ConstColour.loadImageColor),
-                                                                    errorWidget: (context,
-                                                                            url,
+                                                                            Icons.image,
+                                                                            size: 65,
+                                                                            color: ConstColour.loadImageColor),
+                                                                    errorWidget: (context, url,
                                                                             error) =>
                                                                         const Icon(
                                                                             Icons
@@ -619,7 +622,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                   )
                                                                 : CachedNetworkImage(
                                                                     fit: BoxFit
-                                                                        .cover,
+                                                                        .contain,
                                                                     imageUrl: "http://208.64.33.118:8558/Files/" +
                                                                         productController
                                                                             .productDetail[
@@ -676,7 +679,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                     });
                                                                   },
                                                                   icon:
-                                                                      Icon(
+                                                                      const Icon(
                                                                     Icons
                                                                         .cancel_outlined,
                                                                     color: Colors
@@ -697,178 +700,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ),
 
-                            // Padding(
-                            //   padding: EdgeInsets.only(
-                            //       left: deviceWidth * 0.03,
-                            //       right: deviceWidth * 0.03),
-                            //   child: SizedBox(
-                            //     height: deviceHeight * 0.09,
-                            //     child: Row(
-                            //       children: [
-                            //         Padding(
-                            //             padding: const EdgeInsets.all(2.0),
-                            //             child: Container(
-                            //               decoration: BoxDecoration(
-                            //                   borderRadius:
-                            //                       BorderRadius.circular(8),
-                            //                   border: Border.all(
-                            //                       color: ConstColour.primaryColor,
-                            //                       strokeAlign: BorderSide
-                            //                           .strokeAlignInside,
-                            //                       style: BorderStyle.solid)),
-                            //               child: InkWell(
-                            //                   onTap: () {
-                            //                     _pickImages();
-                            //                   },
-                            //                   child: const Icon(
-                            //                     Icons.add,
-                            //                     size: 60,
-                            //                     color: Colors.grey,
-                            //                   )),
-                            //             )),
-                            //         productController.isLoadingSec.value == true
-                            //             ? Padding(
-                            //                 padding: EdgeInsets.only(
-                            //                     left: deviceWidth * 0.3),
-                            //                 child:
-                            //                     const CircularProgressIndicator(
-                            //                   color: ConstColour.primaryColor,
-                            //                 ),
-                            //               )
-                            //             : Expanded(
-                            //                 child: ListView.builder(
-                            //                   scrollDirection: Axis.horizontal,
-                            //                   controller: ScrollController(),
-                            //                   shrinkWrap: true,
-                            //                   itemCount: _imageList.length,
-                            //                   itemBuilder: (context, index) {
-                            //                     return Stack(
-                            //                       alignment: Alignment.topLeft,
-                            //                       children: [
-                            //                         InkWell(
-                            //                           onTap: () {
-                            //                             showDialog(
-                            //                               context: context,
-                            //                               builder: (BuildContext
-                            //                                   context) {
-                            //                                 return Dialog(
-                            //                                   child: Container(
-                            //                                     color: Colors
-                            //                                         .transparent,
-                            //                                     child: PhotoView(
-                            //                                       tightMode: true,
-                            //                                       backgroundDecoration:
-                            //                                           const BoxDecoration(
-                            //                                               color: Colors
-                            //                                                   .transparent),
-                            //                                       imageProvider:
-                            //                                           FileImage(
-                            //                                               _imageList[
-                            //                                                   index]),
-                            //                                       heroAttributes:
-                            //                                           const PhotoViewHeroAttributes(
-                            //                                               tag:
-                            //                                                   "someTag"),
-                            //                                     ),
-                            //                                   ),
-                            //                                 );
-                            //                               },
-                            //                             );
-                            //                           },
-                            //                           child: Padding(
-                            //                             padding:
-                            //                                 const EdgeInsets.all(
-                            //                                     8.0),
-                            //                             child: Container(
-                            //                               width:
-                            //                                   deviceWidth * 0.15,
-                            //                               height:
-                            //                                   deviceHeight * 0.09,
-                            //                               decoration: BoxDecoration(
-                            //                                   borderRadius: BorderRadius
-                            //                                           .circular(
-                            //                                               8),
-                            //                                   border: Border.all(
-                            //                                       color: ConstColour
-                            //                                           .primaryColor,
-                            //                                       strokeAlign:
-                            //                                           BorderSide
-                            //                                               .strokeAlignInside,
-                            //                                       style:
-                            //                                           BorderStyle
-                            //                                               .solid)),
-                            //                               child: ClipRRect(
-                            //                                 borderRadius:
-                            //                                     BorderRadius
-                            //                                         .circular(8),
-                            //                                 child: Image.file(
-                            //                                   _imageList[index],
-                            //                                   fit: BoxFit.cover,
-                            //                                   errorBuilder:
-                            //                                       (BuildContext
-                            //                                               context,
-                            //                                           Object
-                            //                                               exception,
-                            //                                           StackTrace?
-                            //                                               stackTrace) {
-                            //                                     // Custom error widget to display when image fails to load
-                            //
-                            //                                     return const Icon(
-                            //                                       Icons.image,
-                            //                                       size: 30,
-                            //                                       color:
-                            //                                           Colors.grey,
-                            //                                     );
-                            //                                   },
-                            //                                 ),
-                            //                               ),
-                            //                             ),
-                            //                           ),
-                            //                         ),
-                            //                         Positioned(
-                            //                           left: deviceWidth * 0.1,
-                            //                           bottom: deviceHeight * 0.05,
-                            //                           child: Container(
-                            //                             child: _imageList[
-                            //                                         index] !=
-                            //                                     null
-                            //                                 ? IconButton(
-                            //                                     onPressed: () {
-                            //                                       setState(() {
-                            //                                         _imageList
-                            //                                             .removeAt(
-                            //                                                 index);
-                            //                                         productController
-                            //                                             .uploadFileMulti(
-                            //                                                 _imageList);
-                            //                                       });
-                            //                                     },
-                            //                                     icon: const Icon(
-                            //                                       Icons
-                            //                                           .cancel_outlined,
-                            //                                       color:
-                            //                                           Colors.red,
-                            //                                       size: 20,
-                            //                                     ))
-                            //                                 : const SizedBox(),
-                            //                           ),
-                            //                         )
-                            //                       ],
-                            //                     );
-                            //                   },
-                            //                 ),
-                            //               ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-
                             Divider(
                               height: deviceHeight * 0.01,
-                            ),
+                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+
                                 controller: productController.designT,
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -884,6 +723,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 decoration: InputDecoration(
+                                  isDense: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: const BorderSide(
@@ -920,6 +760,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
                                 controller: productController.partyT,
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -935,6 +776,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 decoration: InputDecoration(
+                                  isDense: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: const BorderSide(
@@ -976,6 +818,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: TextFormField(
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
                                       controller: productController.caratT,
                                       keyboardType: TextInputType.number,
                                       validator: (value) {
@@ -996,6 +839,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       decoration: InputDecoration(
+                                        isDense: true,
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(8),
                                           borderSide: const BorderSide(
@@ -1034,6 +878,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: TextFormField(
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
                                       controller: productController.weightT,
                                       keyboardType: TextInputType.number,
                                       validator: (value) {
@@ -1054,6 +899,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       decoration: InputDecoration(
+                                        isDense: true,
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(8),
                                           borderSide: const BorderSide(
@@ -1209,43 +1055,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     fontFamily: ConstFont.poppinsRegular),
                               ),
                             ),
-                            // Padding(
-                            //
-                            //   padding: const EdgeInsets.all(8.0),
-                            //   child: TextFormField(
-                            //     controller:
-                            //         productController.deliveryDateController,
-                            //     readOnly: true,
-                            //     style: const TextStyle(
-                            //       color: Colors.white,
-                            //       fontSize: 18,
-                            //       fontFamily: ConstFont.poppinsRegular,
-                            //       overflow: TextOverflow.ellipsis,
-                            //     ),
-                            //     decoration: InputDecoration(
-                            //       enabledBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(11),
-                            //         borderSide: const BorderSide(
-                            //             color: ConstColour.primaryColor),
-                            //       ),
-                            //       focusedBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(11),
-                            //         borderSide: const BorderSide(
-                            //             color: ConstColour.primaryColor),
-                            //       ),
-                            //       labelText: 'Delivery Date',
-                            //       labelStyle: const TextStyle(
-                            //           color: Colors.white,
-                            //           fontSize: 17,
-                            //           fontFamily: ConstFont.poppinsRegular),
-                            //     ),
-                            //   ),
-                            // ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
                                 maxLines: 3,
                                 controller: productController.descripT,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return "Please Enter Description";
@@ -1260,6 +1075,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 decoration: InputDecoration(
+                                  isDense: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: const BorderSide(
@@ -1300,444 +1116,436 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       ),
                     )
-                  : Obx(
-                      () => Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Container(
-                                height: deviceHeight * 0.4,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: Colors.white),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: CachedNetworkImage(
-                                    width: double.infinity,
-                                    fadeInCurve: Curves.easeInOutQuad,
-                                    fit: BoxFit.cover,
-                                    imageUrl: productController
-                                        .productDetail[0].image
-                                        .toString(),
-                                    placeholder: (context, url) => const Icon(
-                                        Icons.image,
-                                        size: 65,
-                                        color: ConstColour.loadImageColor),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error, size: 45),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: productController
-                                    .productDetail[0].orderImages.isEmpty
-                                ? const SizedBox()
-                                : SizedBox(
-                                    height: deviceHeight * 0.09,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: ListView.builder(
-                                            controller: ScrollController(),
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            itemCount: productController
-                                                .productDetail[0]
-                                                .orderImages
-                                                .length,
-                                            itemBuilder: (context, index) {
-                                              return InkWell(
-                                                onTap: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return Dialog(
-                                                        child: Container(
-                                                          color: Colors
-                                                              .transparent,
-                                                          child: PhotoView(
-                                                            tightMode: true,
-                                                            backgroundDecoration:
-                                                                const BoxDecoration(
-                                                                    color: Colors
-                                                                        .transparent),
-                                                            imageProvider:
-                                                                NetworkImage(
-                                                              productController
-                                                                  .productDetail[
-                                                                      0]
-                                                                  .orderImages[
-                                                                      index]
-                                                                  .path,
-                                                            ),
-                                                            heroAttributes:
-                                                                const PhotoViewHeroAttributes(
-                                                                    tag:
-                                                                        "someTag"),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(5.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                    ),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl:
-                                                            productController
-                                                                .productDetail[
-                                                                    0]
-                                                                .orderImages[
-                                                                    index]
-                                                                .path,
-                                                        fit: BoxFit.cover,
-                                                        fadeInCurve: Curves
-                                                            .easeInOutQuad,
-                                                        width:
-                                                            deviceWidth * 0.16,
-                                                        placeholder: (context,
-                                                                url) =>
-                                                            const Icon(
-                                                                Icons.image,
-                                                                size: 65,
-                                                                color: ConstColour
-                                                                    .loadImageColor),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            const Icon(
-                                                                Icons.error,
-                                                                size: 45),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                          ),
-                          Divider(
-                            height: deviceHeight * 0.01,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              controller: productController.designT,
-                              enableInteractiveSelection: false,
-                              keyboardType: TextInputType.none,
-                              showCursor: false,
-                              // inputFormatters: [
-                              //
-                              // ],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: ConstFont.poppinsRegular,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                labelText: 'Design Name',
-                                labelStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontFamily: ConstFont.poppinsRegular),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              enableInteractiveSelection: false,
-                              keyboardType: TextInputType.none,
-                              showCursor: false,
-                              controller: productController.partyT,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: ConstFont.poppinsRegular,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                labelText: 'Party Name',
-                                labelStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontFamily: ConstFont.poppinsRegular),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    controller: productController.caratT,
-                                    enableInteractiveSelection: false,
-                                    keyboardType: TextInputType.none,
-                                    showCursor: false,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontFamily: ConstFont.poppinsRegular,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(11),
-                                        borderSide: const BorderSide(
-                                            color: ConstColour.primaryColor),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(11),
-                                        borderSide: const BorderSide(
-                                            color: ConstColour.primaryColor),
-                                      ),
-                                      labelText: 'Carat',
-                                      labelStyle: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontFamily: ConstFont.poppinsRegular),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    controller: productController.weightT,
-                                    enableInteractiveSelection: false,
-                                    keyboardType: TextInputType.none,
-                                    showCursor: false,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontFamily: ConstFont.poppinsRegular,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(11),
-                                        borderSide: const BorderSide(
-                                            color: ConstColour.primaryColor),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(11),
-                                        borderSide: const BorderSide(
-                                            color: ConstColour.primaryColor),
-                                      ),
-                                      labelText: 'Weight',
-                                      labelStyle: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontFamily: ConstFont.poppinsRegular),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller:
-                                  productController.createDateController,
-                              enableInteractiveSelection: false,
-                              keyboardType: TextInputType.none,
-                              showCursor: false,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: ConstFont.poppinsRegular,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                labelText: 'Create Date',
-                                labelStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontFamily: ConstFont.poppinsRegular),
-                              ),
-                              // onTap: () async {
-                              //   DateTime? pickedDate = await showDatePicker(
-                              //       context: context,
-                              //       initialDate: DateTime.now(),
-                              //       firstDate: DateTime(1950),
-                              //       lastDate: DateTime(2100),
-                              //     builder: (BuildContext context, picker) {
-                              //       return Theme(
-                              //           data: ThemeData.dark().copyWith(
-                              //             colorScheme: const ColorScheme.dark(
-                              //               primary: Colors.white,
-                              //               onPrimary: Colors.black,
-                              //               surface: ConstColour.bgColor,
-                              //               onSurface: Colors.white
-                              //             ),
-                              //             dialogBackgroundColor: ConstColour.primaryColor
-                              //           ),
-                              //           child: picker!
-                              //       );
-                              //     },
-                              //   );
-                              //   if (pickedDate != null && pickedDate != DateTime.now()) {
-                              //     String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-                              //     _createDateController.text = formattedDate;
-                              //   }
-                              // },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller:
-                                  productController.deliveryDateController,
-                              enableInteractiveSelection: false,
-                              keyboardType: TextInputType.none,
-                              showCursor: false,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: ConstFont.poppinsRegular,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                labelText: 'Delivery Date',
-                                labelStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontFamily: ConstFont.poppinsRegular),
-                              ),
-                              // onTap: () async {
-                              //   DateTime? pickedDate = await showDatePicker(
-                              //     context: context,
-                              //     initialDate: DateTime.now(),
-                              //     firstDate: DateTime(1950),
-                              //     lastDate: DateTime(2100),
-                              //     builder: (BuildContext context, picker) {
-                              //       return Theme(
-                              //           data: ThemeData.dark().copyWith(
-                              //               colorScheme: const ColorScheme.dark(
-                              //                   primary: Colors.white,
-                              //                   onPrimary: Colors.black,
-                              //                   surface: ConstColour.bgColor,
-                              //                   onSurface: Colors.white
-                              //               ),
-                              //               dialogBackgroundColor: ConstColour.primaryColor
-                              //           ),
-                              //           child: picker!
-                              //       );
-                              //     },
-                              //   );
-                              //
-                              //   if (pickedDate != null && pickedDate != DateTime.now()) {
-                              //     String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-                              //     _deliveryDateController.text = formattedDate;
-                              //   }
-                              // },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              maxLines: 3,
-                              controller: productController.descripT,
-                              enableInteractiveSelection: false,
-                              keyboardType: TextInputType.none,
-                              showCursor: false,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: ConstFont.poppinsRegular,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(11),
-                                  borderSide: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                labelText: 'Description',
-                                labelStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontFamily: ConstFont.poppinsRegular),
-                              ),
-                            ),
-                          ),
-                          Divider(
-                            height: deviceHeight * 0.02,
-                          ),
-                        ],
-                      ),
-                    ),
+                  // : Obx(
+                  //     () => Column(
+                  //       children: [
+                  //         Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: Center(
+                  //             child: Container(
+                  //               height: deviceHeight * 0.4,
+                  //               width: double.infinity,
+                  //               decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(16),
+                  //                   color: Colors.white),
+                  //               child: ClipRRect(
+                  //                 borderRadius: BorderRadius.circular(16),
+                  //                 child: CachedNetworkImage(
+                  //                   width: double.infinity,
+                  //                   fadeInCurve: Curves.easeInOutQuad,
+                  //                   fit: BoxFit.contain,
+                  //                   imageUrl: productController.productDetail[0].image.toString(),
+                  //                   placeholder: (context, url) => const Icon(
+                  //                       Icons.image,
+                  //                       size: 65,
+                  //                       color: ConstColour.loadImageColor),
+                  //                   errorWidget: (context, url, error) =>
+                  //                       const Icon(Icons.error, size: 45),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         Container(
+                  //           child: productController.productDetail[0].orderImages.isEmpty
+                  //               ? const SizedBox()
+                  //               : SizedBox(
+                  //                   height: deviceHeight * 0.09,
+                  //                   child: Row(
+                  //                     children: [
+                  //                       Expanded(
+                  //                         child: ListView.builder(
+                  //                           controller: ScrollController(),
+                  //                           scrollDirection: Axis.horizontal,
+                  //                           shrinkWrap: true,
+                  //                           itemCount: productController.productDetail[0].orderImages.length,
+                  //                           itemBuilder: (context, index) {
+                  //                             return InkWell(
+                  //                               onTap: () {
+                  //                                 showDialog(
+                  //                                   context: context,
+                  //                                   builder:
+                  //                                       (BuildContext context) {
+                  //                                     return Dialog(
+                  //                                       child: Container(
+                  //                                         color: Colors
+                  //                                             .transparent,
+                  //                                         child: PhotoView(
+                  //                                           tightMode: true,
+                  //                                           backgroundDecoration:
+                  //                                               const BoxDecoration(
+                  //                                                   color: Colors
+                  //                                                       .transparent),
+                  //                                           imageProvider:
+                  //                                               NetworkImage(
+                  //                                             productController.productDetail[0]
+                  //                                                 .orderImages[
+                  //                                                     index]
+                  //                                                 .path,
+                  //                                           ),
+                  //                                           heroAttributes:
+                  //                                               const PhotoViewHeroAttributes(
+                  //                                                   tag:
+                  //                                                       "someTag"),
+                  //                                         ),
+                  //                                       ),
+                  //                                     );
+                  //                                   },
+                  //                                 );
+                  //                               },
+                  //                               child: Padding(
+                  //                                 padding:
+                  //                                     const EdgeInsets.all(5.0),
+                  //                                 child: Container(
+                  //                                   decoration: BoxDecoration(
+                  //                                     color: Colors.white,
+                  //                                     borderRadius:
+                  //                                         BorderRadius.circular(
+                  //                                             8),
+                  //                                   ),
+                  //                                   child: ClipRRect(
+                  //                                     borderRadius:
+                  //                                         BorderRadius.circular(
+                  //                                             8),
+                  //                                     child: CachedNetworkImage(
+                  //                                       imageUrl:
+                  //                                           productController
+                  //                                               .productDetail[
+                  //                                                   0]
+                  //                                               .orderImages[
+                  //                                                   index]
+                  //                                               .path,
+                  //                                       fit: BoxFit.contain,
+                  //                                       fadeInCurve: Curves
+                  //                                           .easeInOutQuad,
+                  //                                       width:
+                  //                                           deviceWidth * 0.16,
+                  //                                       placeholder: (context,
+                  //                                               url) =>
+                  //                                           const Icon(
+                  //                                               Icons.image,
+                  //                                               size: 65,
+                  //                                               color: ConstColour
+                  //                                                   .loadImageColor),
+                  //                                       errorWidget: (context,
+                  //                                               url, error) =>
+                  //                                           const Icon(
+                  //                                               Icons.error,
+                  //                                               size: 45),
+                  //                                     ),
+                  //                                   ),
+                  //                                 ),
+                  //                               ),
+                  //                             );
+                  //                           },
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //         ),
+                  //         Divider(
+                  //           height: deviceHeight * 0.01,
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: TextField(
+                  //             controller: productController.designT,
+                  //             enableInteractiveSelection: false,
+                  //             keyboardType: TextInputType.none,
+                  //             showCursor: false,
+                  //             // inputFormatters: [
+                  //             //
+                  //             // ],
+                  //             style: const TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 18,
+                  //               fontFamily: ConstFont.poppinsRegular,
+                  //               overflow: TextOverflow.ellipsis,
+                  //             ),
+                  //             decoration: InputDecoration(
+                  //               enabledBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               focusedBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               labelText: 'Design Name',
+                  //               labelStyle: const TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 17,
+                  //                   fontFamily: ConstFont.poppinsRegular),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: TextFormField(
+                  //             enableInteractiveSelection: false,
+                  //             keyboardType: TextInputType.none,
+                  //             showCursor: false,
+                  //             controller: productController.partyT,
+                  //             style: const TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 18,
+                  //               fontFamily: ConstFont.poppinsRegular,
+                  //               overflow: TextOverflow.ellipsis,
+                  //             ),
+                  //             decoration: InputDecoration(
+                  //               enabledBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               focusedBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               labelText: 'Party Name',
+                  //               labelStyle: const TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 17,
+                  //                   fontFamily: ConstFont.poppinsRegular),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Expanded(
+                  //               child: Padding(
+                  //                 padding: const EdgeInsets.all(8.0),
+                  //                 child: TextFormField(
+                  //                   controller: productController.caratT,
+                  //                   enableInteractiveSelection: false,
+                  //                   keyboardType: TextInputType.none,
+                  //                   showCursor: false,
+                  //                   style: const TextStyle(
+                  //                     color: Colors.white,
+                  //                     fontSize: 18,
+                  //                     fontFamily: ConstFont.poppinsRegular,
+                  //                     overflow: TextOverflow.ellipsis,
+                  //                   ),
+                  //                   decoration: InputDecoration(
+                  //                     enabledBorder: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.circular(11),
+                  //                       borderSide: const BorderSide(
+                  //                           color: ConstColour.primaryColor),
+                  //                     ),
+                  //                     focusedBorder: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.circular(11),
+                  //                       borderSide: const BorderSide(
+                  //                           color: ConstColour.primaryColor),
+                  //                     ),
+                  //                     labelText: 'Carat',
+                  //                     labelStyle: const TextStyle(
+                  //                         color: Colors.white,
+                  //                         fontSize: 17,
+                  //                         fontFamily: ConstFont.poppinsRegular),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Expanded(
+                  //               child: Padding(
+                  //                 padding: const EdgeInsets.all(8.0),
+                  //                 child: TextFormField(
+                  //                   controller: productController.weightT,
+                  //                   enableInteractiveSelection: false,
+                  //                   keyboardType: TextInputType.none,
+                  //                   showCursor: false,
+                  //                   style: const TextStyle(
+                  //                     color: Colors.white,
+                  //                     fontSize: 18,
+                  //                     fontFamily: ConstFont.poppinsRegular,
+                  //                     overflow: TextOverflow.ellipsis,
+                  //                   ),
+                  //                   decoration: InputDecoration(
+                  //                     enabledBorder: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.circular(11),
+                  //                       borderSide: const BorderSide(
+                  //                           color: ConstColour.primaryColor),
+                  //                     ),
+                  //                     focusedBorder: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.circular(11),
+                  //                       borderSide: const BorderSide(
+                  //                           color: ConstColour.primaryColor),
+                  //                     ),
+                  //                     labelText: 'Weight',
+                  //                     labelStyle: const TextStyle(
+                  //                         color: Colors.white,
+                  //                         fontSize: 17,
+                  //                         fontFamily: ConstFont.poppinsRegular),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: TextFormField(
+                  //             controller:
+                  //                 productController.createDateController,
+                  //             enableInteractiveSelection: false,
+                  //             keyboardType: TextInputType.none,
+                  //             showCursor: false,
+                  //             style: const TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 18,
+                  //               fontFamily: ConstFont.poppinsRegular,
+                  //               overflow: TextOverflow.ellipsis,
+                  //             ),
+                  //             decoration: InputDecoration(
+                  //               enabledBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               focusedBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               labelText: 'Create Date',
+                  //               labelStyle: const TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 17,
+                  //                   fontFamily: ConstFont.poppinsRegular),
+                  //             ),
+                  //             // onTap: () async {
+                  //             //   DateTime? pickedDate = await showDatePicker(
+                  //             //       context: context,
+                  //             //       initialDate: DateTime.now(),
+                  //             //       firstDate: DateTime(1950),
+                  //             //       lastDate: DateTime(2100),
+                  //             //     builder: (BuildContext context, picker) {
+                  //             //       return Theme(
+                  //             //           data: ThemeData.dark().copyWith(
+                  //             //             colorScheme: const ColorScheme.dark(
+                  //             //               primary: Colors.white,
+                  //             //               onPrimary: Colors.black,
+                  //             //               surface: ConstColour.bgColor,
+                  //             //               onSurface: Colors.white
+                  //             //             ),
+                  //             //             dialogBackgroundColor: ConstColour.primaryColor
+                  //             //           ),
+                  //             //           child: picker!
+                  //             //       );
+                  //             //     },
+                  //             //   );
+                  //             //   if (pickedDate != null && pickedDate != DateTime.now()) {
+                  //             //     String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+                  //             //     _createDateController.text = formattedDate;
+                  //             //   }
+                  //             // },
+                  //           ),
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: TextFormField(
+                  //             controller:
+                  //                 productController.deliveryDateController,
+                  //             enableInteractiveSelection: false,
+                  //             keyboardType: TextInputType.none,
+                  //             showCursor: false,
+                  //             style: const TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 18,
+                  //               fontFamily: ConstFont.poppinsRegular,
+                  //               overflow: TextOverflow.ellipsis,
+                  //             ),
+                  //             decoration: InputDecoration(
+                  //               enabledBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               focusedBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               labelText: 'Delivery Date',
+                  //               labelStyle: const TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 17,
+                  //                   fontFamily: ConstFont.poppinsRegular),
+                  //             ),
+                  //             // onTap: () async {
+                  //             //   DateTime? pickedDate = await showDatePicker(
+                  //             //     context: context,
+                  //             //     initialDate: DateTime.now(),
+                  //             //     firstDate: DateTime(1950),
+                  //             //     lastDate: DateTime(2100),
+                  //             //     builder: (BuildContext context, picker) {
+                  //             //       return Theme(
+                  //             //           data: ThemeData.dark().copyWith(
+                  //             //               colorScheme: const ColorScheme.dark(
+                  //             //                   primary: Colors.white,
+                  //             //                   onPrimary: Colors.black,
+                  //             //                   surface: ConstColour.bgColor,
+                  //             //                   onSurface: Colors.white
+                  //             //               ),
+                  //             //               dialogBackgroundColor: ConstColour.primaryColor
+                  //             //           ),
+                  //             //           child: picker!
+                  //             //       );
+                  //             //     },
+                  //             //   );
+                  //             //
+                  //             //   if (pickedDate != null && pickedDate != DateTime.now()) {
+                  //             //     String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+                  //             //     _deliveryDateController.text = formattedDate;
+                  //             //   }
+                  //             // },
+                  //           ),
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: TextFormField(
+                  //             maxLines: 3,
+                  //             controller: productController.descripT,
+                  //             enableInteractiveSelection: false,
+                  //             keyboardType: TextInputType.none,
+                  //             showCursor: false,
+                  //             style: const TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 18,
+                  //               fontFamily: ConstFont.poppinsRegular,
+                  //               overflow: TextOverflow.ellipsis,
+                  //             ),
+                  //             decoration: InputDecoration(
+                  //               enabledBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               focusedBorder: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.circular(11),
+                  //                 borderSide: const BorderSide(
+                  //                     color: ConstColour.primaryColor),
+                  //               ),
+                  //               labelText: 'Description',
+                  //               labelStyle: const TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 17,
+                  //                   fontFamily: ConstFont.poppinsRegular),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         Divider(
+                  //           height: deviceHeight * 0.02,
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
         ),
       ),
     );

@@ -105,9 +105,9 @@ class _AdminListScreenState extends State<AdminListScreen> {
                   Get.back();
                 },
                 child: const Padding(
-                  padding: EdgeInsets.all(6.0),
+                  padding: EdgeInsets.all(2.0),
                   child: Text(
-                    'Release',
+                    '  Yes  ',
                     style: TextStyle(
                       fontFamily: ConstFont.poppinsMedium,
                       fontSize: 14,
@@ -305,10 +305,7 @@ class _AdminListScreenState extends State<AdminListScreen> {
                                   color: ConstColour.primaryColor),
                               borderRadius: BorderRadius.circular(21)),
                           title: Text(
-                            "👤 " +
-                                adminListController.adminList[index].firstName +
-                                " " +
-                                adminListController.adminList[index].lastName,
+                            "👤 ${adminListController.adminList[index].firstName} ${adminListController.adminList[index].lastName}",
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -327,7 +324,7 @@ class _AdminListScreenState extends State<AdminListScreen> {
                             tooltip: 'Options',
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
-                              side: BorderSide(
+                              side: const BorderSide(
                                 color: ConstColour.primaryColor
                               ),
                             ),
@@ -348,16 +345,16 @@ class _AdminListScreenState extends State<AdminListScreen> {
                                   onTap: () {
                                     releaseDeviceDialog(context, adminListController.adminList[index].id);
                                   },
-                                  child: Text("Release",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
                                   value: '/Release',
+                                  child: const Text("Release",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
                                 ),
                                 PopupMenuItem(
                                   enabled: false,
                                   onTap: () {
 
                                   },
-                                  child: Text("Forgot Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
-                                  value: '/Forgot Password',
+                                  value: '/Reset Password',
+                                  child: const Text("Reset Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
                                 ),
                               ];
                             },

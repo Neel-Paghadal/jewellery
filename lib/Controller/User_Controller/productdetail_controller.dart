@@ -155,10 +155,12 @@ class UserProductController extends GetxController{
         debugPrint(
             'Failed to make API call. Status code: ${response.statusCode}');
         Utils().toastMessage(response.body);
+        homeController.loadingSec.value = false;
       }
     } catch (error) {
+      homeController.loadingSec.value = false;
       debugPrint('Error making API call: $error');
     }
-    homeController.loading.value = false;
+    homeController.loadingSec.value = false;
   }
 }

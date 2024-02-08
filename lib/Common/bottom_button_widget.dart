@@ -31,4 +31,33 @@ class NextButton extends StatelessWidget {
       ) : Text(btnName,style: const TextStyle(fontFamily: ConstFont.poppinsRegular,fontWeight: FontWeight.w600, fontSize: 20,color: Colors.black),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),
     );
   }
+
+
+}
+class NextButtonSec extends StatelessWidget {
+  final VoidCallback? onPressed;
+  var btnName;
+  NextButtonSec({Key? key, this.onPressed,this.btnName}) : super(key: key);
+
+   HomeController homeController = Get.put(HomeController());
+  @override
+  Widget build(BuildContext context) {
+    var deviceHeight = MediaQuery.of(context).size.height;
+    var deviceWidth = MediaQuery.of(context).size.width;
+    return   Obx(
+      () => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          minimumSize: Size(deviceWidth * 0.9, deviceHeight * 0.06),
+           maximumSize: Size(deviceWidth * 1.0, deviceHeight * 0.07),
+          backgroundColor: ConstColour.primaryColor
+      ),
+      onPressed: homeController.loadingSec.value.obs == true ? null : onPressed,
+
+          child:  homeController.loadingSec.value.obs == true
+          ? const CircularProgressIndicator(
+        color: Colors.white,
+      ) : Text(btnName,style: const TextStyle(fontFamily: ConstFont.poppinsRegular,fontWeight: FontWeight.w600, fontSize: 20,color: Colors.black),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),
+    );
+  }
 }

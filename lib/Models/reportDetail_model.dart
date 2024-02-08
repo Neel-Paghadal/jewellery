@@ -30,6 +30,7 @@ class ReportDetail {
   String dateCreated;
   String completedDate;
   String cancelledDate;
+  String cancelReason;
 
   ReportDetail({
     required this.id,
@@ -37,6 +38,7 @@ class ReportDetail {
     required this.dateCreated,
     required this.completedDate,
     required this.cancelledDate,
+    required this.cancelReason
   });
 
   factory ReportDetail.fromJson(Map<String, dynamic> json) => ReportDetail(
@@ -45,6 +47,7 @@ class ReportDetail {
     dateCreated: json["dateCreated"],
     completedDate: json["completedDate"],
     cancelledDate: json["cancelledDate"],
+    cancelReason: (json["cancelReason"] == null ||json["cancelReason"] == "") ? "" : json["cancelReason"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +56,6 @@ class ReportDetail {
     "dateCreated": dateCreated,
     "completedDate": completedDate,
     "cancelledDate": cancelledDate,
+    "cancelReason" : cancelReason
   };
 }

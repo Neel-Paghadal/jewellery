@@ -6,10 +6,8 @@ import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/Models/users_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:jewellery_user/Screen/home.dart';
 import '../ConstFile/constPreferences.dart';
 import '../Models/userList_model.dart';
-import '../Screen/user_list.dart';
 import 'home_Controller.dart';
 
 class UserListController extends GetxController {
@@ -104,16 +102,65 @@ class UserListController extends GetxController {
         reasonController.clear();
         debugPrint('Response: $responseBody');
         Utils().toastMessage("Order Cancel Successfully");
+
+
       } else {
         // Failed API call
-        debugPrint(
-            'Failed to make API call. Status code: ${response.statusCode}');
+        debugPrint('Failed to make API call. Status code: ${response.statusCode}');
         Utils().toastMessage(response.body);
       }
+
     } catch (error) {
       debugPrint('Error making API call: $error');
     }
     homeController.loading.value = false;
+    userList.clear();
+    getUserCall(orderId.toString());
+
+  }
+
+  // assignOrder Update Detail
+  Future<void> assignUpdate(String id,String notes ) async {
+    homeController.loadingSec.value = true;
+    String? token = await ConstPreferences().getToken();
+    debugPrint(token);
+    var url = Uri.parse(ConstApi.updateAssignOrder);
+
+    Map<String, String> requestBody = {
+      "Id":id,
+      "Notes": notes
+    };
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    debugPrint("Request Body :$requestBody");
+
+    try {
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        // Successful API call
+        var responseBody = json.decode(response.body);
+        reasonController.clear();
+        debugPrint('Response: $responseBody');
+        Utils().toastMessage("Update Successfully");
+
+
+      } else {
+        // Failed API call
+        debugPrint('Failed to make API call. Status code: ${response.statusCode}');
+        Utils().toastMessage(response.body);
+      }
+
+    } catch (error) {
+      debugPrint('Error making API call: $error');
+    }
+    homeController.loadingSec.value = false;
     userList.clear();
     getUserCall(orderId.toString());
 

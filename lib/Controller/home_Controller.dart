@@ -12,9 +12,11 @@ import 'package:jewellery_user/Models/dashboard_model.dart';
 
 class HomeController extends GetxController {
   RxBool loading = false.obs;
+  RxBool loadingSec = false.obs;
   RxList<Order> homeList = <Order>[].obs;
   RxBool isLoaderShow = false.obs;
   RxBool isShow = false.obs;
+  // ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
@@ -22,6 +24,60 @@ class HomeController extends GetxController {
     super.onInit();
     checkUser();
   }
+
+  int pageIndex = 0;
+  int pageSize = 6;
+  RxBool loadingPage = false.obs;
+
+
+  Future<void> handleRefresh() async {
+    pageIndex = 1;
+    pageSize = 6;
+
+    homeList.clear();
+    getOrderCall(
+      pageIndex,
+      pageSize,
+    );
+    debugPrint("ScreenRefresh");
+    return await Future.delayed(const Duration(seconds: 1));
+  }
+
+  Future<void> loadProducts() async {
+    loadingPage.value = true;
+
+    pageIndex++;
+
+    debugPrint("Page Order index$pageIndex");
+    try {
+      final RxList<Order> products = await getOrderCall(
+        pageIndex,
+        pageSize,
+      );
+        homeList.addAll(products);
+    } catch (e) {
+      // Handle errors
+      debugPrint('Error loading products: $e');
+    } finally {
+      loadingPage.value = false;
+    }
+  }
+
+  // void onScroll() {
+  //   if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+  //     // User has reached the end of the list, load more products
+  //     loadProducts();
+  //   }
+  // }
+
+
+
+
+
+
+
+
+
 
   void checkUser() async {
     var role = await ConstPreferences().getRole();

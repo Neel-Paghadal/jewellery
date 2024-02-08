@@ -30,13 +30,7 @@ class _OrderScreenState extends State<OrderScreen> {
   File? imageNotes;
   String? userProfileImage;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
 
-    orderController.clearController();
-  }
 
   var startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
   // DateTime startDate = DateTime.now();
@@ -468,6 +462,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             _startDate = pickedDate;
                           });
                         }
+
                         debugPrint(DateFormat('dd-MM-yyyy').format(_startDate!));
                         orderController.dateCon.text = DateFormat('dd-MM-yyyy')
                             .format(_startDate!)

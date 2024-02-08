@@ -7,6 +7,7 @@ import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/newRegister_controller.dart';
+import 'package:jewellery_user/Controller/order_controller.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
 import 'package:jewellery_user/Screen/List%20Screen/adminList_screen.dart';
@@ -33,10 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
   UserListController userListController = Get.put(UserListController());
   ProductController productController = Get.put(ProductController());
   NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
-
-  int _pageIndex = 0;
-  int _pageSize = 6;
-  bool _loading = false;
+  OrderController orderController = Get.put(OrderController());
+  // int _pageIndex = 0;
+  // int _pageSize = 6;
+  // bool _loading = false;
 
   @override
   void initState() {
@@ -44,56 +45,55 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     // if (homeController.homeList.isEmpty) {
-      _loadProducts();
-      _scrollController.addListener(_onScroll);
+    homeController.loadProducts();
+   _scrollController.addListener(_onScroll);
     // }
     homeController.checkUser();
     // newRegisterCon.clearController();
   }
 
-  Future<void> _handleRefresh() async {
-    _pageIndex = 1;
-    _pageSize = 6;
-
-    homeController.homeList.clear();
-    homeController.getOrderCall(
-      _pageIndex,
-      _pageSize,
-    );
-    debugPrint("ScreenRefresh");
-    return await Future.delayed(const Duration(seconds: 1));
-  }
-
-  Future<void> _loadProducts() async {
-    setState(() {
-      _loading = true;
-    });
-    _pageIndex++;
-
-    debugPrint("Page Order index$_pageIndex");
-    try {
-      final RxList<Order> products = await homeController.getOrderCall(
-        _pageIndex,
-        _pageSize,
-      );
-      setState(() {
-        homeController.homeList.addAll(products);
-      });
-    } catch (e) {
-      // Handle errors
-      debugPrint('Error loading products: $e');
-    } finally {
-      setState(() {
-        _loading = false;
-      });
-    }
-  }
-
+  // Future<void> _handleRefresh() async {
+  //   _pageIndex = 1;
+  //   _pageSize = 6;
+  //
+  //   homeController.homeList.clear();
+  //   homeController.getOrderCall(
+  //     _pageIndex,
+  //     _pageSize,
+  //   );
+  //   debugPrint("ScreenRefresh");
+  //   return await Future.delayed(const Duration(seconds: 1));
+  // }
+  //
+  // Future<void> _loadProducts() async {
+  //   setState(() {
+  //     _loading = true;
+  //   });
+  //   _pageIndex++;
+  //
+  //   debugPrint("Page Order index$_pageIndex");
+  //   try {
+  //     final RxList<Order> products = await homeController.getOrderCall(
+  //       _pageIndex,
+  //       _pageSize,
+  //     );
+  //     setState(() {
+  //       homeController.homeList.addAll(products);
+  //     });
+  //   } catch (e) {
+  //     // Handle errors
+  //     debugPrint('Error loading products: $e');
+  //   } finally {
+  //     setState(() {
+  //       _loading = false;
+  //     });
+  //   }
+  // }
+  //
   void _onScroll() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
       // User has reached the end of the list, load more products
-      _loadProducts();
+     homeController.loadProducts();
     }
   }
 
@@ -330,19 +330,26 @@ class _HomeScreenState extends State<HomeScreen> {
         //   ),
         // ),
         floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: ConstColour.primaryColor,
-          splashColor: ConstColour.btnHowerColor,
-            icon: const Icon(Icons.add,color: Colors.black),
+            backgroundColor: ConstColour.primaryColor,
+            splashColor: ConstColour.btnHowerColor,
+            icon: const Icon(Icons.add, color: Colors.black),
             onPressed: () {
+              orderController.clearController();
               Get.to(() => const OrderScreen());
-
-        }, label: const Text("Add Design",style: TextStyle(fontFamily: ConstFont.poppinsMedium,color: Colors.black,fontSize: 16),)),
+            },
+            label: const Text(
+              "Add Design",
+              style: TextStyle(
+                  fontFamily: ConstFont.poppinsMedium,
+                  color: Colors.black,
+                  fontSize: 16),
+            )),
         backgroundColor: ConstColour.bgColor,
         body: Obx(
           () => LiquidPullToRefresh(
             color: Colors.black,
             height: deviceHeight * 0.08,
-            onRefresh: _handleRefresh,
+            onRefresh: homeController.handleRefresh,
             showChildOpacityTransition: false,
             backgroundColor: ConstColour.primaryColor,
             springAnimationDurationInMilliseconds: 1,
@@ -436,13 +443,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 : ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-              controller: _scrollController,
+                    controller: _scrollController,
+
                     itemCount:
-                        homeController.homeList.length + (_loading ? 1 : 0),
+                        homeController.homeList.length + (homeController.loadingPage.value ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == homeController.homeList.length) {
                         // Loading indicator
-                        return _loading
+                        return homeController.loadingPage.value
                             ? Padding(
                                 padding: const EdgeInsets.all(50.0),
                                 child: Center(
@@ -461,8 +469,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             productController.isFilterApplyed.value = false;
                             Get.to(() => const ProductDetailScreen());
-                          productController.productIndex = index;
-                            productController.getProductDetailCall(homeController.homeList[index].id);
+                            productController.productIndex = index;
+                            productController.getProductDetailCall(
+                                homeController.homeList[index].id);
                           },
                           splashColor: ConstColour.btnHowerColor,
                           child: Container(
@@ -488,10 +497,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 BorderRadius.circular(8),
                                             color: Colors.white),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                           child: CachedNetworkImage(
                                             width: double.infinity,
-                                            fit: BoxFit.cover,
+                                            fit: BoxFit.contain,
                                             imageUrl: homeController
                                                 .homeList[index].image
                                                 .toString(),
@@ -501,8 +511,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     size: 65,
                                                     color: ConstColour
                                                         .loadImageColor),
-                                            errorWidget: (context, url, error) =>
-                                                const Icon(Icons.error, size: 45),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error,
+                                                        size: 45),
                                           ),
                                         ),
                                       ),
@@ -510,42 +522,48 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Expanded(
                                       child: ListTile(
                                         contentPadding: const EdgeInsets.all(0),
-                                        title: Text(
-                                          homeController.homeList[index].name,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontFamily:
-                                              ConstFont.poppinsRegular),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                        ),
-                                        subtitle: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                        title: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding:  EdgeInsets.only(top: deviceHeight * 0.055),
+                                              padding:  EdgeInsets.only(right: deviceWidth * 0.08),
                                               child: Text(
-                                                "# ${homeController.homeList[index].orderId.toString()}",
+                                                homeController
+                                                    .homeList[index].name,
                                                 style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                    fontSize: 16,
                                                     fontFamily:
-                                                    ConstFont.poppinsRegular),
+                                                        ConstFont.poppinsRegular),
                                                 overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
                                               ),
                                             ),
                                             Text(
-                                              "Create Date : ${homeController.homeList[index].dateCreated}",
+                                              "# ${homeController.homeList[index].orderId.toString()}",
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 14,
                                                   fontFamily:
-                                                  ConstFont.poppinsRegular),
+                                                      ConstFont.poppinsRegular),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ],
+                                        ),
+                                        subtitle: Padding(
+                                          padding: EdgeInsets.only(top: deviceHeight * 0.056),
+                                          child: Text(
+                                            "Create Date : ${homeController.homeList[index].dateCreated}",
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14,
+                                                fontFamily:
+                                                    ConstFont.poppinsRegular),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -599,11 +617,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 IconButton(
-                                  tooltip: "Assign Order",
+                                    tooltip: "Assign Order",
                                     onPressed: () {
+
                                       userListController.orderId = homeController.homeList[index].id;
                                       userListController.userList.clear();
                                       Get.to(() => const UserListScreen());
+
                                     },
                                     icon: const Icon(
                                       // Icons.assignment_ind,
@@ -617,7 +637,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     },
-
                   ),
           ),
         ),

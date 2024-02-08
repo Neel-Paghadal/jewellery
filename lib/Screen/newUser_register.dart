@@ -66,20 +66,20 @@ class _NewUserRegisterState extends State<NewUserRegister> {
             child: Column(
               children: [
 
-                const Text("Create Account",style: TextStyle(
-                    color: ConstColour.primaryColor,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: ConstFont.poppinsRegular,
-                    fontSize: 30
-                )),
-                Divider(height: deviceHeight * 0.01),
-
-                const Text("Create an account so you can\nexplore all the existing jobs",style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: ConstFont.poppinsRegular,
-                    fontSize: 19
-                ),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,maxLines: 2),
+                // const Text("Create Account",style: TextStyle(
+                //     color: ConstColour.primaryColor,
+                //     fontWeight: FontWeight.w700,
+                //     fontFamily: ConstFont.poppinsRegular,
+                //     fontSize: 30
+                // )),
+                // Divider(height: deviceHeight * 0.01),
+                //
+                // const Text("Create an account so you can\nexplore all the existing jobs",style: TextStyle(
+                //     color: Colors.white,
+                //     fontWeight: FontWeight.w700,
+                //     fontFamily: ConstFont.poppinsRegular,
+                //     fontSize: 19
+                // ),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,maxLines: 2),
                 Divider(height: deviceHeight * 0.03),
 
                 Padding(

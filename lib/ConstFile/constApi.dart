@@ -16,5 +16,6 @@ class ConstApi {
   static  String  releaseDevice = '${baseUrl}User/release-device';
   static  String  getReport = '${baseUrl}Report/Orders';
   static  String  getParty = '${baseUrl}Order/GetParties';
+  static  String  updateAssignOrder = '${baseUrl}Order/UpdateAssignOrder';
 
 }

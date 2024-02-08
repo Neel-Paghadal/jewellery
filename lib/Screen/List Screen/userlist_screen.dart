@@ -6,7 +6,6 @@ import 'package:jewellery_user/Controller/User_Controller/adminList_controller.d
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/userlistScreen_controller.dart';
 import 'package:jewellery_user/Models/userDetail_model.dart';
-import 'package:jewellery_user/Screen/home.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -19,7 +18,8 @@ class UserList extends StatefulWidget {
 
 class _UserListState extends State<UserList> {
   ScrollController _scrollController = ScrollController();
-  UserListScreenController userListScreenController = Get.put(UserListScreenController());
+  UserListScreenController userListScreenController =
+      Get.put(UserListScreenController());
   AdminListController adminListController = Get.put(AdminListController());
   HomeController homeController = Get.put(HomeController());
   int _pageIndex = 0;
@@ -34,14 +34,13 @@ class _UserListState extends State<UserList> {
     _scrollController.addListener(_onScroll);
   }
 
-
-
-  void releaseDeviceDialog(BuildContext context,String userID) {
+  void releaseDeviceDialog(BuildContext context, String userID) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           shadowColor: Colors.white,
           elevation: 8.0,
           // backgroundColor: Colors.white,
@@ -74,7 +73,7 @@ class _UserListState extends State<UserList> {
               splashColor: ConstColour.btnHowerColor,
               child: Container(
                 decoration: BoxDecoration(
-                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.red),
                 child: const Padding(
@@ -90,7 +89,7 @@ class _UserListState extends State<UserList> {
                   ),
                 ),
               ),
-            ) ,
+            ),
             InkWell(
               borderRadius: BorderRadius.circular(5),
               onTap: () {
@@ -103,9 +102,9 @@ class _UserListState extends State<UserList> {
                   Get.back();
                 },
                 child: const Padding(
-                  padding: EdgeInsets.all(6.0),
+                  padding: EdgeInsets.all(2.0),
                   child: Text(
-                    'Release',
+                    '  Yes  ',
                     style: TextStyle(
                       fontFamily: ConstFont.poppinsMedium,
                       fontSize: 14,
@@ -121,12 +120,7 @@ class _UserListState extends State<UserList> {
       },
     );
   }
-  
-  
-  
-  
-  
-  
+
   Future<void> _handleRefresh() async {
     _pageIndex = 1;
     _pageSize = 10;
@@ -182,15 +176,15 @@ class _UserListState extends State<UserList> {
     return Scaffold(
       backgroundColor: ConstColour.bgColor,
       appBar: AppBar(
-          backgroundColor: ConstColour.bgColor,
-          centerTitle: true,
-          title: const Text("Users",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: ConstFont.poppinsRegular,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis)),
+        backgroundColor: ConstColour.bgColor,
+        centerTitle: true,
+        title: const Text("Users",
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: ConstFont.poppinsRegular,
+                fontSize: 22,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis)),
         leading: IconButton(
             tooltip: "Back",
             onPressed: () {
@@ -200,7 +194,7 @@ class _UserListState extends State<UserList> {
             color: ConstColour.primaryColor),
       ),
       body: Obx(
-        () =>  LiquidPullToRefresh(
+        () => LiquidPullToRefresh(
           color: Colors.black,
           height: deviceHeight * 0.08,
           onRefresh: _handleRefresh,
@@ -209,67 +203,65 @@ class _UserListState extends State<UserList> {
           springAnimationDurationInMilliseconds: 1,
           child: Container(
             child: userListScreenController.usersList.isEmpty
-                ?
-            Container(
-              child: userListScreenController.isLoaderShow.value == true
-                  ? Loaders(
-                items: 12,
-                direction: LoaderDirection.ltr,
-                baseColor: Colors.grey,
-                highLightColor: Colors.white,
-                builder: Padding(
-                  padding:
-                  EdgeInsets.only(right: deviceWidth * 0.01),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(8),
-                            side: const BorderSide(
-                              color: Colors.grey,
+                ? Container(
+                    child: userListScreenController.isLoaderShow.value == true
+                        ? Loaders(
+                            items: 12,
+                            direction: LoaderDirection.ltr,
+                            baseColor: Colors.grey,
+                            highLightColor: Colors.white,
+                            builder: Padding(
+                              padding:
+                                  EdgeInsets.only(right: deviceWidth * 0.01),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListTile(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        side: const BorderSide(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: deviceWidth * 0.4,
+                                            height: deviceHeight * 0.01,
+                                            color: Colors.grey,
+                                          ),
+                                          Container(
+                                            width: deviceWidth * 0.2,
+                                            height: deviceHeight * 0.01,
+                                            color: Colors.grey,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        : const Center(
+                            child: Text(
+                              "No User Found",
+                              style: TextStyle(
+                                  fontFamily: ConstFont.poppinsMedium,
+                                  color: Colors.white,
+                                  fontSize: 16),
                             ),
                           ),
-                          title: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: deviceWidth * 0.4,
-                                height: deviceHeight * 0.01,
-                                color: Colors.grey,
-                              ),
-                              Container(
-                                width: deviceWidth * 0.2,
-                                height: deviceHeight * 0.01,
-                                color: Colors.grey,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-
-                  : const Center(
-                    child: Text(
-                      "No User Found",
-                      style: TextStyle(
-                          fontFamily: ConstFont.poppinsMedium,
-                          color: Colors.white,
-                          fontSize: 16),
-                    ),
-                  ),
-            )
+                  )
                 : ListView.builder(
                     controller: _scrollController,
-                    itemCount: userListScreenController.usersList.length + (_loading ? 1 : 0),
+                    itemCount: userListScreenController.usersList.length +
+                        (_loading ? 1 : 0),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
@@ -277,51 +269,46 @@ class _UserListState extends State<UserList> {
                         // Loading indicator
                         return _loading
                             ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            widthFactor: deviceWidth * 0.1,
-                            child: const CircularProgressIndicator(
-                                color: ConstColour.primaryColor),
-                          ),
-                        )
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  widthFactor: deviceWidth * 0.1,
+                                  child: const CircularProgressIndicator(
+                                      color: ConstColour.primaryColor),
+                                ),
+                              )
                             : Container();
                       }
 
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
-
-                          splashColor: ConstColour.btnHowerColor,
-
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  color: ConstColour.primaryColor),
-                              borderRadius: BorderRadius.circular(21)),
-                          title: Text(
-                            "👤 ${userListScreenController
-                                    .usersList[index].firstName} ${userListScreenController
-                                    .usersList[index].lastName}",
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: ConstFont.poppinsMedium),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(
-                            "✆  ${userListScreenController.usersList[index].mobileNumber}",
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: ConstFont.poppinsMedium),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                            splashColor: ConstColour.btnHowerColor,
+                            shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    color: ConstColour.primaryColor),
+                                borderRadius: BorderRadius.circular(21)),
+                            title: Text(
+                              "👤 ${userListScreenController.usersList[index].firstName} ${userListScreenController.usersList[index].lastName}",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: ConstFont.poppinsMedium),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            subtitle: Text(
+                              "✆  ${userListScreenController.usersList[index].mobileNumber}",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: ConstFont.poppinsMedium),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                             trailing: PopupMenuButton(
                               tooltip: 'Options',
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 side: const BorderSide(
-                                    color: ConstColour.primaryColor
-                                ),
+                                    color: ConstColour.primaryColor),
                               ),
                               elevation: 5.0,
                               enableFeedback: true,
@@ -338,19 +325,33 @@ class _UserListState extends State<UserList> {
                                   PopupMenuItem(
                                     enabled: true,
                                     onTap: () {
-                                      debugPrint(userListScreenController.usersList[index].firstName);
-                                      releaseDeviceDialog(context,userListScreenController.usersList[index].id);
+                                      debugPrint(userListScreenController
+                                          .usersList[index].firstName);
+                                      releaseDeviceDialog(
+                                          context,
+                                          userListScreenController
+                                              .usersList[index].id);
                                     },
                                     value: '/Release',
-                                    child: const Text("Release",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                    child: const Text("Release",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily:
+                                                ConstFont.poppinsMedium),
+                                        overflow: TextOverflow.ellipsis),
                                   ),
                                   PopupMenuItem(
                                     enabled: false,
-                                    onTap: () {
-
-                                    },
+                                    onTap: () {},
                                     value: '/Forgot Password',
-                                    child: const Text("Forgot Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                    child: const Text("Forgot Password",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily:
+                                                ConstFont.poppinsMedium),
+                                        overflow: TextOverflow.ellipsis),
                                   ),
                                 ];
                               },

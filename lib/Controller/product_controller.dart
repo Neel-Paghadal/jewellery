@@ -160,7 +160,9 @@ class ProductController extends GetxController {
 
     for (var image in images) {
       var file = File(image.path);
-      request..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
+      request
+        ..files.add(await http.MultipartFile.fromPath('files', file.path))
+        ..fields['Directory'] = directory;
     }
 
     debugPrint("REQUEST$request");
@@ -179,26 +181,24 @@ class ProductController extends GetxController {
         imgListMulti.addAll(responseData.files);
         List<String> seenPaths = [];
 
-
-
         var jsonResponse = json.decode(responseBody);
         // var filePath = json.decode(responseBody);
         debugPrint(imgListMulti.toString());
         // Extract and store the filePath value
 
         for (int i = 0; i <= imgListMulti.length; i++) {
-
-
-          productDetail[0].orderImages.add(OrderImage(id: 'id',path: imgListMulti[i].path,dateCreated: 'dateCreated'));
-
+          productDetail[0].orderImages.add(OrderImage(
+              id: 'id',
+              path: imgListMulti[i].path,
+              dateCreated: 'dateCreated'));
         }
-
 
         filePath = jsonResponse['filePath'];
         debugPrint("File Path " + filePath);
       } else {
         debugPrint(
             'Failed to upload file. Status code: ${response.statusCode}');
+        Utils().toastMessage("Failed to upload file");
       }
     } catch (error) {
       debugPrint('Error uploading file: $error');
@@ -211,7 +211,9 @@ class ProductController extends GetxController {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     // for(int i = 0 ; i<= productDetail[0].orderImages.length; i++){
-    imgListMulti.addAll(productDetail[0].orderImages.map((image) => FileElement(path: image.path)));
+    imgListMulti.addAll(productDetail[0]
+        .orderImages
+        .map((image) => FileElement(path: image.path)));
 
     if (imgList.isEmpty) {
       replaceString(productDetail[0].image);
@@ -277,11 +279,14 @@ class ProductController extends GetxController {
       if (response.statusCode == 200) {
         debugPrint('API call successful');
         debugPrint('Response: ${response.body}');
-        homeController.homeList[productIndex!].id = id;
-        homeController.homeList[productIndex!].image = "http://208.64.33.118:8558/Files/"+imgList[0].path;
-        homeController.homeList[productIndex!].name = name;
-
-        Get.to(() => const HomeScreen());
+        // homeController.homeList[productIndex!].id = id;
+        // homeController.homeList[productIndex!].image = "http://208.64.33.118:8558/Files/${imgList[0].path}";
+        // homeController.homeList[productIndex!].name = name;
+        homeController.homeList.clear();
+        homeController.pageIndex = 0;
+        homeController.pageSize = 6;
+        homeController.loadProducts();
+        Get.to(() => HomeScreen());
         Utils().toastMessage(json.decode(response.body)['message']);
         // Utils().toastMessage("Order Successfull");
 

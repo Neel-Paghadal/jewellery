@@ -166,6 +166,10 @@ class OrderController extends GetxController{
 
         // Utils().snackBar(response.body, '');
         clearController();
+        homeController.homeList.clear();
+        homeController.pageIndex = 0;
+        homeController.pageSize = 6;
+        homeController.loadProducts();
         Get.to(() => const HomeScreen());
       } else {
         debugPrint('Error: ${response.reasonPhrase}');

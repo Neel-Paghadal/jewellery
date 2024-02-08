@@ -29,12 +29,14 @@ class User {
   String userName;
   String status;
   String code;
+  String reason;
 
   User({
     required this.id,
     required this.userName,
     required this.status,
     required this.code,
+    required this.reason,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -42,6 +44,7 @@ class User {
     userName: json["userName"],
     status: json["status"],
     code: json["code"],
+    reason: (json["reason"] == null || json['reason'] == "") ? "" : json["reason"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -49,5 +52,6 @@ class User {
     "userName": userName,
     "status": status,
     "code" : code,
+    "reason" : reason
   };
 }

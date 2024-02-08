@@ -5,7 +5,6 @@ import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/reportScreen_controller.dart';
 import 'package:jewellery_user/Controller/report_search_Controller.dart';
 import 'package:jewellery_user/Models/ordersReport_model.dart';
-import 'package:jewellery_user/Models/users_model.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/report_Screen.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -84,7 +83,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                 top: deviceHeight * 0.02,
                                 left: deviceWidth * 0.03,
                                 right: deviceWidth * 0.03),
-                            child: reportSearchController.isDropLoader.value == true ? CircularProgressIndicator(color: ConstColour.primaryColor,) : Container(
+                            child: reportSearchController.isDropLoader.value == true ? const CircularProgressIndicator(color: ConstColour.primaryColor,) : Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border:
@@ -104,7 +103,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                 hint: Padding(
                                   padding:  EdgeInsets.only(left: deviceWidth * 0.05),
                                   child: const Text(
-                                    'Select username',
+                                    'Select Partyname',
                                     style: TextStyle(
                                         fontFamily: ConstFont.poppinsRegular,
                                         fontSize: 14,
@@ -145,7 +144,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                               Padding(
                                 padding: EdgeInsets.only(left: deviceWidth * 0.05,
                                     right: deviceWidth * 0.12),
-                                child: Text(
+                                child: const Text(
                                   "From Date :     ",
                                   style: TextStyle(
                                       fontSize: 14,
@@ -153,7 +152,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                       overflow: TextOverflow.ellipsis),
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 "To Date :     ",
                                 style: TextStyle(
                                     fontSize: 14,
@@ -520,7 +519,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                           color: Colors.grey,
                                         ),
                                       ),
-                                      leading: Icon(Icons.image,
+                                      leading: const Icon(Icons.image,
                                           color: Colors.grey, size: 50),
                                       title: Row(
                                         mainAxisAlignment:
@@ -601,7 +600,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                             onTap: () {
                               reportScreenController.reportDetail.clear();
                               reportScreenController.getReportDetailCall(reportSearchController.orderReportList[index].id);
-                              Get.to(() => ReportScreen());
+                              Get.to(() => const ReportScreen());
                             },
                             leading: Container(
                                 height: double.infinity,
