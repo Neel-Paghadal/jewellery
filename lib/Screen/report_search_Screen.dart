@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/reportScreen_controller.dart';
 import 'package:jewellery_user/Controller/report_search_Controller.dart';
@@ -311,17 +312,22 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                     // backgroundColor: Colors.white
                                   ),
                                   onPressed: () {
-                                    reportSearchController.orderReportList.clear();
-                                    reportSearchController.isFilterApplyed.value = true;
-                                    setState(() {});
-                                    reportSearchController.getFilterReportCall(
-                                      reportSearchController.partyName.toString(),DateFormat('yyyy-MM-dd').format(_startDate).toString(),
-                                      DateFormat('yyyy-MM-dd').format(_endDate).toString(),
-                                      1,
-                                      20,
-                                    );
-                                    Get.back();
-                                  },
+                                    if(reportSearchController.partyName.isNull){
+                                      Utils().toastMessage("Select Party Name");
+
+                                    }else {
+                                      reportSearchController.orderReportList.clear();
+                                      reportSearchController.isFilterApplyed.value = true;
+                                      setState(() {});
+                                      reportSearchController.getFilterReportCall(
+                                        reportSearchController.partyName.toString(),DateFormat('yyyy-MM-dd').format(_startDate).toString(),
+                                        DateFormat('yyyy-MM-dd').format(_endDate).toString(),
+                                        1,
+                                        20,
+                                      );
+                                      Get.back();
+                                    }
+                                    },
                                   child: const Text(
                                     "Apply",
                                     style: TextStyle(

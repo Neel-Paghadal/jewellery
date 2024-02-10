@@ -24,6 +24,7 @@ class Languages extends Translations{
       'reason' : 'Reason',
       'productDetail' : 'Product Detail',
       'noData' : 'No Data Found',
+      'notes' : 'Notes',
 
 
     },
@@ -46,6 +47,7 @@ class Languages extends Translations{
       'reason' : 'કારણ',
       'productDetail' : 'ઉત્પાદન વિગતો',
       'noData' : 'કોઈ ડેટા મળ્યો નથી',
+      'notes' : 'નોંધો',
 
 
     },
@@ -68,6 +70,7 @@ class Languages extends Translations{
       'reason' : 'कारण',
       'productDetail' : 'वास्तु की बारीकी',
       'noData' : 'डाटा प्राप्त नहीं हुआ',
+      'notes' : 'टिप्पणियाँ',
 
 
     }

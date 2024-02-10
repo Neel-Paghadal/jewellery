@@ -30,6 +30,7 @@ class Order {
   String image;
   String deliveryDate;
   String orderUserId;
+  String notes;
 
   Order({
     required this.name,
@@ -37,6 +38,7 @@ class Order {
     required this.image,
     required this.deliveryDate,
     required this.orderUserId,
+    required this.notes
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -45,6 +47,7 @@ class Order {
     image: json["image"],
     deliveryDate: json["deliveryDate"],
     orderUserId: json["orderUserId"],
+    notes: (json["notes"] == null || json["notes"] == "null") ? "" : json["notes"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +56,6 @@ class Order {
     "image": image,
     "deliveryDate": deliveryDate,
     "orderUserId": orderUserId,
+    "notes" : notes
   };
 }

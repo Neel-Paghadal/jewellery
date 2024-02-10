@@ -13,6 +13,59 @@ class AdminListController extends GetxController {
 
   RxList<AdminDetail> adminList = <AdminDetail>[].obs;
 
+  int pageIndex = 0;
+  int pageSize = 10;
+
+  RxBool loadingPage = false.obs;
+
+
+  Future<void> handleRefresh() async {
+    pageIndex = 1;
+    pageSize = 10;
+
+    adminList.clear();
+    getAdminCall(
+      pageIndex,
+      pageSize,
+    );
+    debugPrint("ScreenRefresh");
+    return await Future.delayed(const Duration(seconds: 1));
+  }
+
+  Future<void> loadProducts() async {
+    loadingPage.value = true;
+    pageIndex++;
+
+    debugPrint("Page Order index$pageIndex");
+    try {
+      final RxList<AdminDetail> products =
+      await getAdminCall(
+        pageIndex,
+        pageSize,
+      );
+        adminList.addAll(products);
+    } catch (e) {
+      // Handle errors
+      debugPrint('Error loading products: $e');
+    } finally {
+      loadingPage.value = false;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   getAdminCall(int pageIndex, int pageSize) async {
     if (adminList.isEmpty) {
       isLoaderShow.value = true;

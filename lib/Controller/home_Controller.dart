@@ -63,12 +63,7 @@ class HomeController extends GetxController {
     }
   }
 
-  // void onScroll() {
-  //   if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-  //     // User has reached the end of the list, load more products
-  //     loadProducts();
-  //   }
-  // }
+
 
 
 

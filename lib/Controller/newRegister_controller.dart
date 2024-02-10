@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
 import 'package:jewellery_user/Screen/home.dart';
 import 'package:http/http.dart' as http;
 import '../Common/snackbar.dart';
@@ -12,7 +13,7 @@ import 'login_controller.dart';
 class NewRegisterCon extends GetxController {
   HomeController homeController = Get.put(HomeController());
   LoginController loginController = Get.put(LoginController());
-
+  AdminListController adminListController = Get.put(AdminListController());
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -63,6 +64,11 @@ class NewRegisterCon extends GetxController {
         Utils().toastMessage("Register Successfull");
         clearController();
         homeController.loading.value = false;
+        adminListController.adminList.clear();
+        adminListController.pageIndex = 0;
+        adminListController.pageSize  = 10;
+        adminListController.loadProducts();
+
         Get.back();
       } else {
         homeController.loading.value = false;

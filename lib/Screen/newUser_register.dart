@@ -481,13 +481,13 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
                     controller: newRegisterCon.reference,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Enter Reference Name";
-                      } else {
-                        return null;
-                      }
-                    },
+                    // validator: (value) {
+                    //   if (value!.isEmpty) {
+                    //     return "Enter Reference Name";
+                    //   } else {
+                    //     return null;
+                    //   }
+                    // },
                     decoration: InputDecoration(
                       labelStyle: const TextStyle(color: Colors.grey),
                       enabledBorder: OutlineInputBorder(

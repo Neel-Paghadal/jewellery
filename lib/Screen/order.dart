@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/order_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import '../ConstFile/constFonts.dart';
 
@@ -20,8 +22,8 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-
   var _startDate;
+  // List<CameraDescription> cameras;
 
   OrderController orderController = Get.put(OrderController());
   HomeController homeController = Get.put(HomeController());
@@ -30,25 +32,55 @@ class _OrderScreenState extends State<OrderScreen> {
   File? imageNotes;
   String? userProfileImage;
 
-
-
-  var startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
+  var startdate = DateTime.now()
+      .add(Duration(
+          hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute))
+      .millisecondsSinceEpoch
+      .obs;
   // DateTime startDate = DateTime.now();
   //
-  Future getImageCamera() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (image == null) return;
 
-    final imageTemporary = File(image.path);
-    setState(() {
-      imageNotes = imageTemporary;
-      orderController.isLoading.value = true;
-      orderController.uploadFile(imageNotes!);
-      debugPrint(imageNotes.toString());
-    });
+  Future<bool> _checkCameraPermission() async {
+    PermissionStatus status = await Permission.camera.status;
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      return await Permission.camera.request().isGranted;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> _checkPermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+  }
+
+
+  Future getImageCamera() async {
+    try {
+      _checkPermission();
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        imageNotes = imageTemporary;
+        orderController.isLoading.value = true;
+        orderController.uploadFile(imageNotes!);
+        debugPrint(imageNotes.toString());
+      });
+    } catch(error) {
+      print("error: $error");
+    }
+
   }
 
   Future getImageGallery() async {
+    _checkPermission();
+
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
 
@@ -116,10 +148,12 @@ class _OrderScreenState extends State<OrderScreen> {
                 : NextButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        if (orderController.imgList.isEmpty && orderController.imgListMulti.isEmpty) {
+                        if (orderController.imgList.isEmpty &&
+                            orderController.imgListMulti.isEmpty) {
                           Utils().snackBar("Image", "Please select the images");
                         } else {
-                          String date = DateFormat('yyyy-MM-dd').format(_startDate!);
+                          String date =
+                              DateFormat('yyyy-MM-dd').format(_startDate!);
 
                           debugPrint(date);
 
@@ -205,14 +239,13 @@ class _OrderScreenState extends State<OrderScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
-                        errorStyle: const TextStyle(color: ConstColour.errorHint),
-
+                        errorStyle:
+                            const TextStyle(color: ConstColour.errorHint),
                       ),
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                           fontFamily: ConstFont.poppinsRegular),
-
                     ),
                   ),
                   Padding(
@@ -272,8 +305,8 @@ class _OrderScreenState extends State<OrderScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
-                        errorStyle: const TextStyle(color: ConstColour.errorHint),
-
+                        errorStyle:
+                            const TextStyle(color: ConstColour.errorHint),
                       ),
                       style: const TextStyle(
                           color: Colors.white,
@@ -290,7 +323,8 @@ class _OrderScreenState extends State<OrderScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
                             autocorrect: true,
@@ -345,8 +379,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: ConstFont.poppinsRegular,
                                   fontSize: 16,
                                   overflow: TextOverflow.ellipsis),
-                              errorStyle: const TextStyle(color: ConstColour.errorHint),
-
+                              errorStyle:
+                                  const TextStyle(color: ConstColour.errorHint),
                             ),
                             style: const TextStyle(
                                 color: Colors.white,
@@ -357,7 +391,8 @@ class _OrderScreenState extends State<OrderScreen> {
                         SizedBox(width: deviceWidth * 0.02),
                         Expanded(
                           child: TextFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
                             keyboardType: TextInputType.number,
                             autocorrect: true,
@@ -412,8 +447,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontFamily: ConstFont.poppinsRegular,
                                   fontSize: 16,
                                   overflow: TextOverflow.ellipsis),
-                              errorStyle: const TextStyle(color: ConstColour.errorHint),
-
+                              errorStyle:
+                                  const TextStyle(color: ConstColour.errorHint),
                             ),
                             style: const TextStyle(
                                 color: Colors.white,
@@ -463,7 +498,8 @@ class _OrderScreenState extends State<OrderScreen> {
                           });
                         }
 
-                        debugPrint(DateFormat('dd-MM-yyyy').format(_startDate!));
+                        debugPrint(
+                            DateFormat('dd-MM-yyyy').format(_startDate!));
                         orderController.dateCon.text = DateFormat('dd-MM-yyyy')
                             .format(_startDate!)
                             .toString();
@@ -503,12 +539,17 @@ class _OrderScreenState extends State<OrderScreen> {
                             borderSide: const BorderSide(
                                 color: ConstColour.textFieldBorder),
                           ),
-                          errorStyle: const TextStyle(color: ConstColour.errorHint),
+                          errorStyle:
+                              const TextStyle(color: ConstColour.errorHint),
                           border: InputBorder.none,
                           filled: true,
                           enabled: true,
                           labelText: "Delivery Date",
-                          hintText: _startDate == null ? "Select Date" :DateFormat('dd-MM-yyyy').format(_startDate).toString(),
+                          hintText: _startDate == null
+                              ? "Select Date"
+                              : DateFormat('dd-MM-yyyy')
+                                  .format(_startDate)
+                                  .toString(),
                           hintStyle: const TextStyle(color: Colors.white),
                           floatingLabelStyle:
                               const TextStyle(color: Colors.white),
@@ -658,8 +699,8 @@ class _OrderScreenState extends State<OrderScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
-                        errorStyle: const TextStyle(color: ConstColour.errorHint),
-
+                        errorStyle:
+                            const TextStyle(color: ConstColour.errorHint),
                         border: InputBorder.none,
                         filled: true,
                         labelText: "Description",
@@ -691,7 +732,9 @@ class _OrderScreenState extends State<OrderScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                              color:orderController.imgList.isNotEmpty ?  ConstColour.primaryColor : Colors.white,
+                              color: orderController.imgList.isNotEmpty
+                                  ? ConstColour.primaryColor
+                                  : Colors.white,
                               strokeAlign: BorderSide.strokeAlignInside,
                               style: BorderStyle.solid)),
                       child: Stack(
@@ -759,8 +802,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                         TextOverflow
                                                                             .ellipsis),
                                                                 onTap: () {
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                  Get.back();
                                                                   getImageCamera();
                                                                 },
                                                                 leading:
@@ -802,8 +844,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                         TextOverflow
                                                                             .ellipsis),
                                                                 onTap: () {
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                  Get.back();
+
                                                                   getImageGallery();
                                                                 },
                                                                 leading:
@@ -892,8 +934,118 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ? IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        imageNotes = null;
-                                        orderController.imgList.clear();
+                                        showCupertinoModalPopup(
+                                          filter: const ColorFilter.mode(
+                                              ConstColour.primaryColor,
+                                              BlendMode.clear),
+                                          semanticsDismissible: false,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+
+                                              shadowColor: Colors.white,
+                                              elevation: 8.0,
+                                              // backgroundColor: Colors.white,
+                                              backgroundColor:
+                                                  Colors.orange.shade100,
+                                              // title: const Text(
+                                              //   'Order',
+                                              //   style: TextStyle(
+                                              //     fontSize: 22,
+                                              //     fontFamily: ConstFont
+                                              //         .poppinsMedium,
+                                              //     color: Colors.black,
+                                              //   ),
+                                              //   overflow: TextOverflow
+                                              //       .ellipsis,
+                                              // ),
+                                              content: const Text(
+                                                'Are you sure, want to delete?',
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      ConstFont.poppinsRegular,
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              actions: [
+                                                InkWell(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  onTap: () {
+                                                    Get.back();
+                                                  },
+                                                  splashColor:
+                                                      ConstColour.btnHowerColor,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        color: Colors.red),
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(6.0),
+                                                      child: Text(
+                                                        'Cancel',
+                                                        style: TextStyle(
+                                                          fontFamily: ConstFont
+                                                              .poppinsRegular,
+                                                          fontSize: 12,
+                                                          color: Colors.white,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  onTap: () {
+                                                    imageNotes = null;
+                                                    orderController.imgList
+                                                        .clear();
+                                                    Get.back();
+                                                  },
+                                                  splashColor:
+                                                      ConstColour.btnHowerColor,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        color: Colors.black),
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(6.0),
+                                                      child: Text(
+                                                        '    Ok    ',
+                                                        style: TextStyle(
+                                                          fontFamily: ConstFont
+                                                              .poppinsRegular,
+                                                          fontSize: 12,
+                                                          color: Colors.white,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       });
                                     },
                                     icon: const Icon(
@@ -999,8 +1151,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                               );
                                             },
                                             child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: deviceHeight * 0.014,left:deviceWidth * 0.02 ,right: deviceWidth * 0.02),
+                                              padding: EdgeInsets.only(
+                                                  top: deviceHeight * 0.014,
+                                                  left: deviceWidth * 0.02,
+                                                  right: deviceWidth * 0.02),
                                               child: Container(
                                                 width: deviceWidth * 0.15,
                                                 height: deviceHeight * 0.075,
@@ -1048,13 +1202,153 @@ class _OrderScreenState extends State<OrderScreen> {
                                               child: _imageList[index] != null
                                                   ? IconButton(
                                                       onPressed: () {
-                                                        setState(() {
-                                                          _imageList
-                                                              .removeAt(index);
-                                                          orderController
-                                                              .uploadFileMulti(
-                                                                  _imageList);
-                                                        });
+                                                        showCupertinoModalPopup(
+                                                          filter: const ColorFilter
+                                                              .mode(
+                                                              ConstColour
+                                                                  .primaryColor,
+                                                              BlendMode.clear),
+                                                          semanticsDismissible:
+                                                              false,
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+
+                                                              shadowColor:
+                                                                  Colors.white,
+                                                              elevation: 8.0,
+                                                              // backgroundColor: Colors.white,
+                                                              backgroundColor:
+                                                                  Colors.orange
+                                                                      .shade100,
+                                                              // title: const Text(
+                                                              //   'Order',
+                                                              //   style: TextStyle(
+                                                              //     fontSize: 22,
+                                                              //     fontFamily: ConstFont
+                                                              //         .poppinsMedium,
+                                                              //     color: Colors.black,
+                                                              //   ),
+                                                              //   overflow: TextOverflow
+                                                              //       .ellipsis,
+                                                              // ),
+                                                              content:
+                                                                  const Text(
+                                                                'Are you sure, want to delete?',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      ConstFont
+                                                                          .poppinsRegular,
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                maxLines: 2,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
+                                                              actions: [
+                                                                InkWell(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                  onTap: () {
+                                                                    Get.back();
+                                                                  },
+                                                                  splashColor:
+                                                                      ConstColour
+                                                                          .btnHowerColor,
+                                                                  child:
+                                                                      Container(
+                                                                    decoration: BoxDecoration(
+                                                                        // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                        borderRadius: BorderRadius.circular(5),
+                                                                        color: Colors.red),
+                                                                    child:
+                                                                        const Padding(
+                                                                      padding:
+                                                                          EdgeInsets.all(
+                                                                              6.0),
+                                                                      child:
+                                                                          Text(
+                                                                        'Cancel',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontFamily:
+                                                                              ConstFont.poppinsRegular,
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                InkWell(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      _imageList
+                                                                          .removeAt(
+                                                                              index);
+                                                                      orderController
+                                                                          .uploadFileMulti(
+                                                                              _imageList);
+                                                                    });
+                                                                    Get.back();
+                                                                  },
+                                                                  splashColor:
+                                                                      ConstColour
+                                                                          .btnHowerColor,
+                                                                  child:
+                                                                      Container(
+                                                                    decoration: BoxDecoration(
+                                                                        // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                        borderRadius: BorderRadius.circular(5),
+                                                                        color: Colors.black),
+                                                                    child:
+                                                                        const Padding(
+                                                                      padding:
+                                                                          EdgeInsets.all(
+                                                                              6.0),
+                                                                      child:
+                                                                          Text(
+                                                                        '    Ok    ',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontFamily:
+                                                                              ConstFont.poppinsRegular,
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
                                                       },
                                                       icon: const Icon(
                                                         Icons.cancel_outlined,
@@ -1081,4 +1375,18 @@ class _OrderScreenState extends State<OrderScreen> {
       ),
     );
   }
+
+
+  // Future<void> initializeCamera() async {
+  //   cameras = await availableCameras();
+  //   final camera = cameras.first;
+  //   controller = CameraController(
+  //     camera,
+  //     ResolutionPreset.medium,
+  //   );
+  //   await controller.initialize();
+  // }
+
+
+
 }

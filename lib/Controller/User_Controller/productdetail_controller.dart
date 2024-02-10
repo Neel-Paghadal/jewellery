@@ -26,8 +26,9 @@ class UserProductController extends GetxController{
   var weight;
   var createDate;
   var deliveryDate;
+  var notes;
   var description;
-  RxList<Order> productDetail = <Order>[].obs;
+  RxList<OrderDetail> productDetail = <OrderDetail>[].obs;
 
   void clearData(){
       productDetail.clear();
@@ -48,7 +49,8 @@ class UserProductController extends GetxController{
 
 
     final response = await http.get(
-        Uri.parse("http://208.64.33.118:8558/api/Order/GetOrderDetails?orderId=$id"),
+        // Uri.parse("http://208.64.33.118:8558/api/Order/GetOrderDetails?orderId=$id"),
+        Uri.parse("http://208.64.33.118:8558/api/Order/GetUserOrderDetails?id=$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);
@@ -61,6 +63,7 @@ class UserProductController extends GetxController{
       weight = productDetail[0].weight.toString();
       createDate = productDetail[0].dateCreated.toString();
       deliveryDate = productDetail[0].deliveryDate.toString();
+      notes = productDetail[0].notes.toString();
       description = productDetail[0].description.toString();
 
       // debugPrint("HOME LIST " + userList[0].userName.toString());

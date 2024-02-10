@@ -776,12 +776,8 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           12)),
-                                                      minimumSize: Size(
-                                                          deviceWidth * 0.4,
-                                                          deviceHeight * 0.03),
-                                                      maximumSize: Size(
-                                                          deviceWidth * 0.5,
-                                                          deviceHeight * 0.04),
+                                                      minimumSize: Size(deviceWidth * 0.2, deviceHeight * 0.03),
+                                                      maximumSize: Size(deviceWidth * 0.31, deviceHeight * 0.04),
                                                       elevation: 3.0,
                                                       shadowColor: Colors.white,
                                                       backgroundColor: ConstColour
@@ -950,12 +946,8 @@ class _UserListScreenState extends State<UserListScreen> {
                                                         borderRadius:
                                                             BorderRadius.circular(
                                                                 12)),
-                                                    minimumSize: Size(
-                                                        deviceWidth * 0.4,
-                                                        deviceHeight * 0.03),
-                                                    maximumSize: Size(
-                                                        deviceWidth * 0.5,
-                                                        deviceHeight * 0.04),
+                                                    minimumSize: Size(deviceWidth * 0.2, deviceHeight * 0.03),
+                                                    maximumSize: Size(deviceWidth * 0.31, deviceHeight * 0.04),
                                                     backgroundColor:
                                                         ConstColour.primaryColor,
                                                     elevation: 3.0,

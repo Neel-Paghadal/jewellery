@@ -6,7 +6,6 @@ import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Controller/User_Controller/productdetail_controller.dart';
 import 'package:jewellery_user/Controller/User_Controller/user_home_con.dart';
-import 'package:jewellery_user/Screen/auth_screen/login.dart';
 import '../../ConstFile/constFonts.dart';
 import 'prodcut_detail.dart';
 
@@ -109,6 +108,14 @@ class _UserHomeState extends State<UserHome> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  userHomeCon.getProductHomeCall();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
@@ -127,7 +134,7 @@ class _UserHomeState extends State<UserHome> {
               onPressed: () {
                 _showLogoutDialog(context);
               },
-              icon: Icon(Icons.exit_to_app)),
+              icon: const Icon(Icons.exit_to_app)),
           title: Text('dashboard'.tr,
               style: const TextStyle(
                   color: Colors.white,
@@ -263,7 +270,7 @@ class _UserHomeState extends State<UserHome> {
                         padding: EdgeInsets.only(top: deviceHeight * 0.35),
                         child: Text(
                             "noData".tr,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontFamily: ConstFont.poppinsRegular),
@@ -278,18 +285,14 @@ class _UserHomeState extends State<UserHome> {
                           itemBuilder: (context, index) {
 
 
-
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ListTile(
                                 onTap: () {
-                                  userProductController.orderUserId =
-                                      userHomeCon.userHome[index].orderUserId;
-                                  debugPrint("Order userId : " +
-                                      userProductController.orderUserId);
-                                  Get.to(const ProductDetailPage());
-                                  userProductController.getProductDetailCall(
-                                      userHomeCon.userHome[index].id);
+                                  userProductController.orderUserId = userHomeCon.userHome[index].orderUserId;
+                                  debugPrint("Order userId : " + userProductController.orderUserId);
+                                  Get.to(() => const ProductDetailPage());
+                                  userProductController.getProductDetailCall(userHomeCon.userHome[index].orderUserId);
                                 },
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -307,9 +310,9 @@ class _UserHomeState extends State<UserHome> {
                                         width: deviceWidth * 0.115,
                                         imageUrl: userHomeCon.userHome[index].image.toString(),
                                         fadeInCurve: Curves.easeInOutQuad,
-                                        placeholder: (context, url) => Icon(Icons.image,size: 40
+                                        placeholder: (context, url) => const Icon(Icons.image,size: 40
                                             ,color : ConstColour.loadImageColor),
-                                        errorWidget: (context, url, error) => Icon(Icons.error,size: 40),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error,size: 40),
                                       )
                                     )),
                                 title: Text(

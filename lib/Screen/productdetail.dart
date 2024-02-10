@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Screen/loader.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import '../Common/bottom_button_widget.dart';
 import '../ConstFile/constColors.dart';
@@ -34,7 +35,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   File? imageNotes;
   final _formKey = GlobalKey<FormState>();
 
+
+  Future<void> _checkPermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+  }
+
   Future getImageCamera() async {
+    _checkPermission();
+
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return;
 
@@ -48,6 +59,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Future getImageGallery() async {
+    _checkPermission();
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
 
@@ -117,7 +129,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                     overflow: TextOverflow.ellipsis),
                 onTap: () {
-                  Navigator.pop(context);
+                  Get.back();
                   getImageCamera();
                 },
                 leading: const Icon(
@@ -139,7 +151,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                     overflow: TextOverflow.ellipsis),
                 onTap: () {
-                  Navigator.pop(context);
+                  Get.back();
                   getImageGallery();
                 },
                 leading: const Icon(
@@ -445,15 +457,157 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   .imgList.isNotEmpty
                                               ? IconButton(
                                                   onPressed: () {
-                                                    setState(() {
-                                                      imageNotes = null;
-                                                      productController.imgList
-                                                          .clear();
-                                                      productController
-                                                          .isLoading.value = true;
-                                                      productController
-                                                          .passOldImage();
-                                                    });
+
+                                                    showCupertinoModalPopup(
+                                                      filter: const ColorFilter.mode(
+                                                          ConstColour
+                                                              .primaryColor,
+                                                          BlendMode.clear),
+                                                      semanticsDismissible: false,
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  10)),
+
+                                                          shadowColor:
+                                                          Colors.white,
+                                                          elevation: 8.0,
+                                                          // backgroundColor: Colors.white,
+                                                          backgroundColor: Colors
+                                                              .orange.shade100,
+                                                          // title: const Text(
+                                                          //   'Order',
+                                                          //   style: TextStyle(
+                                                          //     fontSize: 22,
+                                                          //     fontFamily: ConstFont
+                                                          //         .poppinsMedium,
+                                                          //     color: Colors.black,
+                                                          //   ),
+                                                          //   overflow: TextOverflow
+                                                          //       .ellipsis,
+                                                          // ),
+                                                          content: const Text(
+                                                            'Are you sure, want to delete?',
+                                                            style: TextStyle(
+                                                              fontFamily: ConstFont
+                                                                  .poppinsRegular,
+                                                              fontSize: 16,
+                                                              color: Colors.black,
+                                                            ),
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                          ),
+                                                          actions: [
+                                                            InkWell(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  5),
+                                                              onTap: () {
+                                                                Get.back();
+                                                              },
+                                                              splashColor:
+                                                              ConstColour
+                                                                  .btnHowerColor,
+                                                              child: Container(
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        5),
+                                                                    color: Colors
+                                                                        .red),
+                                                                child:
+                                                                const Padding(
+                                                                  padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                      6.0),
+                                                                  child: Text(
+                                                                    'Cancel',
+                                                                    style:
+                                                                    TextStyle(
+                                                                      fontFamily:
+                                                                      ConstFont
+                                                                          .poppinsRegular,
+                                                                      fontSize:
+                                                                      12,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                    overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            InkWell(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  5),
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  imageNotes = null;
+                                                                  productController.imgList.clear();
+                                                                  productController.isLoading.value = true;
+                                                                  productController.passOldImage();
+                                                                });
+                                                                Get.back();
+                                                              },
+                                                              splashColor:
+                                                              ConstColour
+                                                                  .btnHowerColor,
+                                                              child: Container(
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        5),
+                                                                    color: Colors
+                                                                        .black),
+                                                                child:
+                                                                const Padding(
+                                                                  padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                      6.0),
+                                                                  child: Text(
+                                                                    '    Ok    ',
+                                                                    style:
+                                                                    TextStyle(
+                                                                      fontFamily:
+                                                                      ConstFont
+                                                                          .poppinsRegular,
+                                                                      fontSize:
+                                                                      12,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                    overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+
+
+
+
+
                                                   },
                                                   icon: const Icon(
                                                     Icons.cancel_outlined,
@@ -669,14 +823,149 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                   null
                                                               ? IconButton(
                                                                   onPressed: () {
-                                                                    setState(() {
-                                                                      productController
-                                                                          .productDetail[
-                                                                              0]
-                                                                          .orderImages
-                                                                          .removeAt(
-                                                                              index);
-                                                                    });
+                                                                    showCupertinoModalPopup(
+                                                                      filter: const ColorFilter.mode(
+                                                                          ConstColour
+                                                                              .primaryColor,
+                                                                          BlendMode.clear),
+                                                                      semanticsDismissible: false,
+                                                                      context: context,
+                                                                      builder: (BuildContext context) {
+                                                                        return AlertDialog(
+                                                                          shape: RoundedRectangleBorder(
+                                                                              borderRadius:
+                                                                              BorderRadius
+                                                                                  .circular(
+                                                                                  10)),
+
+                                                                          shadowColor:
+                                                                          Colors.white,
+                                                                          elevation: 8.0,
+                                                                          // backgroundColor: Colors.white,
+                                                                          backgroundColor: Colors
+                                                                              .orange.shade100,
+                                                                          // title: const Text(
+                                                                          //   'Order',
+                                                                          //   style: TextStyle(
+                                                                          //     fontSize: 22,
+                                                                          //     fontFamily: ConstFont
+                                                                          //         .poppinsMedium,
+                                                                          //     color: Colors.black,
+                                                                          //   ),
+                                                                          //   overflow: TextOverflow
+                                                                          //       .ellipsis,
+                                                                          // ),
+                                                                          content: const Text(
+                                                                            'Are you sure, want to delete?',
+                                                                            style: TextStyle(
+                                                                              fontFamily: ConstFont
+                                                                                  .poppinsRegular,
+                                                                              fontSize: 16,
+                                                                              color: Colors.black,
+                                                                            ),
+                                                                            maxLines: 2,
+                                                                            overflow: TextOverflow
+                                                                                .ellipsis,
+                                                                          ),
+                                                                          actions: [
+                                                                            InkWell(
+                                                                              borderRadius:
+                                                                              BorderRadius
+                                                                                  .circular(
+                                                                                  5),
+                                                                              onTap: () {
+                                                                                Get.back();
+                                                                              },
+                                                                              splashColor:
+                                                                              ConstColour
+                                                                                  .btnHowerColor,
+                                                                              child: Container(
+                                                                                decoration:
+                                                                                BoxDecoration(
+                                                                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                                    borderRadius:
+                                                                                    BorderRadius.circular(
+                                                                                        5),
+                                                                                    color: Colors
+                                                                                        .red),
+                                                                                child:
+                                                                                const Padding(
+                                                                                  padding:
+                                                                                  EdgeInsets
+                                                                                      .all(
+                                                                                      6.0),
+                                                                                  child: Text(
+                                                                                    'Cancel',
+                                                                                    style:
+                                                                                    TextStyle(
+                                                                                      fontFamily:
+                                                                                      ConstFont
+                                                                                          .poppinsRegular,
+                                                                                      fontSize:
+                                                                                      12,
+                                                                                      color: Colors
+                                                                                          .white,
+                                                                                    ),
+                                                                                    overflow:
+                                                                                    TextOverflow
+                                                                                        .ellipsis,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            InkWell(
+                                                                              borderRadius:
+                                                                              BorderRadius
+                                                                                  .circular(
+                                                                                  5),
+                                                                              onTap: () {
+                                                                                setState(() {
+                                                                                  productController.productDetail[0].orderImages.removeAt(index);
+                                                                                });
+                                                                                Get.back();
+                                                                              },
+                                                                              splashColor:
+                                                                              ConstColour
+                                                                                  .btnHowerColor,
+                                                                              child: Container(
+                                                                                decoration:
+                                                                                BoxDecoration(
+                                                                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                                    borderRadius:
+                                                                                    BorderRadius.circular(
+                                                                                        5),
+                                                                                    color: Colors
+                                                                                        .black),
+                                                                                child:
+                                                                                const Padding(
+                                                                                  padding:
+                                                                                  EdgeInsets
+                                                                                      .all(
+                                                                                      6.0),
+                                                                                  child: Text(
+                                                                                    '    Ok    ',
+                                                                                    style:
+                                                                                    TextStyle(
+                                                                                      fontFamily:
+                                                                                      ConstFont
+                                                                                          .poppinsRegular,
+                                                                                      fontSize:
+                                                                                      12,
+                                                                                      color: Colors
+                                                                                          .white,
+                                                                                    ),
+                                                                                    overflow:
+                                                                                    TextOverflow
+                                                                                        .ellipsis,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      },
+                                                                    );
+
                                                                   },
                                                                   icon:
                                                                       const Icon(

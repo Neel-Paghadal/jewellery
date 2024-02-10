@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Screen/home.dart';
 import '../Models/file_model.dart';
-import '../Models/product_detail_model.dart';
+import '../Models/productDetailAdmin_model.dart';
 
 class ProductController extends GetxController {
   HomeController homeController = Get.put(HomeController());
@@ -32,6 +32,7 @@ class ProductController extends GetxController {
     imgList.clear();
     imgListMulti.clear();
   }
+
 
   RxList<Order> productDetail = <Order>[].obs;
   RxList<FileElement> imgList = <FileElement>[].obs;

@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../Common/snackbar.dart';
 import '../../ConstFile/constFonts.dart';
@@ -35,7 +36,17 @@ class _DocumentScreenState extends State<DocumentScreen> {
     registerController.imgList.clear();
   }
 
+
+  Future<void> _checkPermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+  }
+
   Future getImageCamera() async {
+    _checkPermission();
+
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return;
 
@@ -50,6 +61,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
   }
 
   Future getImageGallery() async {
+    _checkPermission();
+
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
 

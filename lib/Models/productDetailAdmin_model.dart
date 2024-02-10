@@ -11,14 +11,14 @@ ProductDetail productDetailFromJson(String str) => ProductDetail.fromJson(json.d
 String productDetailToJson(ProductDetail data) => json.encode(data.toJson());
 
 class ProductDetail {
-  OrderDetail order;
+  Order order;
 
   ProductDetail({
     required this.order,
   });
 
   factory ProductDetail.fromJson(Map<String, dynamic> json) => ProductDetail(
-    order: OrderDetail.fromJson(json["order"]),
+    order: Order.fromJson(json["order"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -26,7 +26,7 @@ class ProductDetail {
   };
 }
 
-class OrderDetail {
+class Order {
   String id;
   String name;
   String party;
@@ -36,10 +36,9 @@ class OrderDetail {
   String description;
   String image;
   String dateCreated;
-  String notes;
   List<OrderImage> orderImages;
 
-  OrderDetail({
+  Order({
     required this.id,
     required this.name,
     required this.party,
@@ -49,11 +48,10 @@ class OrderDetail {
     required this.description,
     required this.image,
     required this.dateCreated,
-    required this.notes,
     required this.orderImages,
   });
 
-  factory OrderDetail.fromJson(Map<String, dynamic> json) => OrderDetail(
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"],
     name: json["name"],
     party: json["party"],
@@ -63,7 +61,6 @@ class OrderDetail {
     description: json["description"],
     image: json["image"],
     dateCreated: json["dateCreated"],
-    notes: json["notes"],
     orderImages: List<OrderImage>.from(json["orderImages"].map((x) => OrderImage.fromJson(x))),
   );
 
@@ -77,7 +74,6 @@ class OrderDetail {
     "description": description,
     "image": image,
     "dateCreated": dateCreated,
-    "notes" : notes,
     "orderImages": List<dynamic>.from(orderImages.map((x) => x.toJson())),
   };
 }
