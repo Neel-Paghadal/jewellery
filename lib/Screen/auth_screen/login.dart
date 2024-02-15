@@ -91,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     autocorrect: true,
+
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(10)
@@ -141,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontFamily: ConstFont.poppinsRegular,
                           fontSize: 16,
                           overflow: TextOverflow.ellipsis),
+
                     ),
                     style: const TextStyle(
                         color: Colors.white,
@@ -159,6 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
                     controller: loginController.passController,
+                    obscureText: loginController.isHidden.value,
+
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Password is required';
@@ -193,7 +197,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          loginController.isHidden.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        color: ConstColour.primaryColor,
+                        onPressed: () {
+                          setState(() {
+                            loginController.isHidden.value =! loginController.isHidden.value;
+                          });
+                        },
+                      ),
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Password",

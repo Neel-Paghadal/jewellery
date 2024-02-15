@@ -8,6 +8,8 @@ import 'package:jewellery_user/Screen/splashScreen.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 
+import 'Screen/productdetail.dart';
+
 void main() {
 
   WidgetsFlutterBinding.ensureInitialized();

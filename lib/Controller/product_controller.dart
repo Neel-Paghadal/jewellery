@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constApi.dart';
@@ -87,6 +88,11 @@ class ProductController extends GetxController {
       Utils().toastMessage(response.body);
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
+    }
+    if(response.statusCode == 401 || response.statusCode == 403){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
     }
   }
 
@@ -296,6 +302,11 @@ class ProductController extends GetxController {
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
         Utils().errorsnackBar(response.reasonPhrase.toString(), '');
+      }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
       }
     } catch (e) {
       debugPrint('Error: $e');

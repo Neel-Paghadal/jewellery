@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     homeController.loadProducts();
-   _scrollController.addListener(_onScroll);
+    _scrollController.addListener(_onScroll);
 
     homeController.checkUser();
   }
@@ -89,9 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
   //
   void _onScroll() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       // User has reached the end of the list, load more products
-     homeController.loadProducts();
+      homeController.loadProducts();
     }
   }
 
@@ -194,8 +195,23 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           backgroundColor: ConstColour.black,
           centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.white),
           actions: [
-            TextButton(
+            /*IconButton(onPressed: () {
+              Get.to(() => const ReportSearchScreen());
+            }, icon: Image.asset("asset/icons/statistics.png"), color: Colors.white,)*/
+
+            InkWell(
+                onTap: () {
+                  Get.to(() => const ReportSearchScreen());
+                },
+                borderRadius: BorderRadius.circular(34),
+                child: Image.asset(
+                  "asset/icons/statistics.png",
+                  scale: 3,
+                  color: Colors.white,
+                )),
+            /*TextButton(
                 onPressed: () {
                   Get.to(() => const ReportSearchScreen());
                 },
@@ -205,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontFamily: ConstFont.poppinsBold,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        overflow: TextOverflow.ellipsis)))
+                        overflow: TextOverflow.ellipsis)))*/
           ],
           title: const Text("Dashboard",
               style: TextStyle(
@@ -442,9 +458,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     controller: _scrollController,
-
-                    itemCount:
-                        homeController.homeList.length + (homeController.loadingPage.value ? 1 : 0),
+                    itemCount: homeController.homeList.length +
+                        (homeController.loadingPage.value ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == homeController.homeList.length) {
                         // Loading indicator
@@ -499,9 +514,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               BorderRadius.circular(8),
                                           child: CachedNetworkImage(
                                             width: double.infinity,
-                                            fit: BoxFit.contain,
-                                            imageUrl: homeController
-                                                .homeList[index].image
+                                            fit: BoxFit.cover,
+                                            imageUrl: homeController.homeList[index].image
                                                 .toString(),
                                             fadeInCurve: Curves.easeInOutQuad,
                                             placeholder: (context, url) =>
@@ -527,15 +541,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding:  EdgeInsets.only(right: deviceWidth * 0.08),
+                                              padding: EdgeInsets.only(
+                                                  right: deviceWidth * 0.08),
                                               child: Text(
                                                 homeController
                                                     .homeList[index].name,
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
-                                                    fontFamily:
-                                                        ConstFont.poppinsRegular),
+                                                    fontFamily: ConstFont
+                                                        .poppinsRegular),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                               ),
@@ -552,9 +567,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: EdgeInsets.only(top: deviceHeight * 0.056),
+                                          padding: EdgeInsets.only(
+                                              top: deviceHeight * 0.056),
                                           child: Text(
-                                            "Create Date : ${homeController.homeList[index].dateCreated}",
+                                            "${homeController.homeList[index].dateCreated}",
                                             style: const TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: 14,
@@ -617,11 +633,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 IconButton(
                                     tooltip: "Assign Order",
                                     onPressed: () {
-
-                                      userListController.orderId = homeController.homeList[index].id;
+                                      userListController.orderId =
+                                          homeController.homeList[index].id;
                                       userListController.userList.clear();
                                       Get.to(() => const UserListScreen());
-
                                     },
                                     icon: const Icon(
                                       // Icons.assignment_ind,

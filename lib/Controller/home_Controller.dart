@@ -114,7 +114,7 @@ class HomeController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
-    if(response.statusCode == 401){
+    if(response.statusCode == 401 || response.statusCode == 403){
       Utils().toastMessage("Please Relogin Account");
       ConstPreferences().clearPreferences();
       SystemNavigator.pop();

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
@@ -13,6 +14,7 @@ import 'home_Controller.dart';
 class UserListController extends GetxController {
   HomeController homeController = Get.put(HomeController());
   TextEditingController reasonController = TextEditingController();
+  TextEditingController notesController = TextEditingController();
 
   String? orderId;
   String? userId;
@@ -109,6 +111,11 @@ class UserListController extends GetxController {
         debugPrint('Failed to make API call. Status code: ${response.statusCode}');
         Utils().toastMessage(response.body);
       }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
+      }
 
     } catch (error) {
       debugPrint('Error making API call: $error');
@@ -156,6 +163,11 @@ class UserListController extends GetxController {
         debugPrint('Failed to make API call. Status code: ${response.statusCode}');
         Utils().toastMessage(response.body);
       }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
+      }
 
     } catch (error) {
       debugPrint('Error making API call: $error');
@@ -201,6 +213,11 @@ class UserListController extends GetxController {
         debugPrint('Response: ${response.body}');
         Utils().toastMessage(response.body);
       }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
+      }
     } catch (error) {
       debugPrint('Error making API call: $error');
     }
@@ -244,6 +261,11 @@ class UserListController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
+    if(response.statusCode == 401 || response.statusCode == 403){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
+    }
     isCall.value = false;
     getUserDropCall(orderId.toString());
   }
@@ -278,6 +300,11 @@ class UserListController extends GetxController {
       // Error in API call
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
+    }
+    if(response.statusCode == 401 || response.statusCode == 403){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
     }
   }
 

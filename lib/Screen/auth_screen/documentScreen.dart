@@ -1,16 +1,12 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../Common/snackbar.dart';
 import '../../ConstFile/constFonts.dart';
 import '../../Controller/register_controller.dart';
@@ -36,7 +32,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
     registerController.imgList.clear();
   }
 
-
   Future<void> _checkPermission() async {
     var status = await Permission.storage.status;
     if (!status.isGranted) {
@@ -49,7 +44,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return;
-
 
     final imageTemporary = File(image.path);
     setState(() {
@@ -69,7 +63,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
     final imageTemporary = File(image.path);
     setState(() {
       imageNotes = imageTemporary;
-    registerController.isLoading.value = true;
+      registerController.isLoading.value = true;
       registerController.uploadFile(imageNotes!);
 
       debugPrint(imageNotes.toString());
@@ -86,7 +80,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
     }
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
@@ -96,21 +90,22 @@ class _DocumentScreenState extends State<DocumentScreen> {
       appBar: AppBar(
         backgroundColor: ConstColour.bgColor,
         centerTitle: true,
-        title: Text("Bank Details",
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: ConstFont.poppinsRegular,
-                fontSize: 22,
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis),),
-          leading: IconButton(
-              tooltip: "Back",
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(Icons.arrow_back_ios),
-              color: ConstColour.primaryColor),
-
+        title: const Text(
+          "Bank Details",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: ConstFont.poppinsRegular,
+              fontSize: 22,
+              fontWeight: FontWeight.w500,
+              overflow: TextOverflow.ellipsis),
+        ),
+        leading: IconButton(
+            tooltip: "Back",
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+            color: ConstColour.primaryColor),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -119,7 +114,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
           key: _formKey,
           child: Column(
             children: [
-
               Padding(
                 padding: EdgeInsets.only(
                     left: deviceWidth * 0.03, right: deviceWidth * 0.03),
@@ -154,7 +148,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: ConstColour.textFieldBorder),
+                      borderSide:
+                          BorderSide(color: ConstColour.textFieldBorder),
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                     errorBorder: OutlineInputBorder(
@@ -162,7 +157,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
-                    errorStyle: TextStyle(color: ConstColour.errorHint),
+                    errorStyle: const TextStyle(color: ConstColour.errorHint),
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Bank",
@@ -188,7 +183,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   keyboardType: TextInputType.number,
                   autocorrect: true,
                   controller: registerController.accNo,
-                  inputFormatters: [LengthLimitingTextInputFormatter(16 ),],
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(16),
+                  ],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter Account Number";
@@ -214,7 +211,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: ConstColour.textFieldBorder),
+                      borderSide:
+                          BorderSide(color: ConstColour.textFieldBorder),
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                     errorBorder: OutlineInputBorder(
@@ -222,8 +220,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
-                    errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                    errorStyle: const TextStyle(color: ConstColour.errorHint),
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Account Number",
@@ -246,21 +243,22 @@ class _DocumentScreenState extends State<DocumentScreen> {
                 child: TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   textAlign: TextAlign.start,
-                   textCapitalization: TextCapitalization.characters,
-                   inputFormatters: [LengthLimitingTextInputFormatter(11),],
+                  textCapitalization: TextCapitalization.characters,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(11),
+                  ],
                   keyboardType: TextInputType.text,
                   autocorrect: true,
                   controller: registerController.ifsc,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter IFSC code";
-                    } else if(ifscVal.hasMatch(value)) {
+                    } else if (ifscVal.hasMatch(value)) {
                       return "Enter Valid IFSC Code";
-                    }else{
+                    } else {
                       return null;
                     }
                   },
-
                   decoration: InputDecoration(
                     labelStyle: const TextStyle(color: Colors.grey),
                     enabledBorder: OutlineInputBorder(
@@ -279,7 +277,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: ConstColour.textFieldBorder),
+                      borderSide:
+                          BorderSide(color: ConstColour.textFieldBorder),
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                     errorBorder: OutlineInputBorder(
@@ -287,8 +286,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
-                    errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                    errorStyle: const TextStyle(color: ConstColour.errorHint),
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter IFSC",
@@ -339,7 +337,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: ConstColour.textFieldBorder),
+                      borderSide:
+                          BorderSide(color: ConstColour.textFieldBorder),
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                     errorBorder: OutlineInputBorder(
@@ -347,8 +346,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
-                    errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                    errorStyle: const TextStyle(color: ConstColour.errorHint),
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Branch Name",
@@ -399,7 +397,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: ConstColour.textFieldBorder),
+                      borderSide:
+                          BorderSide(color: ConstColour.textFieldBorder),
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                     errorBorder: OutlineInputBorder(
@@ -407,8 +406,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       borderSide:
                           const BorderSide(color: ConstColour.textFieldBorder),
                     ),
-                    errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                    errorStyle: const TextStyle(color: ConstColour.errorHint),
                     border: InputBorder.none,
                     filled: true,
                     hintText: "Enter Account Holder Name",
@@ -424,15 +422,15 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       fontFamily: ConstFont.poppinsRegular),
                 ),
               ),
-
-
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: ConstColour.primaryColor,strokeAlign: BorderSide.strokeAlignInside,style: BorderStyle.solid)
-                  ),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: ConstColour.primaryColor,
+                          strokeAlign: BorderSide.strokeAlignInside,
+                          style: BorderStyle.solid)),
                   child: Stack(
                     children: [
                       SizedBox(
@@ -441,166 +439,275 @@ class _DocumentScreenState extends State<DocumentScreen> {
                         child: Center(
                           child: Stack(
                             children: [
-
                               Obx(
-                                () =>  Container(
-                                  child : registerController.isLoading.value == true ? CircularProgressIndicator(
-                                    color: ConstColour.primaryColor,
-                                  ) :
-                                   Container(
-                                    child: imageNotes != null
-                                        ?  Image.file(
-                                        imageNotes!,
-                                        // width: deviceWidth * 0.275,
-                                        // height: deviceHeight * 0.13,
-                                      )
-                                        : InkWell(
-                                      onTap: () {
-                                        showDialog<void>(
-                                          context: context,
-                                          builder: (BuildContext dialogContext) {
-                                            return AlertDialog(
-                                              content: SizedBox(
-                                                // height: deviceHeight * 0.17,
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Card(
-                                                      child: ListTile(
-                                                        title: const Text("Camera"),
-                                                        onTap: () {
-                                                          Navigator.pop(context);
-                                                          getImageCamera();
-                                                        },
-                                                        leading: const Icon(
-                                                          Icons.camera_alt,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Card(
-                                                      child: ListTile(
-                                                        title: const Text("Gallery"),
-                                                        onTap: () {
-                                                          Navigator.pop(context);
-                                                          getImageGallery();
-                                                        },
-                                                        leading: const Icon(
-                                                          Icons.photo_library_rounded,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: (userProfileImage == null || userProfileImage!.isEmpty)
-                                          ?
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                         mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Image.asset('asset/icons/image.png',width: deviceWidth * 0.2),
-                                          Padding(
-                                            padding:  EdgeInsets.all(8.0),
-                                            child: Text("Upload Aadhaar Card",style: TextStyle(color: Colors.grey,fontFamily: ConstFont.poppinsMedium,fontSize: 14,),overflow: TextOverflow.ellipsis,),
-                                          )
-                                        ],
-                                      )
+                                () => Container(
+                                  child:
+                                      registerController.isLoading.value == true
+                                          ? const CircularProgressIndicator(
+                                              color: ConstColour.primaryColor,
+                                            )
+                                          : Container(
+                                              child: imageNotes != null
+                                                  ? Image.file(
+                                                      imageNotes!,
+                                                      // width: deviceWidth * 0.275,
+                                                      // height: deviceHeight * 0.13,
+                                                    )
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        showDialog<void>(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              dialogContext) {
+                                                            return AlertDialog(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              11)),
+                                                              title: const Center(
+                                                                  child: Text(
+                                                                      "Choose Image Source",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontFamily: ConstFont
+                                                                              .poppinsBold),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis)),
+                                                              backgroundColor:
+                                                                  ConstColour
+                                                                      .primaryColor,
+                                                              titlePadding:
+                                                                  EdgeInsets.only(
+                                                                      top: deviceHeight *
+                                                                          0.02),
+                                                              actionsPadding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .all(8),
+                                                              content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  const Divider(
+                                                                      color: Colors
+                                                                          .black),
+                                                                  ListTile(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                11),
+                                                                        side: const BorderSide(
+                                                                            color:
+                                                                                ConstColour.primaryColor)),
+                                                                    tileColor:
+                                                                        ConstColour
+                                                                            .bgColor,
+                                                                    title: const Text(
+                                                                        "Camera",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontFamily:
+                                                                              ConstFont.poppinsMedium,
+                                                                          fontSize:
+                                                                              14,
+                                                                        ),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis),
+                                                                    onTap: () {
+                                                                      Get.back();
+                                                                      getImageCamera();
+                                                                    },
+                                                                    leading:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .camera_alt,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height: deviceHeight *
+                                                                          0.01),
+                                                                  ListTile(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                11),
+                                                                        side: const BorderSide(
+                                                                            color:
+                                                                                ConstColour.primaryColor)),
+                                                                    tileColor:
+                                                                        ConstColour
+                                                                            .bgColor,
+                                                                    title: const Text(
+                                                                        "Gallery",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontFamily:
+                                                                              ConstFont.poppinsMedium,
+                                                                          fontSize:
+                                                                              14,
+                                                                        ),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis),
+                                                                    onTap: () {
+                                                                      Get.back();
 
-                                          : CircleAvatar(
-                                        radius: 55,
-                                        backgroundImage: NetworkImage(userProfileImage!),
-                                      ),
-                                    ),
-                                  ),
+                                                                      getImageGallery();
+                                                                    },
+                                                                    leading:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .photo_library_rounded,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      child: (userProfileImage ==
+                                                                  null ||
+                                                              userProfileImage!
+                                                                  .isEmpty)
+                                                          ? Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Image.asset(
+                                                                    'asset/icons/image.png',
+                                                                    width:
+                                                                        deviceWidth *
+                                                                            0.2),
+                                                                const Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  child: Text(
+                                                                    "Upload Aadhaar Card",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      fontFamily:
+                                                                          ConstFont
+                                                                              .poppinsMedium,
+                                                                      fontSize:
+                                                                          14,
+                                                                    ),
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            )
+                                                          : CircleAvatar(
+                                                              radius: 55,
+                                                              backgroundImage:
+                                                                  NetworkImage(
+                                                                      userProfileImage!),
+                                                            ),
+                                                    ),
+                                            ),
 
-                                // Positioned(
-                                //     left: deviceWidth * 0.16,
-                                //     // bottom: deviceHeight * 0.08,
-                                //     top: deviceHeight * 0.08,
-                                //     child: imageNotes != null
-                                //         ? IconButton(
-                                //         onPressed: () {
-                                //           setState(() {
-                                //             imageNotes = null;
-                                //           });
-                                //         },
-                                //         icon: const Icon(
-                                //           CupertinoIcons.minus_circle_fill,
-                                //           color: Colors.red,
-                                //           size: 24,
-                                //         ))
-                                //         : const SizedBox())
+                                  // Positioned(
+                                  //     left: deviceWidth * 0.16,
+                                  //     // bottom: deviceHeight * 0.08,
+                                  //     top: deviceHeight * 0.08,
+                                  //     child: imageNotes != null
+                                  //         ? IconButton(
+                                  //         onPressed: () {
+                                  //           setState(() {
+                                  //             imageNotes = null;
+                                  //           });
+                                  //         },
+                                  //         icon: const Icon(
+                                  //           CupertinoIcons.minus_circle_fill,
+                                  //           color: Colors.red,
+                                  //           size: 24,
+                                  //         ))
+                                  //         : const SizedBox())
                                 ),
                               )
                             ],
                           ),
                         ),
                       ),
-                      Container(child: imageNotes != null
-                          ? IconButton(
-                          onPressed: () {
-                            setState(() {
-                              imageNotes = null;
-                              registerController.imgList.clear();
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.cancel_outlined,
-                            color: Colors.red,
-                            size: 24,
-                          ))
-                          : const SizedBox(),)
+                      Container(
+                        child: imageNotes != null
+                            ? IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    imageNotes = null;
+                                    registerController.imgList.clear();
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.cancel_outlined,
+                                  color: Colors.red,
+                                  size: 24,
+                                ))
+                            : const SizedBox(),
+                      )
                     ],
                   ),
                 ),
               ),
-
-               Obx(
-                 () =>  Padding(
-                      padding: EdgeInsets.only(top: deviceHeight * 0.05),
-                      child:  registerController.isLoading.value == true ? SizedBox() :  NextButton(
-                        btnName: "Register",
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            if (registerController.imgList.isEmpty) {
+              Obx(
+                () => Padding(
+                  padding: EdgeInsets.only(top: deviceHeight * 0.05),
+                  child: registerController.isLoading.value == true
+                      ? const SizedBox()
+                      : NextButton(
+                          btnName: "Register",
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (registerController.imgList.isEmpty) {
                                 Utils().toastMessage("Please enter the image");
-                            } else {
-
-                              homeController.loading.value = true;
-                              registerController.userRegister(
-                                  registerController.firstNames,
-                                  registerController.lastNames,
-                                  registerController.pass,
-                                  registerController.phone,
-                                  registerController.addr,
-                                  registerController.ref,
-                                  registerController.bankName.text,
-                                  registerController.accNo.text,
-                                  registerController.ifsc.text,
-                                  registerController.branchName.text,
-                                  registerController.accHolName.text
-                              );
-
+                              } else {
+                                homeController.loading.value = true;
+                                registerController.userRegister(
+                                    registerController.firstNames,
+                                    registerController.lastNames,
+                                    registerController.pass,
+                                    registerController.phone,
+                                    registerController.addr,
+                                    registerController.ref,
+                                    registerController.bankName.text,
+                                    registerController.accNo.text,
+                                    registerController.ifsc.text,
+                                    registerController.branchName.text,
+                                    registerController.accHolName.text);
+                              }
                             }
-
-
-
-
-                          }
-                        },
-                      ),
-                    ),
-               ),
-
-
+                          },
+                        ),
+                ),
+              ),
             ],
           ),
         ),

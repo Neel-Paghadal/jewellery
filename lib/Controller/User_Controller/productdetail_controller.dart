@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -76,6 +77,11 @@ class UserProductController extends GetxController{
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
+    if(response.statusCode == 401 || response.statusCode == 403){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
+    }
   }
 
 
@@ -115,6 +121,11 @@ class UserProductController extends GetxController{
             'Failed to make API call. Status code: ${response.statusCode}');
         debugPrint('Response: ${response.body}');
         Utils().toastMessage(response.body);
+      }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
       }
     } catch (error) {
       debugPrint('Error making API call: $error');
@@ -159,6 +170,11 @@ class UserProductController extends GetxController{
             'Failed to make API call. Status code: ${response.statusCode}');
         Utils().toastMessage(response.body);
         homeController.loadingSec.value = false;
+      }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
       }
     } catch (error) {
       homeController.loadingSec.value = false;

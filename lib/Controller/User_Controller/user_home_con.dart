@@ -44,7 +44,7 @@ class UserHomeCon extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
-    if(response.statusCode == 401){
+    if(response.statusCode == 401 || response.statusCode == 403){
       Utils().toastMessage("Please Relogin Account");
       ConstPreferences().clearPreferences();
       SystemNavigator.pop();
@@ -67,11 +67,13 @@ class UserHomeCon extends GetxController {
 
     if (response.statusCode == 200) {
       debugPrint(response.body);
-      final responseData = userHomeFromJson(response.body);
-      debugPrint("HOME LIST " + responseData.toString());
-      userHome.clear();
-      userHome.add(responseData.order);
-      debugPrint('Response: ${response.body}');
+      var responseData;
+      responseData = userHomeFromJson(response.body);
+        debugPrint("HOME LIST " + responseData.toString());
+        userHome.clear();
+        userHome.add(responseData.order);
+        debugPrint('Response: ${response.body}');
+
       // Process the data as needed
     } else {
       // Error in API call.
@@ -81,7 +83,7 @@ class UserHomeCon extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
-    if(response.statusCode == 401){
+    if(response.statusCode == 401 || response.statusCode == 403){
       Utils().toastMessage("Please Relogin Account");
       ConstPreferences().clearPreferences();
       SystemNavigator.pop();

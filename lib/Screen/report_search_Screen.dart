@@ -22,21 +22,31 @@ class ReportSearchScreen extends StatefulWidget {
 
 class _ReportSearchScreenState extends State<ReportSearchScreen> {
   ReportSearchController reportSearchController =
-      Get.put(ReportSearchController());
+  Get.put(ReportSearchController());
   Color reportbuttonColor = ConstColour.offerImageColor;
   ScrollController _scrollController = ScrollController();
   HomeController homeController = Get.put(HomeController());
   ReportScreenController reportScreenController = Get.put(ReportScreenController());
+  // DateTime _startDate = DateTime.now();
+  // DateTime _endDate = DateTime.now();
 
-  DateTime _startDate = DateTime.now();
-  DateTime _endDate = DateTime.now();
+  DateTime _startDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
+  DateTime _endDate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
 
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
 
-  var startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
-  DateTime now = DateTime.now();
-  var enddate = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch.obs;
+  // var startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
+  // var enddate = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch.obs;
+
+  var startdate = DateTime(DateTime.now().year, DateTime.now().month, 1).millisecondsSinceEpoch.obs;
+  var enddate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0).millisecondsSinceEpoch.obs;
+
+
+
+
+
+
 
   var dropdownvalue;
 
@@ -61,7 +71,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
             builder: (context, setState) =>
                 Dialog(
                     child: Obx(
-                      () =>  Column(
+                          () =>  Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Row(
@@ -104,7 +114,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                 hint: Padding(
                                   padding:  EdgeInsets.only(left: deviceWidth * 0.05),
                                   child: const Text(
-                                    'Select Partyname',
+                                    'Select Party',
                                     style: TextStyle(
                                         fontFamily: ConstFont.poppinsRegular,
                                         fontSize: 14,
@@ -180,6 +190,8 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                           onPressed: () async {
                                             final DateTime? pickedDate = await showDatePicker(
                                               context: Get.context!,
+                                              initialEntryMode: DatePickerEntryMode.calendarOnly, // <- this
+
                                               initialDate: _startDate,
                                               firstDate: DateTime(2000),
                                               lastDate: DateTime(2050),
@@ -216,8 +228,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                               });
                                             }
                                             debugPrint(
-                                                DateFormat('yyyy-MM-dd').format(
-                                                    _startDate));
+                                                DateFormat('yyyy-MM-dd').format(_startDate));
                                             debugPrint("millisecond$startDate");
                                           },
                                           icon: const Icon(
@@ -242,6 +253,8 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                           onPressed: () async {
                                             final DateTime? pickedDate = await showDatePicker(
                                               context: Get.context!,
+                                              initialEntryMode: DatePickerEntryMode.calendarOnly, // <- this
+
                                               initialDate: _endDate,
                                               firstDate: DateTime(2000),
                                               lastDate: DateTime(2050),
@@ -313,7 +326,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                   ),
                                   onPressed: () {
                                     if(reportSearchController.partyName.isNull){
-                                      Utils().toastMessage("Select Party Name");
+                                      Utils().toastMessage("Select Party");
 
                                     }else {
                                       reportSearchController.orderReportList.clear();
@@ -327,7 +340,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                       );
                                       Get.back();
                                     }
-                                    },
+                                  },
                                   child: const Text(
                                     "Apply",
                                     style: TextStyle(
@@ -418,8 +431,8 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
     debugPrint("Page Order index$_pageIndex");
     try {
       final RxList<OrderReport> products =
-          await reportSearchController.getReportCall(
-            "",null,null,
+      await reportSearchController.getReportCall(
+        "",null,null,
         _pageIndex,
         _pageSize,
       );
@@ -469,25 +482,25 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
             color: ConstColour.primaryColor),
         actions: [
           Obx(
-          () =>
-            IconButton(
-            onPressed: () {
+                  () =>
+                  IconButton(
+                    onPressed: () {
 
-                    reportSearchController.userListDrop.clear();
-                reportSearchController.getPartyCall();
-                _showDialog(context);
+                      reportSearchController.userListDrop.clear();
+                      reportSearchController.getPartyCall();
+                      _showDialog(context);
 
-              },
-                icon:   Icon(
-                    reportSearchController.isFilterApplyed.value == true ?
-                    Icons.filter_alt_off_rounded
-                        : Icons.filter_alt_rounded,
+                    },
+                    icon:   Icon(
+                        reportSearchController.isFilterApplyed.value == true ?
+                        Icons.filter_alt_off_rounded
+                            : Icons.filter_alt_rounded,
 
 
-                color: ConstColour.primaryColor,
-                size: 25),
+                        color: ConstColour.primaryColor,
+                        size: 25),
 
-                )
+                  )
           ),
         ],
       ),
@@ -500,179 +513,179 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
         backgroundColor: ConstColour.primaryColor,
         springAnimationDurationInMilliseconds: 1,
         child: Obx(
-          () => Container(
+              () => Container(
             child: reportSearchController.orderReportList.isEmpty
                 ? Container(
-                    child: reportSearchController.isLoaderShow.value == true
-                        ? Loaders(
-                            items: 12,
-                            direction: LoaderDirection.ltr,
-                            baseColor: Colors.grey,
-                            highLightColor: Colors.white,
-                            builder: Padding(
-                              padding:
-                                  EdgeInsets.only(right: deviceWidth * 0.01),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListTile(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        side: const BorderSide(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      leading: const Icon(Icons.image,
-                                          color: Colors.grey, size: 50),
-                                      title: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            width: deviceWidth * 0.4,
-                                            height: deviceHeight * 0.01,
-                                            color: Colors.grey,
-                                          ),
-                                          Container(
-                                            width: deviceWidth * 0.2,
-                                            height: deviceHeight * 0.01,
-                                            color: Colors.grey,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        : const Center(
-                            child: Text(
-                              "No User Found",
-                              style: TextStyle(
-                                  fontFamily: ConstFont.poppinsMedium,
-                                  color: Colors.white,
-                                  fontSize: 16),
-                            ),
-                          ),
-                  )
-                : ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: reportSearchController.orderReportList.length +
-                        (_loading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      // if (reportSearchController
-                      //         .orderReportList[index].status ==
-                      //     "Completed") {
-                      //   reportbuttonColor = ConstColour.greenColor;
-                      // } else if (reportSearchController
-                      //         .orderReportList[index].status ==
-                      //     "Cancelled") {
-                      //   reportbuttonColor = ConstColour.quantityRemove;
-                      // } else if (reportSearchController
-                      //         .orderReportList[index].status ==
-                      //     "Pending") {
-                      //   reportbuttonColor = Colors.yellow;
-                      // }
-
-                      if (index ==
-                          reportSearchController.orderReportList.length) {
-                        // Loading indicator
-                        return _loading
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  widthFactor: deviceWidth * 0.1,
-                                  child: const CircularProgressIndicator(
-                                      color: ConstColour.primaryColor),
-                                ),
-                              )
-                            : Container();
-                      }
-                      return Padding(
+              child: reportSearchController.isLoaderShow.value == true
+                  ? Loaders(
+                items: 12,
+                direction: LoaderDirection.ltr,
+                baseColor: Colors.grey,
+                highLightColor: Colors.white,
+                builder: Padding(
+                  padding:
+                  EdgeInsets.only(right: deviceWidth * 0.01),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            border: Border.all(color: ConstColour.primaryColor),
-                            borderRadius: BorderRadius.circular(11),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: const BorderSide(
+                              color: Colors.grey,
+                            ),
                           ),
-                          child: ListTile(
-                            onTap: () {
-                              reportScreenController.reportDetail.clear();
-                              reportScreenController.getReportDetailCall(reportSearchController.orderReportList[index].id);
-                              Get.to(() => const ReportScreen());
-                            },
-                            leading: Container(
-                                height: double.infinity,
-                                width: deviceWidth * 0.115,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: CachedNetworkImage(
-                                    imageUrl: reportSearchController
-                                        .orderReportList[index].image,
-                                    fadeInCurve: Curves.easeInOutQuad, fit: BoxFit.cover,
-
-                                    placeholder: (context, url) => const Icon(
-                                        Icons.image,
-                                        size: 30,
-                                        color: ConstColour.loadImageColor),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error, size: 30),
-                                  ),
-                                )),
-                            title: Text(
-                              "# ${reportSearchController.orderReportList[index].orderId}",
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily: ConstFont.poppinsRegular),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              reportSearchController
-                                  .orderReportList[index].dateCreated,
-                              style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 13,
-                                  fontFamily: ConstFont.poppinsRegular),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: Text(
-                              reportSearchController
-                                  .orderReportList[index].status,
-                              style: TextStyle(
-                                  color: (reportSearchController
-                                              .orderReportList[index].status ==
-                                          "Completed")
-                                      ? ConstColour.greenColor
-                                      : (reportSearchController
-                                                  .orderReportList[index]
-                                                  .status ==
-                                              "Cancelled")
-                                          ? ConstColour.quantityRemove
-                                          : (reportSearchController
-                                                      .orderReportList[index]
-                                                      .status ==
-                                                  "Pending")
-                                              ? Colors.yellow
-                                              : null,
-                                  fontFamily: ConstFont.poppinsBold),
-                            ),
+                          leading: const Icon(Icons.image,
+                              color: Colors.grey, size: 50),
+                          title: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: deviceWidth * 0.4,
+                                height: deviceHeight * 0.01,
+                                color: Colors.grey,
+                              ),
+                              Container(
+                                width: deviceWidth * 0.2,
+                                height: deviceHeight * 0.01,
+                                color: Colors.grey,
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    },
+                      )
+                    ],
                   ),
+                ),
+              )
+                  : const Center(
+                child: Text(
+                  "No User Found",
+                  style: TextStyle(
+                      fontFamily: ConstFont.poppinsMedium,
+                      color: Colors.white,
+                      fontSize: 16),
+                ),
+              ),
+            )
+                : ListView.builder(
+              controller: _scrollController,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: reportSearchController.orderReportList.length +
+                  (_loading ? 1 : 0),
+              itemBuilder: (context, index) {
+                // if (reportSearchController
+                //         .orderReportList[index].status ==
+                //     "Completed") {
+                //   reportbuttonColor = ConstColour.greenColor;
+                // } else if (reportSearchController
+                //         .orderReportList[index].status ==
+                //     "Cancelled") {
+                //   reportbuttonColor = ConstColour.quantityRemove;
+                // } else if (reportSearchController
+                //         .orderReportList[index].status ==
+                //     "Pending") {
+                //   reportbuttonColor = Colors.yellow;
+                // }
+
+                if (index ==
+                    reportSearchController.orderReportList.length) {
+                  // Loading indicator
+                  return _loading
+                      ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      widthFactor: deviceWidth * 0.1,
+                      child: const CircularProgressIndicator(
+                          color: ConstColour.primaryColor),
+                    ),
+                  )
+                      : Container();
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(color: ConstColour.primaryColor),
+                      borderRadius: BorderRadius.circular(11),
+                    ),
+                    child: ListTile(
+                      onTap: () {
+                        reportScreenController.reportDetail.clear();
+                        reportScreenController.getReportDetailCall(reportSearchController.orderReportList[index].id);
+                        Get.to(() => const ReportScreen());
+                      },
+                      leading: Container(
+                          height: double.infinity,
+                          width: deviceWidth * 0.115,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: CachedNetworkImage(
+                              imageUrl: reportSearchController
+                                  .orderReportList[index].image,
+                              fadeInCurve: Curves.easeInOutQuad, fit: BoxFit.cover,
+
+                              placeholder: (context, url) => const Icon(
+                                  Icons.image,
+                                  size: 30,
+                                  color: ConstColour.loadImageColor),
+                              errorWidget: (context, url, error) =>
+                              const Icon(Icons.error, size: 30),
+                            ),
+                          )),
+                      title: Text(
+                        "# ${reportSearchController.orderReportList[index].orderId}",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: ConstFont.poppinsRegular),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        reportSearchController
+                            .orderReportList[index].dateCreated,
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                            fontFamily: ConstFont.poppinsRegular),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: Text(
+                        reportSearchController
+                            .orderReportList[index].status,
+                        style: TextStyle(
+                            color: (reportSearchController
+                                .orderReportList[index].status ==
+                                "Completed")
+                                ? ConstColour.greenColor
+                                : (reportSearchController
+                                .orderReportList[index]
+                                .status ==
+                                "Cancelled")
+                                ? ConstColour.quantityRemove
+                                : (reportSearchController
+                                .orderReportList[index]
+                                .status ==
+                                "Pending")
+                                ? Colors.yellow
+                                : null,
+                            fontFamily: ConstFont.poppinsBold),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

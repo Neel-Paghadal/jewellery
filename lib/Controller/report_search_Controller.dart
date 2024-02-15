@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:jewellery_user/ConstFile/constApi.dart';
@@ -56,6 +57,11 @@ class ReportSearchController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
+    if(response.statusCode == 401 || response.statusCode == 403){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
+    }
     isDropLoader.value = false;
   }
 
@@ -98,6 +104,11 @@ class ReportSearchController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
+    if(response.statusCode == 401 || response.statusCode == 403){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
+    }
     isLoaderShow.value = false;
   }
 
@@ -139,6 +150,11 @@ class ReportSearchController extends GetxController {
       // Error in API call
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
+    }
+    if(response.statusCode == 401 || response.statusCode == 403){
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
     }
     isLoaderShow.value = false;
   }

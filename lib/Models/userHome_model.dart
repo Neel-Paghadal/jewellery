@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get_utils/get_utils.dart';
+
 UserHome userHomeFromJson(String str) => UserHome.fromJson(json.decode(str));
 
 String userHomeToJson(UserHome data) => json.encode(data.toJson());
@@ -16,7 +18,7 @@ class UserHome {
   });
 
   factory UserHome.fromJson(Map<String, dynamic> json) => UserHome(
-    order: Order.fromJson(json["order"]),
+    order: (json['user'].length) == 0 ? json["user"] : Order.fromJson(json["order"]),
   );
 
   Map<String, dynamic> toJson() => {

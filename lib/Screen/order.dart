@@ -58,7 +58,6 @@ class _OrderScreenState extends State<OrderScreen> {
     }
   }
 
-
   Future getImageCamera() async {
     try {
       _checkPermission();
@@ -72,10 +71,9 @@ class _OrderScreenState extends State<OrderScreen> {
         orderController.uploadFile(imageNotes!);
         debugPrint(imageNotes.toString());
       });
-    } catch(error) {
+    } catch (error) {
       print("error: $error");
     }
-
   }
 
   Future getImageGallery() async {
@@ -96,9 +94,9 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Future<void> _pickImages() async {
     List<XFile>? pickedImages = await ImagePicker().pickMultiImage(
-      imageQuality: 50,
-      maxWidth: 800,
-    );
+        imageQuality: 50,
+        maxWidth: 800,
+        requestFullMetadata: GetPlatform.isAndroid);
 
     setState(() {
       _imageList.addAll(pickedImages.map((image) => File(image.path)));
@@ -194,8 +192,8 @@ class _OrderScreenState extends State<OrderScreen> {
                       autocorrect: true,
                       controller: orderController.designT,
                       validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please Enter Design";
+                        if (value!.trim().isEmpty) {
+                          return "Please Enter Design Name";
                         } else {
                           return null;
                         }
@@ -260,8 +258,8 @@ class _OrderScreenState extends State<OrderScreen> {
                       autocorrect: true,
                       controller: orderController.partyT,
                       validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please Enter Partyname";
+                        if (value!.trim().isEmpty) {
+                          return "Please Enter Party name";
                         } else {
                           return null;
                         }
@@ -326,14 +324,16 @@ class _OrderScreenState extends State<OrderScreen> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
                             autocorrect: true,
+                            keyboardType:
+                                const TextInputType.numberWithOptions(decimal: true),
                             inputFormatters: [
-                              FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d*')),
                             ],
                             controller: orderController.caratT,
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value!.trim().isEmpty) {
                                 return "Please Enter Carat";
                               } else {
                                 return null;
@@ -394,14 +394,16 @@ class _OrderScreenState extends State<OrderScreen> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
-                            keyboardType: TextInputType.number,
+                            keyboardType:
+                                const TextInputType.numberWithOptions(decimal: true),
                             autocorrect: true,
                             controller: orderController.weightT,
                             inputFormatters: [
-                              FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d*')),
                             ],
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value!.trim().isEmpty) {
                                 return "Please Enter Weight";
                               } else {
                                 return null;
@@ -468,6 +470,8 @@ class _OrderScreenState extends State<OrderScreen> {
                       onTap: () async {
                         final DateTime? pickedDate = await showDatePicker(
                           context: Get.context!,
+                          initialEntryMode:
+                              DatePickerEntryMode.calendarOnly, // <- this
                           initialDate: DateTime.now(),
                           firstDate: DateTime.now(),
                           lastDate: DateTime(2050),
@@ -666,7 +670,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       autocorrect: true,
                       controller: orderController.descripT,
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value!.trim().isEmpty) {
                           return "Please Enter Description";
                         } else {
                           return null;
@@ -764,9 +768,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       builder: (BuildContext
                                                           dialogContext) {
                                                         return AlertDialog(
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(11)
+                                                          ),
+                                                          title: Center(child: Text("Choose Image Source",style: TextStyle(color: Colors.black,fontSize: 18, fontFamily: ConstFont.poppinsBold),overflow: TextOverflow.ellipsis)),
+                                                          backgroundColor: ConstColour.primaryColor,
+                                                          titlePadding: EdgeInsets.only(top: deviceHeight * 0.02),
+                                                          actionsPadding: EdgeInsets.zero,
+                                                          contentPadding: EdgeInsets.all(8),
                                                           content: Column(
                                                             mainAxisSize:
                                                                 MainAxisSize
@@ -775,6 +784,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
+                                                              Divider(color: Colors.black),
                                                               ListTile(
                                                                 shape: RoundedRectangleBorder(
                                                                     borderRadius:
@@ -1350,10 +1360,16 @@ class _OrderScreenState extends State<OrderScreen> {
                                                           },
                                                         );
                                                       },
-                                                      icon: const Icon(
-                                                        Icons.cancel_outlined,
-                                                        color: Colors.red,
-                                                        size: 20,
+                                                      icon: Container(
+                                                        decoration: const BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color: Colors.black
+                                                        ),
+                                                        child: const Icon(
+                                                          Icons.cancel_outlined,
+                                                          color: Colors.red,
+                                                          size: 20,
+                                                        ),
                                                       ))
                                                   : const SizedBox(),
                                             ),
@@ -1376,7 +1392,6 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
-
   // Future<void> initializeCamera() async {
   //   cameras = await availableCameras();
   //   final camera = cameras.first;
@@ -1386,7 +1401,4 @@ class _OrderScreenState extends State<OrderScreen> {
   //   );
   //   await controller.initialize();
   // }
-
-
-
 }

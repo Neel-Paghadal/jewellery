@@ -25,6 +25,8 @@ class RegisterController extends GetxController{
   var ref;
 
   RxBool isLoading = false.obs;
+  RxBool isHidden = true.obs;
+
   //register screen controller
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();

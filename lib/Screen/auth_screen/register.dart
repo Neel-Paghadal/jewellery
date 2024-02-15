@@ -352,6 +352,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       keyboardType: TextInputType.multiline,
                       autocorrect: true,
                       controller: registerController.password,
+                      obscureText: registerController.isHidden.value,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Enter Password";
@@ -363,6 +364,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                       },
                       decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            registerController.isHidden.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          color: ConstColour.primaryColor,
+                          onPressed: () {
+                            setState(() {
+                              registerController.isHidden.value =! registerController.isHidden.value;
+                            });
+                          },
+                        ),
                         labelStyle: const TextStyle(color: Colors.grey),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -415,6 +429,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textAlign: TextAlign.start,
                       keyboardType: TextInputType.multiline,
                       autocorrect: true,
+                      obscureText: registerController.isHidden.value,
+
                       controller: registerController.cPassword,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -426,6 +442,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                         },
                       decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            registerController.isHidden.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          color: ConstColour.primaryColor,
+                          onPressed: () {
+                            setState(() {
+                              registerController.isHidden.value =! registerController.isHidden.value;
+                            });
+                          },
+                        ),
                         labelStyle: const TextStyle(color: Colors.grey),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),

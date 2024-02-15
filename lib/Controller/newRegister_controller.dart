@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
 import 'package:jewellery_user/Screen/home.dart';
@@ -21,6 +22,8 @@ class NewRegisterCon extends GetxController {
   TextEditingController mobile = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController reference = TextEditingController();
+
+  RxBool isHidden = true.obs;
 
   void clearController() {
     firstName.clear();
@@ -75,6 +78,11 @@ class NewRegisterCon extends GetxController {
 
         debugPrint('Error: ${response.reasonPhrase}');
         Utils().errorsnackBar(response.body.toString(), '');
+      }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
       }
     } catch (e) {
       debugPrint('Error: $e');

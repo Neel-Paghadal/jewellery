@@ -22,6 +22,8 @@ class LoginController extends GetxController {
   TextEditingController passController = TextEditingController();
 
 
+  RxBool isHidden = true.obs;
+
 
   void clearController(){
    phoneController.clear();

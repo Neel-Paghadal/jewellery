@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/ConstFile/constApi.dart';
@@ -162,7 +163,7 @@ class OrderController extends GetxController{
       if (response.statusCode == 201) {
         debugPrint('API call successful');
         debugPrint('Response: ${response.body}');
-        Utils().toastMessage("Order Successfull");
+        Utils().toastMessage("Order Successful");
 
         // Utils().snackBar(response.body, '');
         clearController();
@@ -174,6 +175,11 @@ class OrderController extends GetxController{
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
         Utils().errorsnackBar(response.reasonPhrase.toString(), '');
+      }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
       }
     } catch (e) {
       debugPrint('Error: $e');

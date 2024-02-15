@@ -17,7 +17,6 @@ class NewUserRegister extends StatefulWidget {
 }
 
 class _NewUserRegisterState extends State<NewUserRegister> {
-
   final mobileRegex = RegExp(r'^[0-9]{10}$');
   final _formKey = GlobalKey<FormState>();
   NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
@@ -27,12 +26,11 @@ class _NewUserRegisterState extends State<NewUserRegister> {
   void initState() {
     // TODO: implement initState
     super.initState();
-  newRegisterCon.clearController();
+    newRegisterCon.clearController();
   }
 
   @override
   Widget build(BuildContext context) {
-
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
 
@@ -65,7 +63,6 @@ class _NewUserRegisterState extends State<NewUserRegister> {
             key: _formKey,
             child: Column(
               children: [
-
                 // const Text("Create Account",style: TextStyle(
                 //     color: ConstColour.primaryColor,
                 //     fontWeight: FontWeight.w700,
@@ -122,7 +119,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                               borderSide: BorderSide(
                                   color: ConstColour.textFieldBorder),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(8)),
+                                  BorderRadius.all(Radius.circular(8)),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -137,15 +134,13 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                                 fontFamily: ConstFont.poppinsRegular,
                                 fontSize: 16,
                                 overflow: TextOverflow.ellipsis),
-                            errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                            errorStyle: const TextStyle(color: ConstColour.errorHint),
                           ),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontFamily: ConstFont.poppinsRegular),
                         ),
-
                       ),
                       SizedBox(width: deviceWidth * 0.03),
                       Expanded(
@@ -183,15 +178,14 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                               borderSide: BorderSide(
                                   color: ConstColour.textFieldBorder),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(8)),
+                                  BorderRadius.all(Radius.circular(8)),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: const BorderSide(
                                   color: ConstColour.textFieldBorder),
                             ),
-                            errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                            errorStyle: const TextStyle(color: ConstColour.errorHint),
                             border: InputBorder.none,
                             filled: true,
                             hintText: "Enter Lastname",
@@ -219,7 +213,10 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly,LengthLimitingTextInputFormatter(10)],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10)
+                    ],
                     autocorrect: true,
                     controller: newRegisterCon.mobile,
                     validator: (value) {
@@ -250,7 +247,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: ConstColour.textFieldBorder),
+                            BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -266,8 +263,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                           fontFamily: ConstFont.poppinsRegular,
                           fontSize: 16,
                           overflow: TextOverflow.ellipsis),
-                      errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                      errorStyle: const TextStyle(color: ConstColour.errorHint),
                     ),
                     style: const TextStyle(
                         color: Colors.white,
@@ -314,18 +310,15 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: ConstColour.textFieldBorder),
+                            BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
-
                       ),
-
-                      errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                      errorStyle: const TextStyle(color: ConstColour.errorHint),
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Enter Address",
@@ -352,6 +345,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
                     controller: newRegisterCon.password,
+                    obscureText: newRegisterCon.isHidden.value,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Enter Password";
@@ -381,7 +375,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: ConstColour.textFieldBorder),
+                            BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -389,8 +383,21 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
                       ),
-                      errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                      errorStyle: const TextStyle(color: ConstColour.errorHint),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          newRegisterCon.isHidden.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        color: ConstColour.primaryColor,
+                        onPressed: () {
+                          setState(() {
+                            newRegisterCon.isHidden.value =
+                                !newRegisterCon.isHidden.value;
+                          });
+                        },
+                      ),
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Password",
@@ -416,16 +423,31 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                     keyboardType: TextInputType.multiline,
                     autocorrect: true,
                     controller: newRegisterCon.cPassword,
+                    obscureText: newRegisterCon.isHidden.value,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Enter Your Confirm Password";
-                      }  else if (value != newRegisterCon.password.text) {
+                      } else if (value != newRegisterCon.password.text) {
                         return 'Password doesn\'t Match';
                       } else {
                         return null;
                       }
                     },
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          newRegisterCon.isHidden.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        color: ConstColour.primaryColor,
+                        onPressed: () {
+                          setState(() {
+                            newRegisterCon.isHidden.value =
+                                !newRegisterCon.isHidden.value;
+                          });
+                        },
+                      ),
                       labelStyle: const TextStyle(color: Colors.grey),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -444,7 +466,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: ConstColour.textFieldBorder),
+                            BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -460,10 +482,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                           fontFamily: ConstFont.poppinsRegular,
                           fontSize: 16,
                           overflow: TextOverflow.ellipsis),
-                      errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                      errorStyle: const TextStyle(color: ConstColour.errorHint),
                     ),
-
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -507,7 +527,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: ConstColour.textFieldBorder),
+                            BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
                       errorBorder: OutlineInputBorder(
@@ -515,8 +535,7 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
                       ),
-                      errorStyle: TextStyle(color: ConstColour.errorHint),
-
+                      errorStyle: const TextStyle(color: ConstColour.errorHint),
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Reference Name",
@@ -534,11 +553,12 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                 ),
 
                 Padding(
-                  padding:  EdgeInsets.only(top: deviceHeight * 0.05),
+                  padding: EdgeInsets.only(top: deviceHeight * 0.05),
                   child: NextButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        if (newRegisterCon.mobile.text.isEmpty && newRegisterCon.password.text.isEmpty) {
+                        if (newRegisterCon.mobile.text.isEmpty &&
+                            newRegisterCon.password.text.isEmpty) {
                           setState(() {
                             Utils().toastMessage(
                                 "Enter valid Username & password");
@@ -551,13 +571,11 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                               newRegisterCon.password.text,
                               newRegisterCon.mobile.text,
                               newRegisterCon.address.text,
-                              newRegisterCon.reference.text
-                          );
+                              newRegisterCon.reference.text);
 
                           // loginController.login(mobileNo!, password!);
                         }
                       }
-
                     },
                     btnName: "Submit",
                   ),

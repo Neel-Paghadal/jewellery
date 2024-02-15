@@ -36,7 +36,7 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   var dropdownvalue;
-
+  String? imageStr;
   @override
   void initState() {
     // TODO: implement initState
@@ -434,6 +434,20 @@ class _UserListScreenState extends State<UserListScreen> {
                           buttonColor = Colors.yellow;
                         }
 
+                        if (userListController.userList[index].status ==
+                            "In Progress") {
+                          imageStr = "asset/icons/time-management.png";
+                        } else if (userListController.userList[index].status ==
+                            "Completed") {
+                          imageStr = "asset/icons/checkmark.png";
+                        } else if (userListController.userList[index].status ==
+                            "Cancelled") {
+                          imageStr = "asset/icons/cancelled.png";
+                        } else if (userListController.userList[index].status ==
+                            "Pending") {
+                          imageStr = "asset/icons/pending.png";
+                        }
+
                         // return Padding(
                         //   padding: const EdgeInsets.all(8.0),
                         //   child: ListTile(
@@ -481,221 +495,426 @@ class _UserListScreenState extends State<UserListScreen> {
                             splashColor: ConstColour.btnHowerColor,
                             onTap: () {
 
-                              userListController.reasonController.text =userListController.userList[index].reason;
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return StatefulBuilder(
-                                    builder: (context,
-                                        setState) {
-                                      setState(
-                                            () {},
-                                      );
-                                      return Dialog(
-                                        insetAnimationDuration:
-                                        const Duration(
-                                            seconds: 1),
-                                        insetAnimationCurve:
-                                        Curves.linear,
-                                        shadowColor:
-                                        ConstColour
-                                            .primaryColor,
-                                        backgroundColor:
-                                        Colors.black45,
-                                        child: Container(
-                                          decoration:
-                                          BoxDecoration(
-                                            color:
-                                            ConstColour
-                                                .bgColor,
-                                            borderRadius:
-                                            BorderRadius
-                                                .circular(
-                                                8),
-                                            border:
-                                            Border.all(
-                                              color: ConstColour
-                                                  .primaryColor,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors
-                                                    .grey
-                                                    .withOpacity(
-                                                    0.4),
-                                                spreadRadius:
-                                                2,
-                                                blurRadius:
-                                                2,
-                                                offset:
-                                                const Offset(
-                                                    0,
-                                                    2),
+                              userListController.notesController.text =userListController.userList[index].notes;
+                              if(userListController.userList[index].status == "Completed" ||userListController.userList[index].status == "Cancelled"){
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return StatefulBuilder(
+                                      builder: (context, setState) {
+                                        setState(() {});
+                                        return Dialog(
+                                          insetAnimationDuration:
+                                          const Duration(
+                                              seconds: 1),
+                                          insetAnimationCurve:
+                                          Curves.linear,
+                                          shadowColor:
+                                          ConstColour
+                                              .primaryColor,
+                                          backgroundColor:
+                                          Colors.black45,
+                                          child: Container(
+                                            decoration:
+                                            BoxDecoration(
+                                              color:
+                                              ConstColour
+                                                  .bgColor,
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  8),
+                                              border:
+                                              Border.all(
+                                                color: ConstColour
+                                                    .primaryColor,
                                               ),
-                                            ],
-                                          ),
-                                          child: Form(
-                                            key: _formKey,
-                                            child: Column(
-                                              mainAxisSize:
-                                              MainAxisSize
-                                                  .min,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom: deviceHeight *
-                                                          0.01,
-                                                      top: deviceHeight *
-                                                          0.01),
-                                                  child:
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                        EdgeInsets.only(right: deviceWidth * 0.1),
-                                                        child:
-                                                        Text("Code : ${userListController.userList[index].code}", style: const TextStyle(fontSize: 16, color: Colors.white, fontFamily: ConstFont.poppinsMedium)),
-                                                      ),
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            Get.back();
-                                                          },
-                                                          icon: const Icon(
-                                                            Icons.cancel_outlined,
-                                                            color: ConstColour.primaryColor,
-                                                            size: 24,
-                                                          ))
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: deviceHeight *
-                                                          0.02,
-                                                      left: deviceWidth *
-                                                          0.03,
-                                                      right:
-                                                      deviceWidth * 0.03),
-                                                  child:
-                                                  TextFormField(
-                                                    autovalidateMode:
-                                                    AutovalidateMode.onUserInteraction,
-                                                    textAlign:
-                                                    TextAlign.start,
-                                                    keyboardType:
-                                                    TextInputType.text,
-                                                    autocorrect:
-                                                    true,
-                                                    controller:
-                                                    userListController.reasonController,
-                                                    validator:
-                                                        (value) {
-                                                      if (value!
-                                                          .isEmpty) {
-                                                        return "Please Enter Notes";
-                                                      } else {
-                                                        return null;
-                                                      }
-                                                    },
-                                                    decoration:
-                                                    InputDecoration(
-                                                      labelStyle:
-                                                      const TextStyle(color: Colors.grey),
-                                                      enabledBorder:
-                                                      OutlineInputBorder(
-                                                        borderRadius:
-                                                        BorderRadius.circular(8),
-                                                        borderSide:
-                                                        const BorderSide(color: ConstColour.textFieldBorder),
-                                                      ),
-                                                      disabledBorder:
-                                                      OutlineInputBorder(
-                                                        borderRadius:
-                                                        BorderRadius.circular(8),
-                                                        borderSide:
-                                                        const BorderSide(color: ConstColour.textFieldBorder),
-                                                      ),
-                                                      focusedErrorBorder:
-                                                      OutlineInputBorder(
-                                                        borderRadius:
-                                                        BorderRadius.circular(8),
-                                                        borderSide:
-                                                        const BorderSide(color: ConstColour.primaryColor),
-                                                      ),
-                                                      focusedBorder:
-                                                      const OutlineInputBorder(
-                                                        borderSide:
-                                                        BorderSide(color: ConstColour.primaryColor),
-                                                        borderRadius:
-                                                        BorderRadius.all(Radius.circular(8)),
-                                                      ),
-                                                      errorBorder:
-                                                      OutlineInputBorder(
-                                                        borderRadius:
-                                                        BorderRadius.circular(8),
-                                                        borderSide:
-                                                        const BorderSide(color: ConstColour.textFieldBorder),
-                                                      ),
-                                                      border:
-                                                      InputBorder.none,
-                                                      filled:
-                                                      true,
-                                                      labelText:
-                                                      "Notes",
-                                                      hintText:
-                                                      "Enter your notes",
-                                                      floatingLabelStyle:
-                                                      const TextStyle(color: Colors.white),
-                                                      hintStyle: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontFamily: ConstFont.poppinsRegular,
-                                                          fontSize: 16,
-                                                          overflow: TextOverflow.ellipsis),
-                                                    ),
-                                                    minLines:
-                                                    3,
-                                                    maxLines:
-                                                    4,
-                                                    style: const TextStyle(
-                                                        color: Colors
-                                                            .white,
-                                                        fontSize:
-                                                        16,
-                                                        fontFamily:
-                                                        ConstFont.poppinsRegular),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .all(
-                                                      8.0),
-                                                  child:
-                                                  NextButtonSec(
-                                                    btnName:
-                                                    "Update",
-                                                    onPressed:
-                                                        () {
-                                                      // if(_formKey.currentState!.validate()){
-                                                        homeController.loadingSec.value = true;
-                                                      userListController.assignUpdate(
-                                                          userListController.userList[index].id,
-                                                          userListController.reasonController.text);
-                                                      Get.back();
-                                                      // }
-                                                    },
-                                                  ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors
+                                                      .grey
+                                                      .withOpacity(
+                                                      0.4),
+                                                  spreadRadius:
+                                                  2,
+                                                  blurRadius:
+                                                  2,
+                                                  offset:
+                                                  const Offset(
+                                                      0,
+                                                      2),
                                                 ),
                                               ],
                                             ),
+                                            child: Form(
+                                              key: _formKey,
+                                              child: Column(
+                                                mainAxisSize:
+                                                MainAxisSize
+                                                    .min,
+                                                children: [
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                      bottom: deviceHeight *
+                                                          0.01,
+                                                      top: deviceHeight *
+                                                          0.01,),
+                                                    child:
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text("  Code : ${userListController.userList[index].code}", style: const TextStyle(fontSize: 16, color: Colors.white, fontFamily: ConstFont.poppinsMedium)),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              FlutterClipboard.copy(userListController.userList[index].code);
+                                                              Utils().toastMessage("Copied");
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.copy,
+                                                              color: ConstColour.appBar,
+                                                              size: 20,
+                                                            )),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              Get.back();
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.cancel_outlined,
+                                                              color: ConstColour.primaryColor,
+                                                              size: 24,
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: deviceHeight *
+                                                            0.02,
+                                                        left: deviceWidth *
+                                                            0.03,
+                                                        right:
+                                                        deviceWidth * 0.03,bottom: deviceHeight * 0.02),
+                                                    child:
+                                                    TextFormField(
+                                                      autovalidateMode:
+                                                      AutovalidateMode.onUserInteraction,
+                                                      textAlign: TextAlign.start,
+                                                      keyboardType:
+                                                      TextInputType.none,
+                                                      enableInteractiveSelection: false,
+                                                      showCursor: false,
+                                                      autocorrect: true,
+                                                      controller:
+                                                      userListController.notesController,
+                                                      validator:
+                                                          (value) {
+                                                        if (value!
+                                                            .isEmpty) {
+                                                          return "Please Enter Notes";
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                      decoration:
+                                                      InputDecoration(
+                                                        labelStyle:
+                                                        const TextStyle(color: Colors.grey),
+                                                        enabledBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.primaryColor),
+                                                        ),
+                                                        disabledBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.primaryColor),
+                                                        ),
+                                                        focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.primaryColor),
+                                                        ),
+                                                        focusedBorder:
+                                                        const OutlineInputBorder(
+                                                          borderSide:
+                                                          BorderSide(color: ConstColour.primaryColor),
+                                                          borderRadius:
+                                                          BorderRadius.all(Radius.circular(8)),
+                                                        ),
+                                                        errorBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.primaryColor),
+                                                        ),
+                                                        border:
+                                                        InputBorder.none,
+                                                        filled:
+                                                        true,
+                                                        labelText:
+                                                        "Notes",
+                                                        hintText:
+                                                        "Enter your notes",
+                                                        floatingLabelStyle:
+                                                        const TextStyle(color: Colors.white),
+                                                        hintStyle: const TextStyle(
+                                                            color: Colors.grey,
+                                                            fontFamily: ConstFont.poppinsRegular,
+                                                            fontSize: 16,
+                                                            overflow: TextOverflow.ellipsis),
+                                                      ),
+                                                      minLines:
+                                                      3,
+                                                      maxLines:
+                                                      4,
+                                                      style: const TextStyle(
+                                                          color: Colors
+                                                              .white,
+                                                          fontSize:
+                                                          16,
+                                                          fontFamily:
+                                                          ConstFont.poppinsRegular),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                              );
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              }else{
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return StatefulBuilder(
+                                      builder: (context,
+                                          setState) {
+                                        setState(
+                                              () {},
+                                        );
+                                        return Dialog(
+                                          insetAnimationDuration:
+                                          const Duration(
+                                              seconds: 1),
+                                          insetAnimationCurve:
+                                          Curves.linear,
+                                          shadowColor:
+                                          ConstColour
+                                              .primaryColor,
+                                          backgroundColor:
+                                          Colors.black45,
+                                          child: Container(
+                                            decoration:
+                                            BoxDecoration(
+                                              color:
+                                              ConstColour
+                                                  .bgColor,
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  8),
+                                              border:
+                                              Border.all(
+                                                color: ConstColour
+                                                    .primaryColor,
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors
+                                                      .grey
+                                                      .withOpacity(
+                                                      0.4),
+                                                  spreadRadius:
+                                                  2,
+                                                  blurRadius:
+                                                  2,
+                                                  offset:
+                                                  const Offset(
+                                                      0,
+                                                      2),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Form(
+                                              key: _formKey,
+                                              child: Column(
+                                                mainAxisSize:
+                                                MainAxisSize
+                                                    .min,
+                                                children: [
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                      bottom: deviceHeight *
+                                                          0.01,
+                                                      top: deviceHeight *
+                                                          0.01,),
+                                                    child:
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text("  Code : ${userListController.userList[index].code}", style: const TextStyle(fontSize: 16, color: Colors.white, fontFamily: ConstFont.poppinsMedium)),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              FlutterClipboard.copy(userListController.userList[index].code);
+                                                              Utils().toastMessage("Copied");
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.copy,
+                                                              color: ConstColour.appBar,
+                                                              size: 20,
+                                                            )),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              Get.back();
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.cancel_outlined,
+                                                              color: ConstColour.primaryColor,
+                                                              size: 24,
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: deviceHeight *
+                                                            0.02,
+                                                        left: deviceWidth *
+                                                            0.03,
+                                                        right:
+                                                        deviceWidth * 0.03),
+                                                    child:
+                                                    TextFormField(
+                                                      autovalidateMode:
+                                                      AutovalidateMode.onUserInteraction,
+                                                      textAlign:
+                                                      TextAlign.start,
+                                                      keyboardType:
+                                                      TextInputType.text,
+                                                      autocorrect:
+                                                      true,
+                                                      controller:
+                                                      userListController.notesController,
+                                                      validator:
+                                                          (value) {
+                                                        if (value!.trim().isEmpty) {
+                                                          return "Please Enter Notes";
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                      decoration:
+                                                      InputDecoration(
+                                                        labelStyle:
+                                                        const TextStyle(color: Colors.grey),
+                                                        enabledBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.textFieldBorder),
+                                                        ),
+                                                        disabledBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.textFieldBorder),
+                                                        ),
+                                                        focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.primaryColor),
+                                                        ),
+                                                        focusedBorder:
+                                                        const OutlineInputBorder(
+                                                          borderSide:
+                                                          BorderSide(color: ConstColour.primaryColor),
+                                                          borderRadius:
+                                                          BorderRadius.all(Radius.circular(8)),
+                                                        ),
+                                                        errorBorder:
+                                                        OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(8),
+                                                          borderSide:
+                                                          const BorderSide(color: ConstColour.textFieldBorder),
+                                                        ),
+                                                        border:
+                                                        InputBorder.none,
+                                                        filled:
+                                                        true,
+                                                        labelText:
+                                                        "Notes",
+                                                        hintText:
+                                                        "Enter your notes",
+                                                        floatingLabelStyle:
+                                                        const TextStyle(color: Colors.white),
+                                                        hintStyle: const TextStyle(
+                                                            color: Colors.grey,
+                                                            fontFamily: ConstFont.poppinsRegular,
+                                                            fontSize: 16,
+                                                            overflow: TextOverflow.ellipsis),
+                                                      ),
+                                                      minLines:
+                                                      3,
+                                                      maxLines:
+                                                      4,
+                                                      style: const TextStyle(
+                                                          color: Colors
+                                                              .white,
+                                                          fontSize:
+                                                          16,
+                                                          fontFamily:
+                                                          ConstFont.poppinsRegular),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .all(
+                                                        8.0),
+                                                    child:
+                                                    NextButtonSec(
+                                                      btnName:
+                                                      "Update",
+                                                      onPressed:
+                                                          () {
+                                                        if(_formKey.currentState!.validate()){
+                                                        homeController.loadingSec.value = true;
+                                                        userListController.assignUpdate(
+                                                            userListController.userList[index].id,
+                                                            userListController.notesController.text);
+                                                        Get.back();
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              }
+
 
 
 
@@ -714,7 +933,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                     color: ConstColour.primaryColor,
                                     spreadRadius: 1,
                                     blurRadius: 5,
-                                    offset: Offset(0, 3),
+                                    offset: Offset(0, 1),
                                   ),
                                 ],
                               ),
@@ -743,15 +962,17 @@ class _UserListScreenState extends State<UserListScreen> {
                                                   ConstFont.poppinsMedium),
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                        Text(
-                                          userListController
-                                              .userList[index].status,
-                                          style: TextStyle(
-                                              color: buttonColor,
-                                              fontFamily: ConstFont.poppinsMedium,
-                                              fontSize: 16),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                        // Text(
+                                        //   userListController
+                                        //       .userList[index].status,
+                                        //   style: TextStyle(
+                                        //       color: buttonColor,
+                                        //       fontFamily: ConstFont.poppinsMedium,
+                                        //       fontSize: 16),
+                                        //   overflow: TextOverflow.ellipsis,
+                                        // ),
+                                      Image.asset(imageStr.toString(),width: deviceWidth * 0.08,),
+
                                       ],
                                     ),
                                   ),
@@ -832,8 +1053,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                                           actions: [
                                                             InkWell(
                                                               borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
+                                                              BorderRadius.circular(
                                                                   5),
                                                               onTap: () {
                                                                 Get.back();
