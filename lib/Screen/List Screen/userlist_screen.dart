@@ -250,7 +250,7 @@ class _UserListState extends State<UserList> {
                           )
                         : const Center(
                             child: Text(
-                              "No User Found",
+                              "No Data Found",
                               style: TextStyle(
                                   fontFamily: ConstFont.poppinsMedium,
                                   color: Colors.white,

@@ -429,7 +429,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textAlign: TextAlign.start,
                       keyboardType: TextInputType.multiline,
                       autocorrect: true,
-                      obscureText: registerController.isHidden.value,
+                      obscureText: registerController.isHiddenSec.value,
 
                       controller: registerController.cPassword,
                         validator: (value) {
@@ -444,14 +444,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
-                            registerController.isHidden.value
+                            registerController.isHiddenSec.value
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
                           color: ConstColour.primaryColor,
                           onPressed: () {
                             setState(() {
-                              registerController.isHidden.value =! registerController.isHidden.value;
+                              registerController.isHiddenSec.value =! registerController.isHiddenSec.value;
                             });
                           },
                         ),

@@ -1322,9 +1322,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 final DateTime? pickedDate =
                                     await showDatePicker(
                                   context: Get.context!,
-                                  initialEntryMode: DatePickerEntryMode
-                                      .calendarOnly, // <- this
-
+                                  initialEntryMode: DatePickerEntryMode.calendarOnly, // <- this
                                   initialDate: DateTime.now(),
                                   firstDate: DateTime.now(),
                                   lastDate: DateTime(2050),

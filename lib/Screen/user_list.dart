@@ -403,7 +403,7 @@ class _UserListScreenState extends State<UserListScreen> {
                               ),
                               child: const Center(
                                 child: Text(
-                                  "No User Found",
+                                  "No Data Found",
                                   style: TextStyle(
                                       fontFamily: ConstFont.poppinsMedium,
                                       color: Colors.white,
@@ -447,6 +447,7 @@ class _UserListScreenState extends State<UserListScreen> {
                             "Pending") {
                           imageStr = "asset/icons/pending.png";
                         }
+
 
                         // return Padding(
                         //   padding: const EdgeInsets.all(8.0),
@@ -495,7 +496,9 @@ class _UserListScreenState extends State<UserListScreen> {
                             splashColor: ConstColour.btnHowerColor,
                             onTap: () {
 
-                              userListController.notesController.text =userListController.userList[index].notes;
+                              userListController.notesController.text =userListController.userList[index].notes.toString();
+                              debugPrint("Controller"+userListController.notesController.text);
+                              debugPrint("List"+userListController.userList[index].notes.toString());
                               if(userListController.userList[index].status == "Completed" ||userListController.userList[index].status == "Cancelled"){
                                 showDialog(
                                   context: context,
@@ -927,15 +930,15 @@ class _UserListScreenState extends State<UserListScreen> {
                                 border:
                                     Border.all(color: ConstColour.primaryColor),
                                 borderRadius: BorderRadius.circular(11),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    // color: Colors.grey.withOpacity(0.5),
-                                    color: ConstColour.primaryColor,
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 1),
-                                  ),
-                                ],
+                                // boxShadow: const [
+                                //   BoxShadow(
+                                //     // color: Colors.grey.withOpacity(0.5),
+                                //     color: ConstColour.primaryColor,
+                                //     spreadRadius: 1,
+                                //     blurRadius: 5,
+                                //     offset: Offset(0, 1),
+                                //   ),
+                                // ],
                               ),
                               child: Column(
                                 mainAxisSize:  MainAxisSize.min,
@@ -971,7 +974,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                         //       fontSize: 16),
                                         //   overflow: TextOverflow.ellipsis,
                                         // ),
-                                      Image.asset(imageStr.toString(),width: deviceWidth * 0.08,),
+                                      Image.asset(imageStr.toString(),width: deviceWidth * 0.07,),
 
                                       ],
                                     ),
@@ -987,191 +990,20 @@ class _UserListScreenState extends State<UserListScreen> {
                                               right: deviceWidth * 0.03),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.end,
                                             children: [
-                                              ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          12)),
-                                                      minimumSize: Size(deviceWidth * 0.2, deviceHeight * 0.03),
-                                                      maximumSize: Size(deviceWidth * 0.31, deviceHeight * 0.04),
-                                                      elevation: 3.0,
-                                                      shadowColor: Colors.white,
-                                                      backgroundColor: ConstColour
-                                                          .primaryColor),
-                                                  onPressed: () {
-
-
-                                                    showCupertinoModalPopup(
-                                                      filter: const ColorFilter.mode(
-                                                          ConstColour
-                                                              .primaryColor,
-                                                          BlendMode.clear),
-                                                      semanticsDismissible: false,
-                                                      context: context,
-                                                      builder: (BuildContext context) {
-                                                        return AlertDialog(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  10)),
-
-                                                          shadowColor:
-                                                          Colors.white,
-                                                          elevation: 8.0,
-                                                          // backgroundColor: Colors.white,
-                                                          backgroundColor: Colors
-                                                              .orange.shade100,
-                                                          title: const Text(
-                                                            'Order',
-                                                            style: TextStyle(
-                                                              fontSize: 22,
-                                                              fontFamily: ConstFont
-                                                                  .poppinsMedium,
-                                                              color: Colors.black,
-                                                            ),
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
-                                                          ),
-                                                          content: const Text(
-                                                            'Are you sure, want to Complete Order?',
-                                                            style: TextStyle(
-                                                              fontFamily: ConstFont
-                                                                  .poppinsRegular,
-                                                              fontSize: 16,
-                                                              color: Colors.black,
-                                                            ),
-                                                            maxLines: 2,
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
-                                                          ),
-                                                          actions: [
-                                                            InkWell(
-                                                              borderRadius:
-                                                              BorderRadius.circular(
-                                                                  5),
-                                                              onTap: () {
-                                                                Get.back();
-                                                              },
-                                                              splashColor:
-                                                              ConstColour
-                                                                  .btnHowerColor,
-                                                              child: Container(
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                                                    borderRadius:
-                                                                    BorderRadius.circular(
-                                                                        5),
-                                                                    color: Colors
-                                                                        .red),
-                                                                child:
-                                                                const Padding(
-                                                                  padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                      6.0),
-                                                                  child: Text(
-                                                                    'Cancel',
-                                                                    style:
-                                                                    TextStyle(
-                                                                      fontFamily:
-                                                                      ConstFont
-                                                                          .poppinsRegular,
-                                                                      fontSize:
-                                                                      12,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  5),
-                                                              onTap: () {
-                                                                userListController
-                                                                    .assignComplete(
-                                                                    userListController
-                                                                        .userList[
-                                                                    index]
-                                                                        .id);
-                                                                Get.back();
-                                                              },
-                                                              splashColor:
-                                                              ConstColour
-                                                                  .btnHowerColor,
-                                                              child: Container(
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                                                    borderRadius:
-                                                                    BorderRadius.circular(
-                                                                        5),
-                                                                    color: Colors
-                                                                        .black),
-                                                                child:
-                                                                const Padding(
-                                                                  padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                      6.0),
-                                                                  child: Text(
-                                                                    '    Ok    ',
-                                                                    style:
-                                                                    TextStyle(
-                                                                      fontFamily:
-                                                                      ConstFont
-                                                                          .poppinsRegular,
-                                                                      fontSize:
-                                                                      12,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-
-                                                  },
-                                                  child: const Text(
-                                                    "Complete",
-                                                    style: TextStyle(
-                                                        fontFamily: ConstFont
-                                                            .poppinsRegular,
-                                                        color: Colors.black,
-                                                        fontSize: 14),
-                                                  )),
                                               ElevatedButton(
                                                   style: ElevatedButton.styleFrom(
                                                     shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                12)),
+                                                        BorderRadius.circular(
+                                                            5)),
                                                     minimumSize: Size(deviceWidth * 0.2, deviceHeight * 0.03),
                                                     maximumSize: Size(deviceWidth * 0.31, deviceHeight * 0.04),
                                                     backgroundColor:
-                                                        ConstColour.primaryColor,
+                                                    Colors.transparent,
                                                     elevation: 3.0,
-                                                    shadowColor: Colors.white,
+                                                    // shadowColor: Colors.white,
                                                   ),
                                                   onPressed: () {
 
@@ -1182,31 +1014,31 @@ class _UserListScreenState extends State<UserListScreen> {
                                                           builder: (context,
                                                               setState) {
                                                             setState(
-                                                              () {},
+                                                                  () {},
                                                             );
                                                             return Dialog(
                                                               insetAnimationDuration:
-                                                                  const Duration(
-                                                                      seconds: 1),
+                                                              const Duration(
+                                                                  seconds: 1),
                                                               insetAnimationCurve:
-                                                                  Curves.linear,
+                                                              Curves.linear,
                                                               shadowColor:
-                                                                  ConstColour
-                                                                      .primaryColor,
+                                                              ConstColour
+                                                                  .primaryColor,
                                                               backgroundColor:
-                                                                  Colors.black45,
+                                                              Colors.black45,
                                                               child: Container(
                                                                 decoration:
-                                                                    BoxDecoration(
+                                                                BoxDecoration(
                                                                   color:
-                                                                      ConstColour
-                                                                          .bgColor,
+                                                                  ConstColour
+                                                                      .bgColor,
                                                                   borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      8),
                                                                   border:
-                                                                      Border.all(
+                                                                  Border.all(
                                                                     color: ConstColour
                                                                         .primaryColor,
                                                                   ),
@@ -1215,15 +1047,15 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                       color: Colors
                                                                           .grey
                                                                           .withOpacity(
-                                                                              0.4),
+                                                                          0.4),
                                                                       spreadRadius:
-                                                                          2,
+                                                                      2,
                                                                       blurRadius:
-                                                                          2,
+                                                                      2,
                                                                       offset:
-                                                                          const Offset(
-                                                                              0,
-                                                                              2),
+                                                                      const Offset(
+                                                                          0,
+                                                                          2),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -1231,8 +1063,8 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                   key: _formKey,
                                                                   child: Column(
                                                                     mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
+                                                                    MainAxisSize
+                                                                        .min,
                                                                     children: [
                                                                       Padding(
                                                                         padding: EdgeInsets.only(
@@ -1241,15 +1073,15 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                             top: deviceHeight *
                                                                                 0.01),
                                                                         child:
-                                                                            Row(
+                                                                        Row(
                                                                           mainAxisAlignment:
-                                                                              MainAxisAlignment.end,
+                                                                          MainAxisAlignment.end,
                                                                           children: [
                                                                             Padding(
                                                                               padding:
-                                                                                  EdgeInsets.only(right: deviceWidth * 0.1),
+                                                                              EdgeInsets.only(right: deviceWidth * 0.1),
                                                                               child:
-                                                                                  Text("Code : ${userListController.userList[index].code}", style: const TextStyle(fontSize: 16, color: Colors.white, fontFamily: ConstFont.poppinsMedium)),
+                                                                              Text("Code : ${userListController.userList[index].code}", style: const TextStyle(fontSize: 16, color: Colors.white, fontFamily: ConstFont.poppinsMedium)),
                                                                             ),
                                                                             IconButton(
                                                                                 onPressed: () {
@@ -1270,19 +1102,19 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                             left: deviceWidth *
                                                                                 0.03,
                                                                             right:
-                                                                                deviceWidth * 0.03),
+                                                                            deviceWidth * 0.03),
                                                                         child:
-                                                                            TextFormField(
+                                                                        TextFormField(
                                                                           autovalidateMode:
-                                                                              AutovalidateMode.onUserInteraction,
+                                                                          AutovalidateMode.onUserInteraction,
                                                                           textAlign:
-                                                                              TextAlign.start,
+                                                                          TextAlign.start,
                                                                           keyboardType:
-                                                                              TextInputType.text,
+                                                                          TextInputType.text,
                                                                           autocorrect:
-                                                                              true,
+                                                                          true,
                                                                           controller:
-                                                                              userListController.reasonController,
+                                                                          userListController.reasonController,
                                                                           validator:
                                                                               (value) {
                                                                             if (value!
@@ -1293,54 +1125,54 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                             }
                                                                           },
                                                                           decoration:
-                                                                              InputDecoration(
+                                                                          InputDecoration(
                                                                             labelStyle:
-                                                                                const TextStyle(color: Colors.grey),
+                                                                            const TextStyle(color: Colors.grey),
                                                                             enabledBorder:
-                                                                                OutlineInputBorder(
+                                                                            OutlineInputBorder(
                                                                               borderRadius:
-                                                                                  BorderRadius.circular(8),
+                                                                              BorderRadius.circular(8),
                                                                               borderSide:
-                                                                                  const BorderSide(color: ConstColour.textFieldBorder),
+                                                                              const BorderSide(color: ConstColour.textFieldBorder),
                                                                             ),
                                                                             disabledBorder:
-                                                                                OutlineInputBorder(
+                                                                            OutlineInputBorder(
                                                                               borderRadius:
-                                                                                  BorderRadius.circular(8),
+                                                                              BorderRadius.circular(8),
                                                                               borderSide:
-                                                                                  const BorderSide(color: ConstColour.textFieldBorder),
+                                                                              const BorderSide(color: ConstColour.textFieldBorder),
                                                                             ),
                                                                             focusedErrorBorder:
-                                                                                OutlineInputBorder(
+                                                                            OutlineInputBorder(
                                                                               borderRadius:
-                                                                                  BorderRadius.circular(8),
+                                                                              BorderRadius.circular(8),
                                                                               borderSide:
-                                                                                  const BorderSide(color: ConstColour.primaryColor),
+                                                                              const BorderSide(color: ConstColour.primaryColor),
                                                                             ),
                                                                             focusedBorder:
-                                                                                const OutlineInputBorder(
+                                                                            const OutlineInputBorder(
                                                                               borderSide:
-                                                                                  BorderSide(color: ConstColour.primaryColor),
+                                                                              BorderSide(color: ConstColour.primaryColor),
                                                                               borderRadius:
-                                                                                  BorderRadius.all(Radius.circular(8)),
+                                                                              BorderRadius.all(Radius.circular(8)),
                                                                             ),
                                                                             errorBorder:
-                                                                                OutlineInputBorder(
+                                                                            OutlineInputBorder(
                                                                               borderRadius:
-                                                                                  BorderRadius.circular(8),
+                                                                              BorderRadius.circular(8),
                                                                               borderSide:
-                                                                                  const BorderSide(color: ConstColour.textFieldBorder),
+                                                                              const BorderSide(color: ConstColour.textFieldBorder),
                                                                             ),
                                                                             border:
-                                                                                InputBorder.none,
+                                                                            InputBorder.none,
                                                                             filled:
-                                                                                true,
+                                                                            true,
                                                                             labelText:
-                                                                                "Reason",
+                                                                            "Reason",
                                                                             hintText:
-                                                                                "Enter your reason",
+                                                                            "Enter your reason",
                                                                             floatingLabelStyle:
-                                                                                const TextStyle(color: Colors.white),
+                                                                            const TextStyle(color: Colors.white),
                                                                             hintStyle: const TextStyle(
                                                                                 color: Colors.grey,
                                                                                 fontFamily: ConstFont.poppinsRegular,
@@ -1348,16 +1180,16 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                                 overflow: TextOverflow.ellipsis),
                                                                           ),
                                                                           minLines:
-                                                                              3,
+                                                                          3,
                                                                           maxLines:
-                                                                              4,
+                                                                          4,
                                                                           style: const TextStyle(
                                                                               color: Colors
                                                                                   .white,
                                                                               fontSize:
-                                                                                  16,
+                                                                              16,
                                                                               fontFamily:
-                                                                                  ConstFont.poppinsRegular),
+                                                                              ConstFont.poppinsRegular),
                                                                         ),
                                                                       ),
                                                                       Padding(
@@ -1365,9 +1197,9 @@ class _UserListScreenState extends State<UserListScreen> {
                                                                             .all(
                                                                             8.0),
                                                                         child:
-                                                                            NextButton(
+                                                                        NextButton(
                                                                           btnName:
-                                                                              "orderCancel".tr,
+                                                                          "orderCancel".tr,
                                                                           onPressed:
                                                                               () {
                                                                             // if(_formKey.currentState!.validate()){
@@ -1392,7 +1224,185 @@ class _UserListScreenState extends State<UserListScreen> {
 
 
                                                   },
-                                                  child: const Text("Cancel")),
+                                                  child: const Text("Cancel" ,style: TextStyle(
+                                                      fontFamily: ConstFont
+                                                      .poppinsRegular,
+                                                      color: Colors.redAccent,
+                                                      fontSize: 14),)),
+                                              Padding(
+                                                padding:  EdgeInsets.only(left:  deviceWidth * 0.02),
+                                                child: ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5)),
+                                                        minimumSize: Size(deviceWidth * 0.2, deviceHeight * 0.03),
+                                                        maximumSize: Size(deviceWidth * 0.31, deviceHeight * 0.04),
+                                                        elevation: 3.0,
+                                                        // shadowColor: Colors.white,
+                                                        backgroundColor: Colors.green.shade600),
+                                                    onPressed: () {
+
+
+                                                      showCupertinoModalPopup(
+                                                        filter: const ColorFilter.mode(
+                                                            ConstColour
+                                                                .primaryColor,
+                                                            BlendMode.clear),
+                                                        semanticsDismissible: false,
+                                                        context: context,
+                                                        builder: (BuildContext context) {
+                                                          return AlertDialog(
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    10)),
+
+                                                            shadowColor:
+                                                            Colors.white,
+                                                            elevation: 8.0,
+                                                            // backgroundColor: Colors.white,
+                                                            backgroundColor: Colors
+                                                                .orange.shade100,
+                                                            title: const Text(
+                                                              'Order',
+                                                              style: TextStyle(
+                                                                fontSize: 22,
+                                                                fontFamily: ConstFont
+                                                                    .poppinsMedium,
+                                                                color: Colors.black,
+                                                              ),
+                                                              overflow: TextOverflow
+                                                                  .ellipsis,
+                                                            ),
+                                                            content: const Text(
+                                                              'Are you sure, want to Complete Order?',
+                                                              style: TextStyle(
+                                                                fontFamily: ConstFont
+                                                                    .poppinsRegular,
+                                                                fontSize: 16,
+                                                                color: Colors.black,
+                                                              ),
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow
+                                                                  .ellipsis,
+                                                            ),
+                                                            actions: [
+                                                              InkWell(
+                                                                borderRadius:
+                                                                BorderRadius.circular(
+                                                                    5),
+                                                                onTap: () {
+                                                                  Get.back();
+                                                                },
+                                                                splashColor:
+                                                                ConstColour
+                                                                    .btnHowerColor,
+                                                                child: Container(
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          5),
+                                                                      color: Colors
+                                                                          .red),
+                                                                  child:
+                                                                  const Padding(
+                                                                    padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                        6.0),
+                                                                    child: Text(
+                                                                      'Cancel',
+                                                                      style:
+                                                                      TextStyle(
+                                                                        fontFamily:
+                                                                        ConstFont
+                                                                            .poppinsRegular,
+                                                                        fontSize:
+                                                                        12,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                      overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              InkWell(
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    5),
+                                                                onTap: () {
+                                                                  userListController
+                                                                      .assignComplete(
+                                                                      userListController
+                                                                          .userList[
+                                                                      index]
+                                                                          .id);
+                                                                  Get.back();
+                                                                },
+                                                                splashColor:
+                                                                ConstColour
+                                                                    .btnHowerColor,
+                                                                child: Container(
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          5),
+                                                                      color: Colors
+                                                                          .black),
+                                                                  child:
+                                                                  const Padding(
+                                                                    padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                        6.0),
+                                                                    child: Text(
+                                                                      '    Ok    ',
+                                                                      style:
+                                                                      TextStyle(
+                                                                        fontFamily:
+                                                                        ConstFont
+                                                                            .poppinsRegular,
+                                                                        fontSize:
+                                                                        12,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                      overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+
+                                                    },
+                                                    child: const Text(
+                                                      "Complete",
+                                                      style: TextStyle(
+                                                          fontFamily: ConstFont
+                                                              .poppinsRegular,
+                                                          color: Colors.white,
+                                                          fontSize: 14),
+                                                    )),
+                                              ),
+
                                             ],
                                           ),
                                         )

@@ -61,7 +61,7 @@ class LoginController extends GetxController {
         pref.setBool("login", true);
         clearController();
 
-        Utils().toastMessage("Login successful");
+        Utils().toastMessage("Login successfully");
         debugPrint(response.body);
 
         debugPrint('Response: ${response.body}');

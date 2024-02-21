@@ -64,7 +64,7 @@ class NewRegisterCon extends GetxController {
       if (response.statusCode == 201) {
         debugPrint('API call successful');
         debugPrint('Response: ${response.body}');
-        Utils().toastMessage("Register Successfull");
+        Utils().toastMessage("Register Successful");
         clearController();
         homeController.loading.value = false;
         adminListController.adminList.clear();

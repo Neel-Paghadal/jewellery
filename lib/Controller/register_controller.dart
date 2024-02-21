@@ -26,6 +26,7 @@ class RegisterController extends GetxController{
 
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
+  RxBool isHiddenSec = true.obs;
 
   //register screen controller
   TextEditingController firstName = TextEditingController();
@@ -145,7 +146,7 @@ class RegisterController extends GetxController{
         debugPrint('API call successful');
         debugPrint('Response: ${response.body}');
         Get.to(()=> const LoginScreen());
-        Utils().toastMessage("Register Successfull");
+        Utils().toastMessage("Register Successfully");
 
         // Utils().snackBar(response.body, '');
       } else {

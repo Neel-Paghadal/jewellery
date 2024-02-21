@@ -19,14 +19,14 @@ class UserListController extends GetxController {
   String? orderId;
   String? userId;
 
-
   RxList<User> userList = <User>[].obs;
   RxList<UsersData> userListDrop = <UsersData>[].obs;
   TextEditingController notesCon = TextEditingController();
 
-   RxBool isCall = false.obs;
+  RxBool isCall = false.obs;
   // Assign order to new user
-  Future<void> assignOrder(String userId, String code, String notes, String orderId) async {
+  Future<void> assignOrder(
+      String userId, String code, String notes, String orderId) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.assignOrder);
@@ -74,17 +74,13 @@ class UserListController extends GetxController {
     getUserCall(orderId.toString());
   }
 
-
   // Assign order cancel
-  Future<void> assignCancel(String id,String reason ) async {
+  Future<void> assignCancel(String id, String reason) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.orderCancel);
 
-    Map<String, String> requestBody = {
-      "Id":id,
-      "Reason":reason
-    };
+    Map<String, String> requestBody = {"Id": id, "Reason": reason};
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -104,39 +100,33 @@ class UserListController extends GetxController {
         reasonController.clear();
         debugPrint('Response: $responseBody');
         Utils().toastMessage("Order Cancel Successfully");
-
-
       } else {
         // Failed API call
-        debugPrint('Failed to make API call. Status code: ${response.statusCode}');
+        debugPrint(
+            'Failed to make API call. Status code: ${response.statusCode}');
         Utils().toastMessage(response.body);
       }
-      if(response.statusCode == 401 || response.statusCode == 403){
+      if (response.statusCode == 401 || response.statusCode == 403) {
         Utils().toastMessage("Please Relogin Account");
         ConstPreferences().clearPreferences();
         SystemNavigator.pop();
       }
-
     } catch (error) {
       debugPrint('Error making API call: $error');
     }
     homeController.loading.value = false;
     userList.clear();
     getUserCall(orderId.toString());
-
   }
 
   // assignOrder Update Detail
-  Future<void> assignUpdate(String id,String notes ) async {
+  Future<void> assignUpdate(String id, String notes) async {
     homeController.loadingSec.value = true;
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.updateAssignOrder);
 
-    Map<String, String> requestBody = {
-      "Id":id,
-      "Notes": notes
-    };
+    Map<String, String> requestBody = {"Id": id, "Notes": notes};
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -156,36 +146,35 @@ class UserListController extends GetxController {
         reasonController.clear();
         debugPrint('Response: $responseBody');
         Utils().toastMessage("Update Successfully");
-
-
       } else {
         // Failed API call
-        debugPrint('Failed to make API call. Status code: ${response.statusCode}');
+        debugPrint(
+            'Failed to make API call. Status code: ${response.statusCode}');
         Utils().toastMessage(response.body);
       }
-      if(response.statusCode == 401 || response.statusCode == 403){
+      if (response.statusCode == 401 || response.statusCode == 403) {
         Utils().toastMessage("Please Relogin Account");
         ConstPreferences().clearPreferences();
         SystemNavigator.pop();
       }
-
     } catch (error) {
       debugPrint('Error making API call: $error');
     }
     homeController.loadingSec.value = false;
     userList.clear();
     getUserCall(orderId.toString());
-
   }
 
   // Assign order Complete
-  Future<void> assignComplete(String id,) async {
+  Future<void> assignComplete(
+    String id,
+  ) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.orderComplete);
 
     Map<String, String> requestBody = {
-      "Id":id,
+      "Id": id,
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -213,7 +202,7 @@ class UserListController extends GetxController {
         debugPrint('Response: ${response.body}');
         Utils().toastMessage(response.body);
       }
-      if(response.statusCode == 401 || response.statusCode == 403){
+      if (response.statusCode == 401 || response.statusCode == 403) {
         Utils().toastMessage("Please Relogin Account");
         ConstPreferences().clearPreferences();
         SystemNavigator.pop();
@@ -228,7 +217,7 @@ class UserListController extends GetxController {
     homeController.loading.value = false;
   }
 
- // getUserOrderList
+  // getUserOrderList
   getUserCall(String id) async {
     isCall.value = true;
     String? token = await ConstPreferences().getToken();
@@ -261,7 +250,7 @@ class UserListController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
-    if(response.statusCode == 401 || response.statusCode == 403){
+    if (response.statusCode == 401 || response.statusCode == 403) {
       Utils().toastMessage("Please Relogin Account");
       ConstPreferences().clearPreferences();
       SystemNavigator.pop();
@@ -272,7 +261,6 @@ class UserListController extends GetxController {
 
   // get user dropdown call
   getUserDropCall(String id) async {
-
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
 
@@ -291,7 +279,7 @@ class UserListController extends GetxController {
       debugPrint("HOME LIST $responseData");
       userListDrop.clear();
       userListDrop.addAll(responseData.users);
-      if(userListDrop.isEmpty){
+      if (userListDrop.isEmpty) {
         Utils().toastMessage("No Users Found");
       }
       debugPrint('Response: ${response.body}');
@@ -301,12 +289,10 @@ class UserListController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
-    if(response.statusCode == 401 || response.statusCode == 403){
+    if (response.statusCode == 401 || response.statusCode == 403) {
       Utils().toastMessage("Please Relogin Account");
       ConstPreferences().clearPreferences();
       SystemNavigator.pop();
     }
   }
-
-
 }

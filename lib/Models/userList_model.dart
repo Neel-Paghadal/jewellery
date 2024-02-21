@@ -47,7 +47,7 @@ class User {
     status: json["status"],
     code: json["code"],
     reason: (json["reason"] == null || json['reason'] == "") ? "" : json["reason"],
-    notes : (json["Notes"] == null || json['Notes'] == "") ? "" : json["Notes"]
+    notes : (json["notes"] == null || json['notes'] == "") ? "" : json["notes"]
   );
 
   Map<String, dynamic> toJson() => {

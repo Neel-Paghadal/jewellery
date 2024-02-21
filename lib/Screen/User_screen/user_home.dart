@@ -113,6 +113,7 @@ class _UserHomeState extends State<UserHome> {
     super.initState();
   userHomeCon.getProductHomeCall();
   }
+  final _formKey = GlobalKey<FormState>();
 
 
   @override
@@ -202,145 +203,164 @@ class _UserHomeState extends State<UserHome> {
           ],
         ),
         body:
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    cursorColor: ConstColour.errorImage,
-                    keyboardType: TextInputType.text,
-                    controller: userHomeCon.codeController,
-                    style: TextStyle(
-                      height: deviceHeight * 0.001,
-                      color: ConstColour.black,
-                      fontSize: 15,
-                      fontFamily: ConstFont.poppinsRegular,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onChanged: (value) {
-                      userHomeCon.userHome.clear();
-                    },
-                    decoration: InputDecoration(
-                      fillColor: ConstColour.searchColor,
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(11),
-                          borderSide: BorderSide.none),
-                      hintText: 'EnterCode'.tr,
-                      hintStyle: const TextStyle(
-                        color: ConstColour.errorImage,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      cursorColor: ConstColour.errorImage,
+                      keyboardType: TextInputType.text,
+                      controller: userHomeCon.codeController,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return "Please Enter Code";
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: const TextStyle(
+                        // height: deviceHeight * 0.001,
+                        color: ConstColour.black,
+                        fontSize: 15,
                         fontFamily: ConstFont.poppinsRegular,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      suffixIcon: TextButton(
-                        style: TextButton.styleFrom(
-                          // minimumSize: Size(deviceWidth * 0.1, deviceHeight * 0.04),
-                            maximumSize:
-                            Size(deviceWidth * 0.4, deviceHeight * 0.05)),
-                        onPressed: () {
-                          userHomeCon.getProductCall(userHomeCon.codeController.text);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.black,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: deviceWidth * 0.03,
-                                vertical: deviceHeight * 0.003),
-                            child: Text(
-                              'Apply'.tr,
-                              style: const TextStyle(
-                                  color: ConstColour.primaryColor,
-                                  fontSize: 14,
-                                  fontFamily: ConstFont.poppinsRegular),
+                      onChanged: (value) {
+                        userHomeCon.userHome.clear();
+                      },
+
+                      decoration: InputDecoration(
+                        fillColor: ConstColour.searchColor,
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(11),
+                            borderSide: BorderSide.none),
+                        contentPadding: const EdgeInsets.all(6),
+                        hintText: 'EnterCode'.tr,
+
+                        hintStyle: const TextStyle(
+                          color: ConstColour.errorImage,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          fontFamily: ConstFont.poppinsRegular,
+                        ),
+                        suffixIcon: TextButton(
+                          style: TextButton.styleFrom(
+                            // minimumSize: Size(deviceWidth * 0.1, deviceHeight * 0.04),
+                              maximumSize:
+                              Size(deviceWidth * 0.4, deviceHeight * 0.07)),
+                          onPressed: () {
+                            if(_formKey.currentState!.validate()){
+                              userHomeCon.getProductCall(userHomeCon.codeController.text);
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              color: Colors.black,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: deviceWidth * 0.03,
+                                  vertical: deviceHeight * 0.003),
+                              child: Text(
+                                'Apply'.tr,
+                                style: const TextStyle(
+                                    color: ConstColour.primaryColor,
+                                    fontSize: 14,
+                                    fontFamily: ConstFont.poppinsRegular),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Obx(
-                  () => userHomeCon.userHome.isEmpty
-                      ? Padding(
-                        padding: EdgeInsets.only(top: deviceHeight * 0.35),
-                        child: Text(
-                            "noData".tr,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: ConstFont.poppinsRegular),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                      )
-                      : ListView.builder(
-                          controller: ScrollController(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: userHomeCon.userHome.length,
-                          itemBuilder: (context, index) {
 
 
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                onTap: () {
-                                  userProductController.orderUserId = userHomeCon.userHome[index].orderUserId;
-                                  debugPrint("Order userId : " + userProductController.orderUserId);
-                                  Get.to(() => const ProductDetailPage());
-                                  userProductController.getProductDetailCall(userHomeCon.userHome[index].orderUserId);
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  side: const BorderSide(
-                                      color: ConstColour.primaryColor),
-                                ),
-                                leading: Container(
-                                    decoration: BoxDecoration(
+                  Obx(
+                    () => userHomeCon.userHome.isEmpty
+                        ? Padding(
+                          padding: EdgeInsets.only(top: deviceHeight * 0.35),
+                          child: Text(
+                              "noData".tr,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: ConstFont.poppinsRegular),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                        )
+                        : ListView.builder(
+                            controller: ScrollController(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: userHomeCon.userHome.length,
+                            itemBuilder: (context, index) {
+
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  onTap: () {
+                                    userProductController.orderUserId = userHomeCon.userHome[index].orderUserId;
+                                    debugPrint("Order userId : " + userProductController.orderUserId);
+                                    Get.to(() => const ProductDetailPage());
+                                    userProductController.getProductDetailCall(userHomeCon.userHome[index].orderUserId);
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: const BorderSide(
+                                        color: ConstColour.primaryColor),
+                                  ),
+                                  leading: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: CachedNetworkImage(
+                                          width: deviceWidth * 0.115,
+                                          imageUrl: userHomeCon.userHome[index].image.toString(),
+                                          fadeInCurve: Curves.easeInOutQuad,
+                                          placeholder: (context, url) => const Icon(Icons.image,size: 40
+                                              ,color : ConstColour.loadImageColor),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error,size: 40),
+                                        )
+                                      )),
+                                  title: Text(
+                                    userHomeCon.userHome[index].name,
+                                    style: const TextStyle(
+                                      fontFamily: ConstFont.poppinsRegular,
+                                      fontSize: 14,
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: CachedNetworkImage(
-                                        width: deviceWidth * 0.115,
-                                        imageUrl: userHomeCon.userHome[index].image.toString(),
-                                        fadeInCurve: Curves.easeInOutQuad,
-                                        placeholder: (context, url) => const Icon(Icons.image,size: 40
-                                            ,color : ConstColour.loadImageColor),
-                                        errorWidget: (context, url, error) => const Icon(Icons.error,size: 40),
-                                      )
-                                    )),
-                                title: Text(
-                                  userHomeCon.userHome[index].name,
-                                  style: const TextStyle(
-                                    fontFamily: ConstFont.poppinsRegular,
-                                    fontSize: 14,
-                                    color: Colors.white,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text(
-                                  "createdate".tr +
-                                      userHomeCon.userHome[index].deliveryDate,
-                                  style: const TextStyle(
-                                    fontFamily: ConstFont.poppinsRegular,
-                                    fontSize: 14,
-                                    color: Colors.grey,
+                                  subtitle: Text(
+                                    "createdate".tr +
+                                        userHomeCon.userHome[index].deliveryDate,
+                                    style: const TextStyle(
+                                      fontFamily: ConstFont.poppinsRegular,
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
-              ],
-        ),
+                              );
+
+                            },
+                          ),
+                  ),
+                ],
+                      ),
+            ),
       ),
     );
   }

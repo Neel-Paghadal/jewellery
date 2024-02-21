@@ -214,7 +214,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                                       .cancelledDate
                                                       .toString() ==
                                                   "")
-                                          ? ConstColour.offerImageColor
+                                          ? Colors.yellow
                                           : reportScreenController
                                                       .reportDetail[index]
                                                       .completedDate

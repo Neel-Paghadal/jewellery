@@ -535,7 +535,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ),
                 ),
-                SizedBox(
+                userProductController.productDetail[0].orderImages.isEmpty  ? SizedBox() :  SizedBox(
                   height: deviceHeight * 0.1,
                   child: Row(
                     children: [

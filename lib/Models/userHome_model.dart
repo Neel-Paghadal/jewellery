@@ -18,7 +18,7 @@ class UserHome {
   });
 
   factory UserHome.fromJson(Map<String, dynamic> json) => UserHome(
-    order: (json['user'].length) == 0 ? json["user"] : Order.fromJson(json["order"]),
+    order: Order.fromJson(json["order"]),
   );
 
   Map<String, dynamic> toJson() => {

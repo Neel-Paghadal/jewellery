@@ -228,7 +228,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         ),
                         border: InputBorder.none,
                         filled: true,
-                        labelText: "Design name",
+                        labelText: "Design Name",
                         hintText: "Enter your design name",
                         floatingLabelStyle:
                             const TextStyle(color: Colors.white),
@@ -294,7 +294,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         ),
                         border: InputBorder.none,
                         filled: true,
-                        labelText: "Party name",
+                        labelText: "Party Name",
                         hintText: "Enter your party name",
                         floatingLabelStyle:
                             const TextStyle(color: Colors.white),
