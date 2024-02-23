@@ -5,9 +5,9 @@ import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
-import 'package:jewellery_user/Screen/home.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/home.dart';
 import 'package:jewellery_user/Screen/loader.dart';
-import 'package:jewellery_user/Screen/newUser_register.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/newUser_register.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../../Models/adminList_model.dart';

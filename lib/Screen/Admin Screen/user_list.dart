@@ -7,9 +7,10 @@ import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
 import 'package:jewellery_user/Screen/loader.dart';
-import '../Common/bottom_button_widget.dart';
-import '../ConstFile/constColors.dart';
-import '../ConstFile/constFonts.dart';
+import '../../Common/bottom_button_widget.dart';
+import '../../ConstFile/constColors.dart';
+import '../../ConstFile/constFonts.dart';
+
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
@@ -487,7 +488,8 @@ class _UserListScreenState extends State<UserListScreen> {
                         //                       color: ConstColour.primaryColor))
                         //               : SizedBox()),
                         // );
-                        //fdrefr
+
+
 
                         return Padding(
                           padding: const EdgeInsets.all(8.0),

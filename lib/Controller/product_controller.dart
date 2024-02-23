@@ -8,7 +8,7 @@ import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/Controller/home_Controller.dart';
-import 'package:jewellery_user/Screen/home.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/home.dart';
 import '../Models/file_model.dart';
 import '../Models/productDetailAdmin_model.dart';
 
@@ -146,13 +146,13 @@ class ProductController extends GetxController {
         filePath = jsonResponse['filePath'];
         replaceString(productDetail[0].image);
         productDetail[0].image = '';
-        productDetail[0].image =
-            "http://208.64.33.118:8558/Files/${imgList[0].path}";
+        // productDetail[0].image =
+        //     "http://208.64.33.118:8558/Files/${imgList[0].path}";
+        productDetail[0].image =  ConstApi.baseFilePath+imgList[0].path;
         filePath = imgList[0].path;
         debugPrint("File Path " + filePath);
       } else {
-        debugPrint(
-            'Failed to upload file. Status code: ${response.statusCode}');
+        debugPrint('Failed to upload file. Status code: ${response.statusCode}');
       }
     } catch (error) {
       debugPrint('Error uploading file: $error');

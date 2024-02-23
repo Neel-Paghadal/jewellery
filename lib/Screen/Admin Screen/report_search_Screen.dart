@@ -7,10 +7,10 @@ import 'package:jewellery_user/Controller/reportScreen_controller.dart';
 import 'package:jewellery_user/Controller/report_search_Controller.dart';
 import 'package:jewellery_user/Models/ordersReport_model.dart';
 import 'package:jewellery_user/Screen/loader.dart';
-import 'package:jewellery_user/Screen/report_Screen.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/report_Screen.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import '../ConstFile/constColors.dart';
-import '../ConstFile/constFonts.dart';
+import '../../ConstFile/constColors.dart';
+import '../../ConstFile/constFonts.dart';
 import 'package:intl/intl.dart';
 
 class ReportSearchScreen extends StatefulWidget {
@@ -52,6 +52,8 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
 
   DateTime? fromDate;
   DateTime? toDate;
+
+  int status = 0;
 
   void _showDialog(context) {
     dropdownvalue = null;
@@ -182,13 +184,10 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                 children: [
                   InkWell(
                     splashColor: ConstColour.btnHowerColor,
-
-                    onTap:() async {
-                      final DateTime? pickedDate =
-                          await showDatePicker(
+                    onTap: () async {
+                      final DateTime? pickedDate = await showDatePicker(
                         context: Get.context!,
-                        initialEntryMode:
-                        DatePickerEntryMode.calendarOnly,
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
                         initialDate: _startDate,
                         firstDate: DateTime(2000),
                         lastDate: DateTime.now(),
@@ -200,8 +199,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                 // header background color
                                 onPrimary: Colors.black,
                                 // header text color
-                                onSurface:
-                                Colors.black, // body text color
+                                onSurface: Colors.black, // body text color
                               ),
                               // textButtonTheme: TextButtonThemeData(
                               //   style: TextButton.styleFrom(
@@ -214,8 +212,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                         },
                       );
                       if (pickedDate != null) {
-                        startdate.value =
-                            pickedDate.millisecondsSinceEpoch;
+                        startdate.value = pickedDate.millisecondsSinceEpoch;
                         setState(() {
                           _startDate = pickedDate;
                           _endDate = _startDate;
@@ -270,8 +267,6 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                       _endDate = _startDate;
                                     });
                                   }
-
-
 
                                   // final DateTime? pickedDate = await showDatePicker(
                                   //   context: Get.context!,
@@ -329,16 +324,14 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                     ),
                   ),
                   InkWell(
-                  splashColor: ConstColour.btnHowerColor,
+                    splashColor: ConstColour.btnHowerColor,
                     onTap: () async {
-                      final DateTime? pickedDate =
-                          await showDatePicker(
+                      final DateTime? pickedDate = await showDatePicker(
                         context: Get.context!,
                         initialDate: _endDate,
                         firstDate: _startDate,
                         lastDate: DateTime.now(),
-                        initialEntryMode:
-                        DatePickerEntryMode.calendarOnly,
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
                         builder: (context, child) {
                           return Theme(
                             data: Theme.of(context).copyWith(
@@ -347,8 +340,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                 // header background color
                                 onPrimary: Colors.black,
                                 // header text color
-                                onSurface:
-                                Colors.black, // body text color
+                                onSurface: Colors.black, // body text color
                               ),
                               // textButtonTheme: TextButtonThemeData(
                               //   style: TextButton.styleFrom(
@@ -380,7 +372,8 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                           children: [
                             IconButton(
                                 onPressed: () async {
-                                  final DateTime? pickedDate = await showDatePicker(
+                                  final DateTime? pickedDate =
+                                      await showDatePicker(
                                     context: Get.context!,
                                     initialDate: _endDate,
                                     firstDate: _startDate,
@@ -472,6 +465,121 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: deviceHeight * 0.01,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: deviceWidth * 0.02, right: deviceWidth * 0.02),
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      dense: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          side: const BorderSide(color: Colors.black)),
+                      activeColor: ConstColour.primaryColor,
+                      title: const Text("In Process",
+                          style: TextStyle(
+                              color: Colors.black,
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: ConstFont.poppinsRegular,
+                              fontSize: 14),
+                          maxLines: 2,
+                          textAlign: TextAlign.center),
+                      value: 1,
+                      groupValue: status,
+                      onChanged: (value) {
+                        setState(() {
+                          status = value!.toInt();
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.01,
+                    ),
+                    RadioListTile(
+                      dense: true,
+                      activeColor: ConstColour.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          side: const BorderSide(color: Colors.black)),
+                      title: const Text(
+                        "Working",
+                        style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontFamily: ConstFont.poppinsRegular,
+                            fontSize: 14),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                      value: 2,
+                      groupValue: status,
+                      onChanged: (value) {
+                        setState(() {
+                          status = value!.toInt();
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.01,
+                    ),
+                    RadioListTile(
+                      dense: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          side: const BorderSide(color: Colors.black)),
+                      activeColor: ConstColour.primaryColor,
+                      title: const Text(
+                        "Complete",
+                        style: TextStyle(
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                            fontFamily: ConstFont.poppinsRegular,
+                            fontSize: 14),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                      value: 3,
+                      groupValue: status,
+                      onChanged: (value) {
+                        setState(() {
+                          status = value!.toInt();
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.01,
+                    ),
+                    RadioListTile(
+                      dense: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          side: const BorderSide(color: Colors.black)),
+                      activeColor: ConstColour.primaryColor,
+                      title: const Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: Colors.black,
+                          overflow: TextOverflow.ellipsis,
+                          fontFamily: ConstFont.poppinsRegular,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                      ),
+                      value: 4,
+                      groupValue: status,
+                      onChanged: (value) {
+                        setState(() {
+                          status = value!.toInt();
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: deviceHeight * 0.01,

@@ -10,9 +10,10 @@ import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/order_controller.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/orderScreen_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
-import '../ConstFile/constFonts.dart';
+import '../../ConstFile/constFonts.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -29,7 +30,7 @@ class _OrderScreenState extends State<OrderScreen> {
   HomeController homeController = Get.put(HomeController());
 
   final _formKey = GlobalKey<FormState>();
-  File? imageNotes;
+  // File? imageNotes;
   String? userProfileImage;
 
   var startdate = DateTime.now()
@@ -66,10 +67,10 @@ class _OrderScreenState extends State<OrderScreen> {
 
       final imageTemporary = File(image.path);
       setState(() {
-        imageNotes = imageTemporary;
+        orderController.imageNotes = imageTemporary;
         orderController.isLoading.value = true;
-        orderController.uploadFile(imageNotes!);
-        debugPrint(imageNotes.toString());
+        orderController.uploadFile(orderController.imageNotes!);
+        debugPrint(orderController.imageNotes.toString());
       });
     } catch (error) {
       print("error: $error");
@@ -84,11 +85,11 @@ class _OrderScreenState extends State<OrderScreen> {
 
     final imageTemporary = File(image.path);
     setState(() {
-      imageNotes = imageTemporary;
+      orderController.imageNotes = imageTemporary;
       orderController.isLoading.value = true;
-      orderController.uploadFile(imageNotes!);
+      orderController.uploadFile(orderController.imageNotes!);
 
-      debugPrint(imageNotes.toString());
+      debugPrint(orderController.imageNotes.toString());
     });
   }
 
@@ -325,8 +326,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                 AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
                             autocorrect: true,
-                            keyboardType:
-                                const TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(
                                   RegExp(r'^\d+\.?\d*')),
@@ -394,8 +395,8 @@ class _OrderScreenState extends State<OrderScreen> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             textAlign: TextAlign.start,
-                            keyboardType:
-                                const TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
                             autocorrect: true,
                             controller: orderController.weightT,
                             inputFormatters: [
@@ -754,169 +755,193 @@ class _OrderScreenState extends State<OrderScreen> {
                                   : Stack(
                                       children: [
                                         Container(
-                                          child: imageNotes != null
-                                              ? Image.file(
-                                                  fit: BoxFit.cover,
-                                                  imageNotes!,
-                                                  // width: deviceWidth * 0.275,
-                                                  // height: deviceHeight * 0.13,
-                                                )
-                                              : InkWell(
-                                                  onTap: () {
-                                                    showDialog<void>(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          dialogContext) {
-                                                        return AlertDialog(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(11)
-                                                          ),
-                                                          title: Center(child: Text("Choose Image Source",style: TextStyle(color: Colors.black,fontSize: 18, fontFamily: ConstFont.poppinsBold),overflow: TextOverflow.ellipsis)),
-                                                          backgroundColor: ConstColour.primaryColor,
-                                                          titlePadding: EdgeInsets.only(top: deviceHeight * 0.02),
-                                                          actionsPadding: EdgeInsets.zero,
-                                                          contentPadding: EdgeInsets.all(8),
-                                                          content: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Divider(color: Colors.black),
-                                                              ListTile(
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            11),
-                                                                    side: const BorderSide(
-                                                                        color: ConstColour
-                                                                            .primaryColor)),
-                                                                tileColor:
-                                                                    ConstColour
-                                                                        .bgColor,
-                                                                title: const Text(
-                                                                    "Camera",
-                                                                    style:
-                                                                        TextStyle(
+                                          child:
+                                              orderController.imageNotes != null
+                                                  ? Image.file(
+                                                      fit: BoxFit.cover,
+                                                      orderController
+                                                          .imageNotes!,
+                                                      // width: deviceWidth * 0.275,
+                                                      // height: deviceHeight * 0.13,
+                                                    )
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        showDialog<void>(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              dialogContext) {
+                                                            return AlertDialog(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              11)),
+                                                              title: const Center(
+                                                                  child: Text(
+                                                                      "Choose Image Source",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontFamily: ConstFont
+                                                                              .poppinsBold),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis)),
+                                                              backgroundColor:
+                                                                  ConstColour
+                                                                      .primaryColor,
+                                                              titlePadding:
+                                                                  EdgeInsets.only(
+                                                                      top: deviceHeight *
+                                                                          0.02),
+                                                              actionsPadding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .all(8),
+                                                              content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  const Divider(
+                                                                      color: Colors
+                                                                          .black),
+                                                                  ListTile(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                11),
+                                                                        side: const BorderSide(
+                                                                            color:
+                                                                                ConstColour.primaryColor)),
+                                                                    tileColor:
+                                                                        ConstColour
+                                                                            .bgColor,
+                                                                    title: const Text(
+                                                                        "Camera",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontFamily:
+                                                                              ConstFont.poppinsMedium,
+                                                                          fontSize:
+                                                                              14,
+                                                                        ),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis),
+                                                                    onTap: () {
+                                                                      Get.back();
+                                                                      getImageCamera();
+                                                                    },
+                                                                    leading:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .camera_alt,
                                                                       color: Colors
                                                                           .white,
-                                                                      fontFamily:
-                                                                          ConstFont
-                                                                              .poppinsMedium,
-                                                                      fontSize:
-                                                                          14,
                                                                     ),
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis),
-                                                                onTap: () {
-                                                                  Get.back();
-                                                                  getImageCamera();
-                                                                },
-                                                                leading:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .camera_alt,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  height:
-                                                                      deviceHeight *
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height: deviceHeight *
                                                                           0.01),
-                                                              ListTile(
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            11),
-                                                                    side: const BorderSide(
-                                                                        color: ConstColour
-                                                                            .primaryColor)),
-                                                                tileColor:
-                                                                    ConstColour
-                                                                        .bgColor,
-                                                                title: const Text(
-                                                                    "Gallery",
-                                                                    style:
-                                                                        TextStyle(
+                                                                  ListTile(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                11),
+                                                                        side: const BorderSide(
+                                                                            color:
+                                                                                ConstColour.primaryColor)),
+                                                                    tileColor:
+                                                                        ConstColour
+                                                                            .bgColor,
+                                                                    title: const Text(
+                                                                        "Gallery",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontFamily:
+                                                                              ConstFont.poppinsMedium,
+                                                                          fontSize:
+                                                                              14,
+                                                                        ),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis),
+                                                                    onTap: () {
+                                                                      Get.back();
+                                                                      getImageGallery();
+                                                                    },
+                                                                    leading:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .photo_library_rounded,
                                                                       color: Colors
                                                                           .white,
-                                                                      fontFamily:
-                                                                          ConstFont
-                                                                              .poppinsMedium,
-                                                                      fontSize:
-                                                                          14,
                                                                     ),
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis),
-                                                                onTap: () {
-                                                                  Get.back();
-
-                                                                  getImageGallery();
-                                                                },
-                                                                leading:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .photo_library_rounded,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ],
-                                                          ),
+                                                            );
+                                                          },
                                                         );
                                                       },
-                                                    );
-                                                  },
-                                                  child: (userProfileImage ==
-                                                              null ||
-                                                          userProfileImage!
-                                                              .isEmpty)
-                                                      ? Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Image.asset(
-                                                                'asset/icons/image.png',
-                                                                width:
-                                                                    deviceWidth *
-                                                                        0.2),
-                                                            const Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Text(
-                                                                "Upload Main Image",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .grey,
-                                                                  fontFamily:
-                                                                      ConstFont
-                                                                          .poppinsMedium,
-                                                                  fontSize: 14,
-                                                                ),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
+                                                      child: (userProfileImage ==
+                                                                  null ||
+                                                              userProfileImage!
+                                                                  .isEmpty)
+                                                          ? Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Image.asset(
+                                                                    'asset/icons/image.png',
+                                                                    width:
+                                                                        deviceWidth *
+                                                                            0.2),
+                                                                const Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  child: Text(
+                                                                    "Upload Main Image",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      fontFamily:
+                                                                          ConstFont
+                                                                              .poppinsMedium,
+                                                                      fontSize:
+                                                                          14,
+                                                                    ),
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                )
+                                                              ],
                                                             )
-                                                          ],
-                                                        )
-                                                      : CircleAvatar(
-                                                          radius: 55,
-                                                          backgroundImage:
-                                                              NetworkImage(
-                                                                  userProfileImage!),
-                                                        ),
-                                                ),
+                                                          : CircleAvatar(
+                                                              radius: 55,
+                                                              backgroundImage:
+                                                                  NetworkImage(
+                                                                      userProfileImage!),
+                                                            ),
+                                                    ),
                                         ),
                                         // Positioned(
                                         //     left: deviceWidth * 0.16,
@@ -943,120 +968,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             child: orderController.imgList.isNotEmpty
                                 ? IconButton(
                                     onPressed: () {
-                                      setState(() {
-                                        showCupertinoModalPopup(
-                                          filter: const ColorFilter.mode(
-                                              ConstColour.primaryColor,
-                                              BlendMode.clear),
-                                          semanticsDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-
-                                              shadowColor: Colors.white,
-                                              elevation: 8.0,
-                                              // backgroundColor: Colors.white,
-                                              backgroundColor:
-                                                  Colors.orange.shade100,
-                                              // title: const Text(
-                                              //   'Order',
-                                              //   style: TextStyle(
-                                              //     fontSize: 22,
-                                              //     fontFamily: ConstFont
-                                              //         .poppinsMedium,
-                                              //     color: Colors.black,
-                                              //   ),
-                                              //   overflow: TextOverflow
-                                              //       .ellipsis,
-                                              // ),
-                                              content: const Text(
-                                                'Are you sure, want to delete?',
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      ConstFont.poppinsRegular,
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                ),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              actions: [
-                                                InkWell(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  onTap: () {
-                                                    Get.back();
-                                                  },
-                                                  splashColor:
-                                                      ConstColour.btnHowerColor,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        color: Colors.red),
-                                                    child: const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(6.0),
-                                                      child: Text(
-                                                        'Cancel',
-                                                        style: TextStyle(
-                                                          fontFamily: ConstFont
-                                                              .poppinsRegular,
-                                                          fontSize: 12,
-                                                          color: Colors.white,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                InkWell(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  onTap: () {
-                                                    imageNotes = null;
-                                                    orderController.imgList
-                                                        .clear();
-                                                    Get.back();
-                                                  },
-                                                  splashColor:
-                                                      ConstColour.btnHowerColor,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        color: Colors.black),
-                                                    child: const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(6.0),
-                                                      child: Text(
-                                                        '    Ok    ',
-                                                        style: TextStyle(
-                                                          fontFamily: ConstFont
-                                                              .poppinsRegular,
-                                                          fontSize: 12,
-                                                          color: Colors.white,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      });
+                                      mainImageCancelDialog(context);
                                     },
                                     icon: const Icon(
                                       Icons.cancel_outlined,
@@ -1361,10 +1273,12 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         );
                                                       },
                                                       icon: Container(
-                                                        decoration: const BoxDecoration(
-                                                            shape: BoxShape.circle,
-                                                            color: Colors.black
-                                                        ),
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Colors
+                                                                    .black),
                                                         child: const Icon(
                                                           Icons.cancel_outlined,
                                                           color: Colors.red,

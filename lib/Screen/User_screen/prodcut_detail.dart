@@ -736,36 +736,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'deliveryDate'.tr,
-                          style: const TextStyle(
-                            color: ConstColour.btnHowerColor,
-                            fontSize: 15,
-                            fontFamily: ConstFont.poppinsRegular,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          ': ${userProductController.deliveryDate}',
-                          style: const TextStyle(
-                            color: ConstColour.textColor,
-                            fontSize: 16,
-                            fontFamily: ConstFont.poppinsRegular,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Expanded(
+                //         child: Text(
+                //           'deliveryDate'.tr,
+                //           style: const TextStyle(
+                //             color: ConstColour.btnHowerColor,
+                //             fontSize: 15,
+                //             fontFamily: ConstFont.poppinsRegular,
+                //             overflow: TextOverflow.ellipsis,
+                //           ),
+                //         ),
+                //       ),
+                //       Expanded(
+                //         child: Text(
+                //           ': ${userProductController.deliveryDate}',
+                //           style: const TextStyle(
+                //             color: ConstColour.textColor,
+                //             fontSize: 16,
+                //             fontFamily: ConstFont.poppinsRegular,
+                //             overflow: TextOverflow.ellipsis,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 (userProductController.notes == "" || userProductController.notes == null) ? SizedBox() : Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(

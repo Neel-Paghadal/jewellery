@@ -29,8 +29,7 @@ class ReportScreenController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(
-        Uri.parse("http://208.64.33.118:8558/api/Report/OrderDetails?orderId=$orderId"),
+    final response = await http.get(Uri.parse("http://208.64.33.118:8558/api/Report/OrderDetails?orderId=$orderId"),
         headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;

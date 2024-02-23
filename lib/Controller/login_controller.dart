@@ -7,7 +7,7 @@ import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
-import 'package:jewellery_user/Screen/home.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/home.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

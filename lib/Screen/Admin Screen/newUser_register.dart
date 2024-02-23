@@ -7,7 +7,7 @@ import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/newRegister_controller.dart';
 
-import '../ConstFile/constFonts.dart';
+import '../../ConstFile/constFonts.dart';
 
 class NewUserRegister extends StatefulWidget {
   const NewUserRegister({super.key});

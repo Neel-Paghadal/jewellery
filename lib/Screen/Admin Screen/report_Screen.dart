@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:jewellery_user/Controller/reportScreen_controller.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 
-import '../ConstFile/constColors.dart';
-import '../ConstFile/constFonts.dart';
+import '../../ConstFile/constColors.dart';
+import '../../ConstFile/constFonts.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});

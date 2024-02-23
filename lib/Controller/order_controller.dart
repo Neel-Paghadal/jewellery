@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
-import 'package:jewellery_user/Screen/home.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/home.dart';
 import '../Common/snackbar.dart';
 import '../ConstFile/constPreferences.dart';
 import '../Models/file_model.dart';
@@ -27,6 +27,7 @@ class OrderController extends GetxController{
   RxBool isLoading = false.obs;
   RxBool isLoadingSec = false.obs;
 
+  File? imageNotes;
 
   void clearController(){
     designT.clear();
