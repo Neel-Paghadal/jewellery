@@ -158,7 +158,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                 title: Text(
                                   reportScreenController
                                       .reportDetail[index].name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontFamily: ConstFont.poppinsRegular,
@@ -167,9 +167,9 @@ class _ReportScreenState extends State<ReportScreen> {
                                 ),
                                 minLeadingWidth: -40,
                                 visualDensity:
-                                    VisualDensity(horizontal: -4, vertical: -4),
+                                    const VisualDensity(horizontal: -4, vertical: -4),
                                 contentPadding:
-                                    EdgeInsets.only(left: 0.0, right: 10.0),
+                                    const EdgeInsets.only(left: 0.0, right: 10.0),
                                 horizontalTitleGap: 0.0,
                                 // subtitle: Text(
                                 //   "Completed",
@@ -179,114 +179,80 @@ class _ReportScreenState extends State<ReportScreen> {
                                 //       fontFamily: ConstFont.poppinsBold),
                                 //   overflow: TextOverflow.ellipsis,
                                 // ),
-                                trailing: Text(
-                                  (reportScreenController.reportDetail[index]
-                                                  .completedDate
-                                                  .toString() ==
-                                              "" &&
-                                          reportScreenController
-                                                  .reportDetail[index]
-                                                  .cancelledDate
-                                                  .toString() ==
-                                              "")
-                                      ? "Pending"
-                                      : reportScreenController
-                                                  .reportDetail[index]
-                                                  .completedDate
-                                                  .toString() !=
-                                              ""
-                                          ? "Completed"
-                                          : reportScreenController
-                                                      .reportDetail[index]
-                                                      .cancelledDate
-                                                      .toString() !=
-                                                  ""
-                                              ? "Cancelled"
-                                              : "In Progress",
+                                trailing: Text(reportScreenController.reportDetail[index].orderStatus,
                                   style: TextStyle(
-                                      color: (reportScreenController
-                                                      .reportDetail[index]
-                                                      .completedDate
-                                                      .toString() ==
-                                                  "" &&
-                                              reportScreenController
-                                                      .reportDetail[index]
-                                                      .cancelledDate
-                                                      .toString() ==
-                                                  "")
-                                          ? Colors.yellow
-                                          : reportScreenController
-                                                      .reportDetail[index]
-                                                      .completedDate
-                                                      .toString() !=
-                                                  ""
-                                              ? ConstColour.greenColor
-                                              : reportScreenController
-                                                          .reportDetail[index]
-                                                          .cancelledDate
-                                                          .toString() !=
-                                                      ""
-                                                  ? ConstColour.quantityRemove
-                                                  : ConstColour.primaryColor,
+                                      color: (reportScreenController.reportDetail[index].orderStatus ==
+                                          "Complete")
+                                          ? ConstColour.completeColor
+                                          : (reportScreenController.reportDetail[index].orderStatus ==
+                                          "Cancel")
+                                          ? ConstColour.cancelColor
+                                          : (reportScreenController.reportDetail[index].orderStatus ==
+                                          "Pending")
+                                          ? ConstColour.pendingColor
+                                          : (reportScreenController.reportDetail[index].orderStatus ==
+                                          "Working")
+                                          ? ConstColour.workingColor
+                                          : (reportScreenController.reportDetail[index].orderStatus ==
+                                          "New")
+                                          ? ConstColour.newColor
+                                          : Colors.white,
+
+
+
+
                                       fontSize: 16,
                                       fontFamily: ConstFont.poppinsBold),
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                // trailing:  IconButton(
-                                //   onPressed: () {},
-                                //   icon: Image.asset(
-                                //     "asset/icons/report_icon.png",
-                                //   ),
-                                // ),
                               ),
                               Text(
-                                "Created Date : " +
-                                    reportScreenController
-                                        .reportDetail[index].dateCreated,
-                                style: TextStyle(
-                                    color: Colors.blueGrey.shade200,
-                                    fontSize: 14,
+                                "Created Date : ${reportScreenController.reportDetail[index].orderCreatedDate}",
+                                style: TextStyle(color: Colors.blueGrey.shade200, fontSize: 14,
                                     fontFamily: ConstFont.poppinsRegular),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              reportScreenController
-                                          .reportDetail[index].completedDate ==
-                                      ""
-                                  ? SizedBox()
+                              reportScreenController.reportDetail[index].assignDate == ""
+                                  ? const SizedBox()
                                   : Text(
-                                      "Assign Date : " +
-                                          reportScreenController
+                                      "Assign Date : ${reportScreenController
                                               .reportDetail[index]
-                                              .completedDate,
+                                              .assignDate}",
                                       style: TextStyle(
                                           color: Colors.blueGrey.shade200,
                                           fontSize: 14,
                                           fontFamily: ConstFont.poppinsRegular),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                              reportScreenController
-                                          .reportDetail[index].cancelledDate ==
-                                      ""
-                                  ? SizedBox()
+                              reportScreenController.reportDetail[index].completedDate == ""
+                                  ? const SizedBox()
                                   : Text(
-                                      "Cancel Date : " +
-                                          reportScreenController
+                                      "Completed Date : ${reportScreenController
                                               .reportDetail[index]
-                                              .cancelledDate,
+                                              .completedDate}",
                                       style: TextStyle(
                                           color: Colors.blueGrey.shade200,
                                           fontSize: 14,
                                           fontFamily: ConstFont.poppinsRegular),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                              reportScreenController
-                                          .reportDetail[index].cancelReason ==
-                                      ""
-                                  ? SizedBox()
+                              reportScreenController.reportDetail[index].cancelledDate == ""
+                                  ? const SizedBox()
                                   : Text(
-                                      "Reason : " +
-                                          reportScreenController
-                                              .reportDetail[index].cancelReason,
+                                      "Cancel Date : ${reportScreenController
+                                              .reportDetail[index]
+                                              .cancelledDate}",
+                                      style: TextStyle(
+                                          color: Colors.blueGrey.shade200,
+                                          fontSize: 14,
+                                          fontFamily: ConstFont.poppinsRegular),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                              reportScreenController.reportDetail[index].cancelReason == ""
+                                  ? const SizedBox()
+                                  : Text(
+                                      "Reason : ${reportScreenController
+                                              .reportDetail[index].cancelReason}",
                                       style: TextStyle(
                                           color: Colors.blueGrey.shade200,
                                           fontSize: 14,

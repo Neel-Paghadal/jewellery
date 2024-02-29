@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constApi.dart';
-import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Screen/Admin%20Screen/home.dart';
 import 'package:jwt_decode/jwt_decode.dart';

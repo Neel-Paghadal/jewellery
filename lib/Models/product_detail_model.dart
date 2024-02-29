@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:get/get.dart';
-
 ProductDetail productDetailFromJson(String str) => ProductDetail.fromJson(json.decode(str));
 
 String productDetailToJson(ProductDetail data) => json.encode(data.toJson());

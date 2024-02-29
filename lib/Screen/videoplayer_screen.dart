@@ -1,4 +1,5 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
@@ -62,21 +63,30 @@ class VideoItem extends StatelessWidget {
         future: VideoThumbnail.thumbnailData(
           video: url,
           imageFormat: ImageFormat.JPEG,
-          maxWidth: 150,
-          quality: 25,
+          quality: 100,
         ),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+
             return Stack(
-              alignment:  Alignment.center,
+              alignment: Alignment.center,
               children: [
-                Image.memory(snapshot.data as Uint8List,fit: BoxFit.fill,),
-                const Icon(Icons.play_arrow_outlined,color: ConstColour.primaryColor,size: 40,)
+                Image.memory(
+                  snapshot.data as Uint8List,
+                  fit: BoxFit.fill,
+                ),
+                Icon(
+                  CupertinoIcons.play_circle_fill,
+                  color: ConstColour.primaryColor,
+                  size: 35,
+                )
               ],
             );
+
           } else {
-            return const Center(child: CircularProgressIndicator());
+
+            return const Center(child: CircularProgressIndicator(color: ConstColour.primaryColor,));
+
           }
         },
       ),
@@ -129,7 +139,6 @@ class VideoItem extends StatelessWidget {
 //   }
 // }
 
-
 class VideoPlayerDialog extends StatefulWidget {
   final String url;
 
@@ -146,15 +155,21 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.url),videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: false));
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.url),
+        videoPlayerOptions: VideoPlayerOptions(
+            allowBackgroundPlayback: false, mixWithOthers: true));
     _chewieController = ChewieController(
       videoPlayerController: _controller,
       allowFullScreen: true,
       autoInitialize: true,
       allowedScreenSleep: false,
       fullScreenByDefault: false,
-      aspectRatio: _controller.value.aspectRatio,
-      cupertinoProgressColors: ChewieProgressColors(bufferedColor: Colors.green),
+      allowMuting: true,
+      allowPlaybackSpeedChanging: true,
+      zoomAndPan: true,
+      // aspectRatio: _controller.value.aspectRatio,
+      cupertinoProgressColors:
+          ChewieProgressColors(bufferedColor: ConstColour.primaryColor),
       autoPlay: true,
       looping: true,
       // Other customization options can be added here
@@ -175,16 +190,6 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
     super.dispose();
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 //
 // class MultimediaList extends StatelessWidget {

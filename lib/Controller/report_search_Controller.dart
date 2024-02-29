@@ -9,7 +9,6 @@ import 'package:jewellery_user/Models/ordersReport_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/Models/party_model.dart';
 import '../Common/snackbar.dart';
-import '../Models/users_model.dart';
 
 class ReportSearchController extends GetxController {
 
@@ -112,7 +111,7 @@ class ReportSearchController extends GetxController {
     isLoaderShow.value = false;
   }
 
-  getFilterReportCall(String partyName,var startD,var endD,int pageIndex, int pageSize) async {
+  getFilterReportCall(String partyName,String orderStatus, var startD,var endD,int pageIndex, int pageSize) async {
     if (orderReportList.isEmpty) {
       isLoaderShow.value = true;
     } else {
@@ -123,6 +122,7 @@ class ReportSearchController extends GetxController {
 
     Map<String, dynamic> requestData = {
       "partyName": partyName,
+      "orderStatus" : orderStatus,
       "startDate": startD,
       "endDate": endD,
       "pageNumber": pageIndex,

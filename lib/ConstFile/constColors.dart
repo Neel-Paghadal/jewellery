@@ -20,6 +20,11 @@ class ConstColour {
   static const Color textColor = Color(0xffE6E6E6);
   static const Color loadImageColor = Color(0xFFE0E0E0);
   static const Color errorHint = Colors.redAccent;
+  static const Color completeColor  = Color(0xff82f66f);
+  static const Color cancelColor = Colors.redAccent;
+  static const Color newColor = Color(0xfcaef6e4);
+  static const Color pendingColor = Color(0xfff9dd68);
+  static const Color workingColor = Colors.blueAccent;
 
 
 }

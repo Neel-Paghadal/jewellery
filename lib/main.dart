@@ -4,11 +4,9 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jewellery_user/Common/checkInternet.dart';
 import 'package:jewellery_user/Language%20Module/languages.dart';
-import 'package:jewellery_user/Screen/User_screen/user_home.dart';
 import 'package:jewellery_user/Screen/splashScreen.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
-import 'package:jewellery_user/Screen/videoplayer_screen.dart';
 
 
 void main() {
@@ -46,6 +44,7 @@ class MyApp extends StatelessWidget {
       locale: Locale('en','US'),
       // locale: Locale('gu','IN'),
       // locale: Locale('hi','IN'),
+
       translations: Languages(),
       // fallbackLocale: Locale('en','US'),
       debugShowCheckedModeBanner: false,

@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:ffi';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/videoplayer_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
-import '../../Common/bottom_button_widget.dart';
 import '../../ConstFile/constColors.dart';
 import '../../ConstFile/constFonts.dart';
 import 'package:intl/intl.dart';
@@ -61,7 +60,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Future getImageGallery() async {
     _checkPermission();
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final image = await ImagePicker().pickMedia(imageQuality: 100);
     if (image == null) return;
 
     final imageTemporary = File(image.path);
@@ -95,19 +94,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(11)
-          ),
-          title: Center(child: Text("Choose Image Source",style: TextStyle(color: Colors.black,fontSize: 18, fontFamily: ConstFont.poppinsBold),overflow: TextOverflow.ellipsis)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
+          title: const Center(
+              child: Text("Choose Image Source",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: ConstFont.poppinsBold),
+                  overflow: TextOverflow.ellipsis)),
           backgroundColor: ConstColour.primaryColor,
-           titlePadding: EdgeInsets.only(top: deviceHeight * 0.02),
-           actionsPadding: EdgeInsets.zero,
-          contentPadding: EdgeInsets.all(8),
+          titlePadding: EdgeInsets.only(top: deviceHeight * 0.02),
+          actionsPadding: EdgeInsets.zero,
+          contentPadding: const EdgeInsets.all(8),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Divider(color: Colors.black),
+              const Divider(color: Colors.black),
               ListTile(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(11),
@@ -158,9 +162,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -182,19 +183,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           Obx(
             () => (productController.isLoading.value == true ||
                     productController.isLoadingSec.value == true)
-                ?  SizedBox()
+                ? const SizedBox()
                 : IconButton(
                     onPressed: () {
-                      // if (productController.isFilterApplyed.value == false) {
-                      //   debugPrint("If calls");
-                      //   productController.isFilterApplyed.value = true;
-                      // } else {
                       if (_formKey.currentState!.validate()) {
                         String date;
                         if (_startDate == null) {
                           var dates;
-                          dates = DateFormat('dd/MM/yyyy').parse(
-                              productController.deliveryDateController.text);
+                          dates = DateFormat('dd/MM/yyyy').parse(productController.deliveryDateController.text);
                           debugPrint(dates.toString());
 
                           date = DateFormat('yyyy-MM-dd').format(dates);
@@ -216,17 +212,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         productController.isFilterApplyed.value = false;
                       }
                       debugPrint("Else calls");
-                      // }
-                      // setState(() {});
+
                     },
-                    // icon: productController.isFilterApplyed.value == true
-                    //     ?
+
                     icon: const Icon(Icons.done,
                         color: ConstColour.primaryColor, size: 25)
-                    // : Image.asset(
-                    //     "asset/icons/edit.png",
-                    //     width: deviceWidth * 0.06,
-                    //   ),
                     ),
           )
         ],
@@ -355,8 +345,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     ),
                   )
-                :
-                Obx(
+                : Obx(
                     () => Form(
                       key: _formKey,
                       child: Column(
@@ -381,90 +370,126 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                             ),
                                           )
                                         : InkWell(
-                                      onTap: () {
-
-
-                                        showDialog(
-                                          context: context,
-                                          builder:
-                                              (BuildContext context) {
-                                            return Container(
-                                              color: Colors.black,
-                                              child: PhotoView(
-                                                tightMode: true,
-                                                filterQuality:
-                                                FilterQuality
-                                                    .high,
-                                                backgroundDecoration:
-                                                BoxDecoration(
-                                                  color: Colors.black,
-                                                ),
-                                                loadingBuilder: (context,
-                                                    ImageChunkEvent?
-                                                    loadingProgress) {
-                                                  if (loadingProgress ==
-                                                      null) {
-                                                    return Container();
-                                                  } else {
-                                                    return Center(
-                                                      child:
-                                                      CircularProgressIndicator(
-                                                        color: ConstColour
-                                                            .primaryColor,
-                                                        value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                            null
-                                                            ? loadingProgress
-                                                            .cumulativeBytesLoaded /
-                                                            (loadingProgress.expectedTotalBytes ??
-                                                                1)
-                                                            : null,
+                                            onTap: () {
+                                              if (productController
+                                                  .productDetail[0].image
+                                                  .endsWith('.mp4')) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (_) => Dialog(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    insetPadding:
+                                                        EdgeInsets.zero,
+                                                    insetAnimationDuration:
+                                                        const Duration(
+                                                            milliseconds: 500),
+                                                    child: VideoPlayerDialog(
+                                                        url: productController
+                                                            .productDetail[0]
+                                                            .image),
+                                                  ),
+                                                );
+                                              } else {
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Container(
+                                                      color: Colors.black,
+                                                      child: PhotoView(
+                                                        tightMode: true,
+                                                        filterQuality:
+                                                            FilterQuality.high,
+                                                        backgroundDecoration:
+                                                            const BoxDecoration(
+                                                          color: Colors.black,
+                                                        ),
+                                                        loadingBuilder: (context,
+                                                            ImageChunkEvent?
+                                                                loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null) {
+                                                            return Container();
+                                                          } else {
+                                                            return Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                color: ConstColour
+                                                                    .primaryColor,
+                                                                value: loadingProgress
+                                                                            .expectedTotalBytes !=
+                                                                        null
+                                                                    ? loadingProgress
+                                                                            .cumulativeBytesLoaded /
+                                                                        (loadingProgress.expectedTotalBytes ??
+                                                                            1)
+                                                                    : null,
+                                                              ),
+                                                            );
+                                                          }
+                                                        },
+                                                        imageProvider: NetworkImage(
+                                                            productController
+                                                                .productDetail[
+                                                                    0]
+                                                                .image
+                                                                .toString()),
+                                                        heroAttributes:
+                                                            const PhotoViewHeroAttributes(
+                                                                tag: "someTag"),
                                                       ),
                                                     );
-                                                  }
-                                                },
-                                                imageProvider:NetworkImage(
-                                                    productController
-                                                        .productDetail[0].image
-                                                        .toString()
-                                                ),
-                                                heroAttributes:
-                                                const PhotoViewHeroAttributes(
-                                                    tag:
-                                                    "someTag"),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                          child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(16),
-                                              child: CachedNetworkImage(
-                                                width: double.infinity,
-                                                fit: BoxFit.contain,
-                                                progressIndicatorBuilder:
-                                                    (context, url,
-                                                            downloadProgress) =>
-                                                        Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          value: downloadProgress
-                                                              .progress,
-                                                          color: ConstColour
-                                                              .primaryColor),
-                                                ),
-                                                imageUrl: productController
+                                                  },
+                                                );
+                                              }
+                                            },
+                                            child: productController
                                                     .productDetail[0].image
-                                                    .toString(),
-                                                fadeInCurve: Curves.easeInOutQuad,
-                                                // placeholder: (context, url) => const Icon(Icons.image,size: 65, color: ConstColour.loadImageColor),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const Icon(Icons.error,
-                                                            size: 45),
-                                              ),
-                                            ),
-                                        ),
+                                                    .endsWith('.mp4')
+                                                ? ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
+                                                    child: VideoItem(
+                                                        url: productController
+                                                            .productDetail[0]
+                                                            .image),
+                                                  )
+                                                : ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16),
+                                                    child: CachedNetworkImage(
+                                                      width: double.infinity,
+                                                      fit: BoxFit.contain,
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                                  downloadProgress) =>
+                                                              Center(
+                                                        child: CircularProgressIndicator(
+                                                            value:
+                                                                downloadProgress
+                                                                    .progress,
+                                                            color: ConstColour
+                                                                .primaryColor),
+                                                      ),
+                                                      imageUrl:
+                                                          productController
+                                                              .productDetail[0]
+                                                              .image
+                                                              .toString(),
+                                                      fadeInCurve:
+                                                          Curves.easeInOutQuad,
+                                                      // placeholder: (context, url) => const Icon(Icons.image,size: 65, color: ConstColour.loadImageColor),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          const Icon(
+                                                              Icons.error,
+                                                              size: 45),
+                                                    ),
+                                                  ),
+                                          ),
                                   ),
                                   Row(
                                     mainAxisAlignment:
@@ -670,15 +695,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ),
                           ),
-
-
-
-
-
-
-
-
-
                           Container(
                             child:
                                 // productController
@@ -724,7 +740,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                             controller: ScrollController(),
                                             scrollDirection: Axis.horizontal,
                                             shrinkWrap: true,
-                                            itemCount: productController.productDetail[0].orderImages.length,
+                                            itemCount: productController
+                                                .productDetail[0]
+                                                .orderImages
+                                                .length,
                                             itemBuilder: (context, index) {
                                               debugPrint(productController
                                                   .productDetail[0]
@@ -732,446 +751,268 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   .path);
 
                                               // final item = productController.productDetail[0].orderImages[index].path;
-                                              final item =   productController.productDetail[0].orderImages[index].path.startsWith('http://') ? productController.productDetail[0].orderImages[index].path :'http://208.64.33.118:8558/Files/${productController.productDetail[0].orderImages[index].path}';
+                                              final item = productController
+                                                      .productDetail[0]
+                                                      .orderImages[index]
+                                                      .path
+                                                      .startsWith('http://')
+                                                  ? productController
+                                                      .productDetail[0]
+                                                      .orderImages[index]
+                                                      .path
+                                                  : '${ConstApi.baseFilePath + productController.productDetail[0].orderImages[index].path}';
 
-                                              if (item.endsWith('.mp4')) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(5.0),
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    child: Container(
-                                                        height: deviceHeight * 0.09,
-                                                        width: deviceWidth *  0.16,
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius: BorderRadius.circular(8),
-                                                        ),
-                                                        child: InkWell(
-                                                            onTap:() {
+                                              // if (item.endsWith('.mp4')) {
 
-                                                              showDialog(
-                                                                context: context,
-                                                                builder: (_) => Dialog(
-                                                                  backgroundColor: Colors.white,
-                                                                  insetPadding: EdgeInsets.zero,
-                                                                  insetAnimationDuration: Duration(milliseconds: 500),
-                                                                  child: VideoPlayerDialog(url: item),
-                                                                ),
-                                                              );                                                            },
-                                                            child: VideoItem(url: item))),
-                                                  ),
-                                                );
-                                              } else {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(5.0),
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    child: Container(
-                                                        height: deviceHeight * 0.09,
-                                                        width: deviceWidth *  0.16,
-
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius: BorderRadius.circular(8),
-                                                        ),
-                                                        child: InkWell(
-                                                            onTap: () {
-                                                              showDialog(
-                                                                context: context,
-                                                                builder:
-                                                                    (BuildContext context) {
-                                                                  return Container(
-                                                                    color: Colors.black,
-                                                                    child: PhotoView(
-                                                                      tightMode: true,
-                                                                      filterQuality:
-                                                                      FilterQuality
-                                                                          .high,
-                                                                      backgroundDecoration:
-                                                                      BoxDecoration(
-                                                                        color: Colors.black,
-                                                                      ),
-                                                                      loadingBuilder: (context,
-                                                                          ImageChunkEvent?
-                                                                          loadingProgress) {
-                                                                        if (loadingProgress ==
-                                                                            null) {
-                                                                          return Container();
-                                                                        } else {
-                                                                          return Center(
-                                                                            child:
-                                                                            CircularProgressIndicator(
-                                                                              color: ConstColour
-                                                                                  .primaryColor,
-                                                                              value: loadingProgress
-                                                                                  .expectedTotalBytes !=
-                                                                                  null
-                                                                                  ? loadingProgress
-                                                                                  .cumulativeBytesLoaded /
-                                                                                  (loadingProgress.expectedTotalBytes ??
-                                                                                      1)
-                                                                                  : null,
-                                                                            ),
-                                                                          );
-                                                                        }
-                                                                      },
-                                                                      imageProvider:  NetworkImage(
-                                                                        item,
-                                                                      ),
-                                                                      heroAttributes:
-                                                                      const PhotoViewHeroAttributes(
-                                                                          tag:
-                                                                          "someTag"),
+                                              return Stack(
+                                                alignment: Alignment.topRight,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            5.0),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: Container(
+                                                          height: deviceHeight * 0.09,
+                                                          width: deviceWidth * 0.16,
+                                                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8),),
+                                                          child: InkWell(
+                                                              onTap: () {
+                                                                if (item.endsWith('.mp4')) {
+                                                                  showDialog(
+                                                                    context: context,
+                                                                    builder: (_) =>
+                                                                        Dialog(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      insetPadding:
+                                                                          EdgeInsets
+                                                                              .zero,
+                                                                      insetAnimationDuration:
+                                                                          const Duration(
+                                                                              milliseconds: 500),
+                                                                      child: VideoPlayerDialog(
+                                                                          url:
+                                                                              item),
                                                                     ),
                                                                   );
-                                                                },
-                                                              );
-                                                            },
-                                                            child: ImageItem(url: item))),
+                                                                } else {
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return Container(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        child:
+                                                                            PhotoView(
+                                                                          tightMode:
+                                                                              true,
+                                                                          filterQuality:
+                                                                              FilterQuality.high,
+                                                                          backgroundDecoration:
+                                                                              const BoxDecoration(
+                                                                            color:
+                                                                                Colors.black,
+                                                                          ),
+                                                                          loadingBuilder:
+                                                                              (context, ImageChunkEvent? loadingProgress) {
+                                                                            if (loadingProgress ==
+                                                                                null) {
+                                                                              return Container();
+                                                                            } else {
+                                                                              return Center(
+                                                                                child: CircularProgressIndicator(
+                                                                                  color: ConstColour.primaryColor,
+                                                                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+                                                                                ),
+                                                                              );
+                                                                            }
+                                                                          },
+                                                                          imageProvider:
+                                                                              NetworkImage(
+                                                                            item,
+                                                                          ),
+                                                                          heroAttributes:
+                                                                              const PhotoViewHeroAttributes(tag: "someTag"),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                }
+                                                              },
+                                                              child: item
+                                                                      .endsWith(
+                                                                          '.mp4')
+                                                                  ? VideoItem(
+                                                                      url: item)
+                                                                  : ImageItem(
+                                                                      url:
+                                                                          item))),
+                                                    ),
                                                   ),
-                                                );
-                                              }
+                                                  Positioned(
+                                                    left: deviceWidth * 0.1,
+                                                    bottom: deviceHeight * 0.05,
+                                                    child: Container(
+                                                      child: productController
+                                                                  .productDetail[
+                                                                      0]
+                                                                  .orderImages !=
+                                                              null
+                                                          ? IconButton(
+                                                              onPressed: () {
+                                                                showCupertinoModalPopup(
+                                                                  filter: const ColorFilter
+                                                                      .mode(
+                                                                      ConstColour
+                                                                          .primaryColor,
+                                                                      BlendMode
+                                                                          .clear),
+                                                                  semanticsDismissible:
+                                                                      false,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(10)),
 
-                                              // return InkWell(
-                                              //   onTap: () {
-                                              //     showDialog(
-                                              //       context: context,
-                                              //       builder:
-                                              //           (BuildContext context) {
-                                              //         return Container(
-                                              //           color: Colors.black,
-                                              //           child: PhotoView(
-                                              //             tightMode: true,
-                                              //             filterQuality:
-                                              //                 FilterQuality
-                                              //                     .high,
-                                              //             backgroundDecoration:
-                                              //                 BoxDecoration(
-                                              //               color: Colors.black,
-                                              //             ),
-                                              //             loadingBuilder: (context,
-                                              //                 ImageChunkEvent?
-                                              //                     loadingProgress) {
-                                              //               if (loadingProgress ==
-                                              //                   null) {
-                                              //                 return Container();
-                                              //               } else {
-                                              //                 return Center(
-                                              //                   child:
-                                              //                       CircularProgressIndicator(
-                                              //                     color: ConstColour
-                                              //                         .primaryColor,
-                                              //                     value: loadingProgress
-                                              //                                 .expectedTotalBytes !=
-                                              //                             null
-                                              //                         ? loadingProgress
-                                              //                                 .cumulativeBytesLoaded /
-                                              //                             (loadingProgress.expectedTotalBytes ??
-                                              //                                 1)
-                                              //                         : null,
-                                              //                   ),
-                                              //                 );
-                                              //               }
-                                              //             },
-                                              //             imageProvider: productController
-                                              //                     .productDetail[
-                                              //                         0]
-                                              //                     .orderImages[
-                                              //                         index]
-                                              //                     .path
-                                              //                     .startsWith(
-                                              //                         'http://')
-                                              //                 ? NetworkImage(
-                                              //                     productController
-                                              //                         .productDetail[
-                                              //                             0]
-                                              //                         .orderImages[
-                                              //                             index]
-                                              //                         .path,
-                                              //                   )
-                                              //                 : NetworkImage(
-                                              //                     "http://208.64.33.118:8558/Files/" +
-                                              //                         productController
-                                              //                             .productDetail[
-                                              //                                 0]
-                                              //                             .orderImages[
-                                              //                                 index]
-                                              //                             .path,
-                                              //                   ),
-                                              //             heroAttributes:
-                                              //                 const PhotoViewHeroAttributes(
-                                              //                     tag:
-                                              //                         "someTag"),
-                                              //           ),
-                                              //         );
-                                              //       },
-                                              //     );
-                                              //   },
-                                              //   child: Stack(
-                                              //     alignment: Alignment.topRight,
-                                              //     children: [
-                                              //       Padding(
-                                              //         padding:
-                                              //             const EdgeInsets.all(
-                                              //                 5.0),
-                                              //         child: ClipRRect(
-                                              //           borderRadius:
-                                              //               BorderRadius
-                                              //                   .circular(8),
-                                              //           child: Container(
-                                              //             height: deviceHeight *
-                                              //                 0.09,
-                                              //             decoration:
-                                              //                 BoxDecoration(
-                                              //               color: Colors.white,
-                                              //               borderRadius:
-                                              //                   BorderRadius
-                                              //                       .circular(
-                                              //                           8),
-                                              //             ),
-                                              //             child: productController
-                                              //                     .productDetail[
-                                              //                         0]
-                                              //                     .orderImages[
-                                              //                         index]
-                                              //                     .path
-                                              //                     .startsWith(
-                                              //                         'http://')
-                                              //                 ? CachedNetworkImage(
-                                              //                     imageUrl: productController
-                                              //                         .productDetail[
-                                              //                             0]
-                                              //                         .orderImages[
-                                              //                             index]
-                                              //                         .path,
-                                              //                     fit: BoxFit
-                                              //                         .contain,
-                                              //                     fadeInCurve:
-                                              //                         Curves
-                                              //                             .easeInOutQuad,
-                                              //                     width:
-                                              //                         deviceWidth *
-                                              //                             0.16,
-                                              //                     placeholder:
-                                              //                         (context,
-                                              //                                 url) =>
-                                              //                             Center(
-                                              //                       child: const Icon(
-                                              //                           Icons
-                                              //                               .image,
-                                              //                           size:
-                                              //                               55,
-                                              //                           color: ConstColour
-                                              //                               .loadImageColor),
-                                              //                     ),
-                                              //                     errorWidget: (context,
-                                              //                             url,
-                                              //                             error) =>
-                                              //                         const Icon(
-                                              //                             Icons
-                                              //                                 .error,
-                                              //                             size:
-                                              //                                 45),
-                                              //                   )
-                                              //                 : CachedNetworkImage(
-                                              //                     fit: BoxFit
-                                              //                         .contain,
-                                              //                     imageUrl: "http://208.64.33.118:8558/Files/" +
-                                              //                         productController
-                                              //                             .productDetail[
-                                              //                                 0]
-                                              //                             .orderImages[
-                                              //                                 index]
-                                              //                             .path,
-                                              //                     fadeInCurve:
-                                              //                         Curves
-                                              //                             .easeInOutQuad,
-                                              //                     width:
-                                              //                         deviceWidth *
-                                              //                             0.16,
-                                              //                     placeholder:
-                                              //                         (context,
-                                              //                                 url) =>
-                                              //                             Center(
-                                              //                       child: const Icon(
-                                              //                           Icons
-                                              //                               .image,
-                                              //                           size:
-                                              //                               55,
-                                              //                           color: ConstColour
-                                              //                               .loadImageColor),
-                                              //                     ),
-                                              //                     errorWidget: (context,
-                                              //                             url,
-                                              //                             error) =>
-                                              //                         const Icon(
-                                              //                             Icons
-                                              //                                 .error,
-                                              //                             size:
-                                              //                                 45),
-                                              //                   ),
-                                              //           ),
-                                              //         ),
-                                              //       ),
-                                              //       Positioned(
-                                              //         left: deviceWidth * 0.1,
-                                              //         bottom:
-                                              //             deviceHeight * 0.05,
-                                              //         child: Container(
-                                              //           child: productController
-                                              //                       .productDetail[
-                                              //                           0]
-                                              //                       .orderImages !=
-                                              //                   null
-                                              //               ? IconButton(
-                                              //                   onPressed: () {
-                                              //                     showCupertinoModalPopup(
-                                              //                       filter: const ColorFilter
-                                              //                           .mode(
-                                              //                           ConstColour
-                                              //                               .primaryColor,
-                                              //                           BlendMode
-                                              //                               .clear),
-                                              //                       semanticsDismissible:
-                                              //                           false,
-                                              //                       context:
-                                              //                           context,
-                                              //                       builder:
-                                              //                           (BuildContext
-                                              //                               context) {
-                                              //                         return AlertDialog(
-                                              //                           shape: RoundedRectangleBorder(
-                                              //                               borderRadius:
-                                              //                                   BorderRadius.circular(10)),
-                                              //
-                                              //                           shadowColor:
-                                              //                               Colors.white,
-                                              //                           elevation:
-                                              //                               8.0,
-                                              //                           // backgroundColor: Colors.white,
-                                              //                           backgroundColor: Colors
-                                              //                               .orange
-                                              //                               .shade100,
-                                              //                           // title: const Text(
-                                              //                           //   'Order',
-                                              //                           //   style: TextStyle(
-                                              //                           //     fontSize: 22,
-                                              //                           //     fontFamily: ConstFont
-                                              //                           //         .poppinsMedium,
-                                              //                           //     color: Colors.black,
-                                              //                           //   ),
-                                              //                           //   overflow: TextOverflow
-                                              //                           //       .ellipsis,
-                                              //                           // ),
-                                              //                           content:
-                                              //                               const Text(
-                                              //                             'Are you sure, want to delete?',
-                                              //                             style:
-                                              //                                 TextStyle(
-                                              //                               fontFamily:
-                                              //                                   ConstFont.poppinsRegular,
-                                              //                               fontSize:
-                                              //                                   16,
-                                              //                               color:
-                                              //                                   Colors.black,
-                                              //                             ),
-                                              //                             maxLines:
-                                              //                                 2,
-                                              //                             overflow:
-                                              //                                 TextOverflow.ellipsis,
-                                              //                           ),
-                                              //                           actions: [
-                                              //                             InkWell(
-                                              //                               borderRadius:
-                                              //                                   BorderRadius.circular(5),
-                                              //                               onTap:
-                                              //                                   () {
-                                              //                                 Get.back();
-                                              //                               },
-                                              //                               splashColor:
-                                              //                                   ConstColour.btnHowerColor,
-                                              //                               child:
-                                              //                                   Container(
-                                              //                                 decoration: BoxDecoration(
-                                              //                                     // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                              //                                     borderRadius: BorderRadius.circular(5),
-                                              //                                     color: Colors.red),
-                                              //                                 child: const Padding(
-                                              //                                   padding: EdgeInsets.all(6.0),
-                                              //                                   child: Text(
-                                              //                                     'Cancel',
-                                              //                                     style: TextStyle(
-                                              //                                       fontFamily: ConstFont.poppinsRegular,
-                                              //                                       fontSize: 12,
-                                              //                                       color: Colors.white,
-                                              //                                     ),
-                                              //                                     overflow: TextOverflow.ellipsis,
-                                              //                                   ),
-                                              //                                 ),
-                                              //                               ),
-                                              //                             ),
-                                              //                             InkWell(
-                                              //                               borderRadius:
-                                              //                                   BorderRadius.circular(5),
-                                              //                               onTap:
-                                              //                                   () {
-                                              //                                 setState(() {
-                                              //                                   productController.productDetail[0].orderImages.removeAt(index);
-                                              //                                 });
-                                              //                                 Get.back();
-                                              //                               },
-                                              //                               splashColor:
-                                              //                                   ConstColour.btnHowerColor,
-                                              //                               child:
-                                              //                                   Container(
-                                              //                                 decoration: BoxDecoration(
-                                              //                                     // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                              //                                     borderRadius: BorderRadius.circular(5),
-                                              //                                     color: Colors.black),
-                                              //                                 child: const Padding(
-                                              //                                   padding: EdgeInsets.all(6.0),
-                                              //                                   child: Text(
-                                              //                                     '    Ok    ',
-                                              //                                     style: TextStyle(
-                                              //                                       fontFamily: ConstFont.poppinsRegular,
-                                              //                                       fontSize: 12,
-                                              //                                       color: Colors.white,
-                                              //                                     ),
-                                              //                                     overflow: TextOverflow.ellipsis,
-                                              //                                   ),
-                                              //                                 ),
-                                              //                               ),
-                                              //                             ),
-                                              //                           ],
-                                              //                         );
-                                              //                       },
-                                              //                     );
-                                              //                   },
-                                              //                   icon: Container(
-                                              //                     decoration: BoxDecoration(
-                                              //                         shape: BoxShape
-                                              //                             .circle,
-                                              //                         color: Colors
-                                              //                             .black),
-                                              //                     child:
-                                              //                         const Icon(
-                                              //                       Icons
-                                              //                           .cancel_outlined,
-                                              //                       color: Colors
-                                              //                           .redAccent,
-                                              //                       size: 20,
-                                              //                     ),
-                                              //                   ))
-                                              //               : const SizedBox(),
-                                              //         ),
-                                              //       )
-                                              //     ],
-                                              //   ),
-                                              // );
-
-
-
-
+                                                                      shadowColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      elevation:
+                                                                          8.0,
+                                                                      // backgroundColor: Colors.white,
+                                                                      backgroundColor: Colors
+                                                                          .orange
+                                                                          .shade100,
+                                                                      // title: const Text(
+                                                                      //   'Order',
+                                                                      //   style: TextStyle(
+                                                                      //     fontSize: 22,
+                                                                      //     fontFamily: ConstFont
+                                                                      //         .poppinsMedium,
+                                                                      //     color: Colors.black,
+                                                                      //   ),
+                                                                      //   overflow: TextOverflow
+                                                                      //       .ellipsis,
+                                                                      // ),
+                                                                      content:
+                                                                          const Text(
+                                                                        'Are you sure, want to delete?',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontFamily:
+                                                                              ConstFont.poppinsRegular,
+                                                                          fontSize:
+                                                                              16,
+                                                                          color:
+                                                                              Colors.black,
+                                                                        ),
+                                                                        maxLines:
+                                                                            2,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                      actions: [
+                                                                        InkWell(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5),
+                                                                          onTap:
+                                                                              () {
+                                                                            Get.back();
+                                                                          },
+                                                                          splashColor:
+                                                                              ConstColour.btnHowerColor,
+                                                                          child:
+                                                                              Container(
+                                                                            decoration: BoxDecoration(
+                                                                                // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                                borderRadius: BorderRadius.circular(5),
+                                                                                color: Colors.red),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.all(6.0),
+                                                                              child: Text(
+                                                                                'Cancel',
+                                                                                style: TextStyle(
+                                                                                  fontFamily: ConstFont.poppinsRegular,
+                                                                                  fontSize: 12,
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                                overflow: TextOverflow.ellipsis,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        InkWell(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5),
+                                                                          onTap:
+                                                                              () {
+                                                                            setState(() {
+                                                                              productController.productDetail[0].orderImages.removeAt(index);
+                                                                            });
+                                                                            Get.back();
+                                                                          },
+                                                                          splashColor:
+                                                                              ConstColour.btnHowerColor,
+                                                                          child:
+                                                                              Container(
+                                                                            decoration: BoxDecoration(
+                                                                                // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                                borderRadius: BorderRadius.circular(5),
+                                                                                color: Colors.black),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.all(6.0),
+                                                                              child: Text(
+                                                                                '    Ok    ',
+                                                                                style: TextStyle(
+                                                                                  fontFamily: ConstFont.poppinsRegular,
+                                                                                  fontSize: 12,
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                                overflow: TextOverflow.ellipsis,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              icon: Container(
+                                                                decoration: const BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: Colors
+                                                                        .black),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .cancel_outlined,
+                                                                  color: Colors
+                                                                      .redAccent,
+                                                                  size: 20,
+                                                                ),
+                                                              ))
+                                                          : const SizedBox(),
+                                                    ),
+                                                  )
+                                                ],
+                                              );
                                             },
                                           ),
                                         ),
@@ -1179,24 +1020,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ),
                           ),
-
-
-
                           Divider(
                             height: deviceHeight * 0.01,
                           ),
-
-
-
-
-
-
-
-
-
-
-
-
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
@@ -1320,7 +1146,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         AutovalidateMode.onUserInteraction,
                                     controller: productController.caratT,
                                     keyboardType:
-                                        TextInputType.numberWithOptions(
+                                        const TextInputType.numberWithOptions(
                                             decimal: true),
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
@@ -1384,7 +1210,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         AutovalidateMode.onUserInteraction,
                                     controller: productController.weightT,
                                     keyboardType:
-                                        TextInputType.numberWithOptions(
+                                        const TextInputType.numberWithOptions(
                                             decimal: true),
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
@@ -1453,7 +1279,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 final DateTime? pickedDate =
                                     await showDatePicker(
                                   context: Get.context!,
-                                  initialEntryMode: DatePickerEntryMode.calendarOnly, // <- this
+                                  initialEntryMode: DatePickerEntryMode
+                                      .calendarOnly, // <- this
                                   initialDate: DateTime.now(),
                                   firstDate: DateTime.now(),
                                   lastDate: DateTime(2050),

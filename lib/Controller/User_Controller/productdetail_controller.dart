@@ -1,10 +1,6 @@
-
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
@@ -13,9 +9,7 @@ import 'package:jewellery_user/Controller/User_Controller/user_home_con.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Models/product_detail_model.dart';
 import 'package:jewellery_user/Screen/User_screen/user_home.dart';
-
 import '../../ConstFile/constApi.dart';
-import '../../Screen/User_screen/prodcut_detail.dart';
 
 class UserProductController extends GetxController{
   UserHomeCon userHomeCon = Get.put(UserHomeCon());

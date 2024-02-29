@@ -19,5 +19,9 @@ class ConstApi {
   static  String  getReport = '${apiUrl}Report/Orders';
   static  String  getParty = '${apiUrl}Order/GetParties';
   static  String  updateAssignOrder = '${apiUrl}Order/UpdateAssignOrder';
+  static  String  forgotPassword = '${apiUrl}Auth/reset-password';
+  static  String  userProfileDetail = '${apiUrl}User/getUserDetails?id=';
+  static  String  fileUpload = '${apiUrl}File/Upload';
+  static  String  orderDelete = '${apiUrl}Order/DeleteOrder';
 
 }

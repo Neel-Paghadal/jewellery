@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jewellery_user/Common/bottom_button_widget.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/newRegister_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../ConstFile/constFonts.dart';
 
@@ -21,6 +25,46 @@ class _NewUserRegisterState extends State<NewUserRegister> {
   final _formKey = GlobalKey<FormState>();
   NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
   HomeController homeController = Get.put(HomeController());
+  File? imageNotes;
+  String? userProfileImage;
+
+  Future<void> _checkPermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+  }
+
+  Future getImageCamera() async {
+    _checkPermission();
+
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    setState(() {
+      imageNotes = imageTemporary;
+      newRegisterCon.isLoading.value = true;
+      newRegisterCon.uploadFile(imageNotes!);
+      debugPrint(imageNotes.toString());
+    });
+  }
+
+  Future getImageGallery() async {
+    _checkPermission();
+
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    setState(() {
+      imageNotes = imageTemporary;
+      newRegisterCon.isLoading.value = true;
+      newRegisterCon.uploadFile(imageNotes!);
+
+      debugPrint(imageNotes.toString());
+    });
+  }
 
   @override
   void initState() {
@@ -78,7 +122,6 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                 //     fontSize: 19
                 // ),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,maxLines: 2),
                 Divider(height: deviceHeight * 0.03),
-
                 Padding(
                   padding: EdgeInsets.only(
                       left: deviceWidth * 0.03, right: deviceWidth * 0.03),
@@ -134,7 +177,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                                 fontFamily: ConstFont.poppinsRegular,
                                 fontSize: 16,
                                 overflow: TextOverflow.ellipsis),
-                            errorStyle: const TextStyle(color: ConstColour.errorHint),
+                            errorStyle:
+                                const TextStyle(color: ConstColour.errorHint),
                           ),
                           style: const TextStyle(
                               color: Colors.white,
@@ -185,7 +229,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                               borderSide: const BorderSide(
                                   color: ConstColour.textFieldBorder),
                             ),
-                            errorStyle: const TextStyle(color: ConstColour.errorHint),
+                            errorStyle:
+                                const TextStyle(color: ConstColour.errorHint),
                             border: InputBorder.none,
                             filled: true,
                             hintText: "Enter Lastname",
@@ -205,7 +250,6 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                   ),
                 ),
                 Divider(height: deviceHeight * 0.01),
-
                 Padding(
                   padding: EdgeInsets.only(
                       left: deviceWidth * 0.03, right: deviceWidth * 0.03),
@@ -272,7 +316,6 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                   ),
                 ),
                 Divider(height: deviceHeight * 0.01),
-
                 Padding(
                   padding: EdgeInsets.only(
                       left: deviceWidth * 0.03, right: deviceWidth * 0.03),
@@ -335,7 +378,6 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                   ),
                 ),
                 Divider(height: deviceHeight * 0.01),
-
                 Padding(
                   padding: EdgeInsets.only(
                       left: deviceWidth * 0.03, right: deviceWidth * 0.03),
@@ -551,7 +593,254 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                         fontFamily: ConstFont.poppinsRegular),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                            color: ConstColour.primaryColor,
+                            strokeAlign: BorderSide.strokeAlignInside,
+                            style: BorderStyle.solid)),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: deviceWidth * 1.0,
+                          height: deviceHeight * 0.18,
+                          child: Center(
+                            child: Stack(
+                              children: [
+                                Obx(
+                                  () => Container(
+                                    child:
+                                        newRegisterCon.isLoading.value == true
+                                            ? const CircularProgressIndicator(
+                                                color: ConstColour.primaryColor,
+                                              )
+                                            : Container(
+                                                child: imageNotes != null
+                                                    ? Image.file(
+                                                        imageNotes!,
+                                                        // width: deviceWidth * 0.275,
+                                                        // height: deviceHeight * 0.13,
+                                                      )
+                                                    : InkWell(
+                                                        onTap: () {
+                                                          showDialog<void>(
+                                                            context: context,
+                                                            builder: (BuildContext
+                                                                dialogContext) {
+                                                              return AlertDialog(
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            11)),
+                                                                title: const Center(
+                                                                    child: Text(
+                                                                        "Choose Image Source",
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize:
+                                                                                18,
+                                                                            fontFamily: ConstFont
+                                                                                .poppinsBold),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis)),
+                                                                backgroundColor:
+                                                                    ConstColour
+                                                                        .primaryColor,
+                                                                titlePadding:
+                                                                    EdgeInsets.only(
+                                                                        top: deviceHeight *
+                                                                            0.02),
+                                                                actionsPadding:
+                                                                    EdgeInsets
+                                                                        .zero,
+                                                                contentPadding:
+                                                                    const EdgeInsets
+                                                                        .all(8),
+                                                                content: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    const Divider(
+                                                                        color: Colors
+                                                                            .black),
+                                                                    ListTile(
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              11),
+                                                                          side:
+                                                                              const BorderSide(color: ConstColour.primaryColor)),
+                                                                      tileColor:
+                                                                          ConstColour
+                                                                              .bgColor,
+                                                                      title: const Text(
+                                                                          "Camera",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontFamily:
+                                                                                ConstFont.poppinsMedium,
+                                                                            fontSize:
+                                                                                14,
+                                                                          ),
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis),
+                                                                      onTap:
+                                                                          () {
+                                                                        Get.back();
+                                                                        getImageCamera();
+                                                                      },
+                                                                      leading:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .camera_alt,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height: deviceHeight *
+                                                                            0.01),
+                                                                    ListTile(
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              11),
+                                                                          side:
+                                                                              const BorderSide(color: ConstColour.primaryColor)),
+                                                                      tileColor:
+                                                                          ConstColour
+                                                                              .bgColor,
+                                                                      title: const Text(
+                                                                          "Gallery",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontFamily:
+                                                                                ConstFont.poppinsMedium,
+                                                                            fontSize:
+                                                                                14,
+                                                                          ),
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis),
+                                                                      onTap:
+                                                                          () {
+                                                                        Get.back();
 
+                                                                        getImageGallery();
+                                                                      },
+                                                                      leading:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .photo_library_rounded,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                        child: (userProfileImage ==
+                                                                    null ||
+                                                                userProfileImage!
+                                                                    .isEmpty)
+                                                            ? Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Image.asset(
+                                                                      'asset/icons/image.png',
+                                                                      width: deviceWidth *
+                                                                          0.2),
+                                                                  const Padding(
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: Text(
+                                                                      "Upload Profile Image",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontFamily:
+                                                                            ConstFont.poppinsMedium,
+                                                                        fontSize:
+                                                                            14,
+                                                                      ),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              )
+                                                            : CircleAvatar(
+                                                                radius: 55,
+                                                                backgroundImage:
+                                                                    NetworkImage(
+                                                                        userProfileImage!),
+                                                              ),
+                                                      ),
+                                              ),
+
+                                    // Positioned(
+                                    //     left: deviceWidth * 0.16,
+                                    //     // bottom: deviceHeight * 0.08,
+                                    //     top: deviceHeight * 0.08,
+                                    //     child: imageNotes != null
+                                    //         ? IconButton(
+                                    //         onPressed: () {
+                                    //           setState(() {
+                                    //             imageNotes = null;
+                                    //           });
+                                    //         },
+                                    //         icon: const Icon(
+                                    //           CupertinoIcons.minus_circle_fill,
+                                    //           color: Colors.red,
+                                    //           size: 24,
+                                    //         ))
+                                    //         : const SizedBox())
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: imageNotes != null
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      imageNotes = null;
+                                      newRegisterCon.imgList.clear();
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.cancel_outlined,
+                                    color: Colors.red,
+                                    size: 24,
+                                  ))
+                              : const SizedBox(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: deviceHeight * 0.05),
                   child: NextButton(
@@ -563,6 +852,8 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                             Utils().toastMessage(
                                 "Enter valid Username & password");
                           });
+                        } else if (newRegisterCon.imgList.isEmpty) {
+                          Utils().toastMessage("Please enter the image");
                         } else {
                           homeController.loading.value = true;
                           newRegisterCon.userRegister(
@@ -580,58 +871,6 @@ class _NewUserRegisterState extends State<NewUserRegister> {
                     btnName: "Submit",
                   ),
                 ),
-
-                // Padding(
-                //   padding: EdgeInsets.only(
-                //       top: deviceHeight * 0.1,
-                //       left: deviceWidth * 0.03,
-                //       right: deviceWidth * 0.03),
-                //   child: ListTile(
-                //     splashColor: ConstColour.btnHowerColor,
-                //     onTap: () {
-                //       if (_formKey.currentState!.validate()) {
-                //         if (newRegisterCon.mobile.text.isEmpty && newRegisterCon.password.text.isEmpty) {
-                //           setState(() {
-                //             Utils().toastMessage(
-                //                 "Enter valid Username & password");
-                //           });
-                //         } else {
-                //        newRegisterCon.userRegister(
-                //            newRegisterCon.firstName.text,
-                //            newRegisterCon.lastName.text,
-                //            newRegisterCon.password.text,
-                //            newRegisterCon.mobile.text,
-                //            newRegisterCon.address.text,
-                //            newRegisterCon.reference.text
-                //        );
-                //
-                //           // loginController.login(mobileNo!, password!);
-                //         }
-                //       }
-                //     },
-                //     shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(10)),
-                //     tileColor: ConstColour.primaryColor,
-                //     titleAlignment: ListTileTitleAlignment.center,
-                //     title: Padding(
-                //       padding: EdgeInsets.only(left: deviceWidth * 0.1),
-                //       child: const Text(
-                //         "Next",
-                //         style: TextStyle(
-                //             fontFamily: ConstFont.poppinsRegular,
-                //             fontWeight: FontWeight.w500,
-                //             fontSize: 20,
-                //             color: Colors.black),
-                //         overflow: TextOverflow.ellipsis,
-                //         textAlign: TextAlign.center,
-                //       ),
-                //     ),
-                //     trailing: const Icon(
-                //       Icons.arrow_forward,
-                //       size: 24,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),

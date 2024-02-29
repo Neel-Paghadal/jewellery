@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
-import 'package:jewellery_user/Screen/Admin%20Screen/home.dart';
 import 'package:http/http.dart' as http;
+import 'package:jewellery_user/Models/file_model.dart';
 import '../Common/snackbar.dart';
 import '../ConstFile/constApi.dart';
 import '../ConstFile/constPreferences.dart';
@@ -24,6 +25,9 @@ class NewRegisterCon extends GetxController {
   TextEditingController reference = TextEditingController();
 
   RxBool isHidden = true.obs;
+  RxBool isLoading = false.obs;
+  RxList<FileElement> imgList = <FileElement>[].obs;
+  var filePath;
 
   void clearController() {
     firstName.clear();
@@ -34,6 +38,41 @@ class NewRegisterCon extends GetxController {
     mobile.clear();
     reference.clear();
   }
+
+
+  void uploadFile(File image) async {
+    var url = Uri.parse(ConstApi.fileUpload);
+    var file = File(image.path);
+    var directory = 'Test';
+
+    var request = http.MultipartRequest('POST', url)..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
+
+    try {
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+      if (response.statusCode == 200) {
+        debugPrint('File uploaded successfully');
+        debugPrint(response.toString());
+        debugPrint('Response: $responseBody');
+        final responseData = fileUploadFromJson(responseBody);
+        imgList.addAll(responseData.files);
+        // var filePath = json.decode(responseBody);
+        debugPrint(imgList.toString());
+        // Extract and store the filePath value
+        filePath = imgList[0].path.toString();
+        debugPrint("File Path "+filePath);
+
+
+      } else {
+        debugPrint('Failed to upload file. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      debugPrint('Error uploading file: $error');
+    }
+    isLoading.value = false;
+  }
+
+
 
   Future<void> userRegister(String firstName, String lastName, String password,
       String mobileNumber, String address, String referenceName) async {
@@ -48,6 +87,7 @@ class NewRegisterCon extends GetxController {
       "mobileNumber": mobileNumber,
       "address": address,
       "referenceName": referenceName,
+      "ProfileImage" : filePath.toString(),
       "DeviceId": ""
     };
 

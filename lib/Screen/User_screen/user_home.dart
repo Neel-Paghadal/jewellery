@@ -6,6 +6,7 @@ import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Controller/User_Controller/productdetail_controller.dart';
 import 'package:jewellery_user/Controller/User_Controller/user_home_con.dart';
+import 'package:jewellery_user/Screen/videoplayer_screen.dart';
 import '../../ConstFile/constFonts.dart';
 import 'prodcut_detail.dart';
 
@@ -317,22 +318,49 @@ class _UserHomeState extends State<UserHome> {
                                     side: const BorderSide(
                                         color: ConstColour.primaryColor),
                                   ),
-                                  leading: Container(
+
+                                leading:  Container(
+                                      height: double.infinity,
+                                      width: deviceWidth * 0.115,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(6),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: CachedNetworkImage(
-                                          width: deviceWidth * 0.115,
-                                          imageUrl: userHomeCon.userHome[index].image.toString(),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: userHomeCon.userHome[index].image.endsWith('.mp4')
+                                            ? VideoItem(
+                                            url: userHomeCon.userHome[index].image)
+                                            : CachedNetworkImage(
+                                          imageUrl: userHomeCon.userHome[index].image,
                                           fadeInCurve: Curves.easeInOutQuad,
-                                          placeholder: (context, url) => const Icon(Icons.image,size: 40
-                                              ,color : ConstColour.loadImageColor),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error,size: 40),
-                                        )
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                          const Icon(Icons.image,
+                                              size: 30,
+                                              color: ConstColour
+                                                  .loadImageColor),
+                                          errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error, size: 30),
+                                        ),
                                       )),
+
+                                  // leading: Container(
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.white,
+                                  //       borderRadius: BorderRadius.circular(6),
+                                  //     ),
+                                  //     child: Padding(
+                                  //       padding: const EdgeInsets.all(4.0),
+                                  //       child: CachedNetworkImage(
+                                  //         width: deviceWidth * 0.115,
+                                  //         imageUrl: userHomeCon.userHome[index].image.toString(),
+                                  //         fadeInCurve: Curves.easeInOutQuad,
+                                  //         placeholder: (context, url) => const Icon(Icons.image,size: 40
+                                  //             ,color : ConstColour.loadImageColor),
+                                  //         errorWidget: (context, url, error) => const Icon(Icons.error,size: 40),
+                                  //       )
+                                  //     )),
                                   title: Text(
                                     userHomeCon.userHome[index].name,
                                     style: const TextStyle(

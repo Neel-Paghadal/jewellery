@@ -6,6 +6,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:jewellery_user/Controller/User_Controller/productdetail_controller.dart';
 import 'package:jewellery_user/Controller/User_Controller/user_home_con.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
+import 'package:jewellery_user/Screen/videoplayer_screen.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../Common/bottom_button_widget.dart';
@@ -33,7 +34,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
     return WillPopScope(
       onWillPop: () async {
-        userProductController.clearData();
+        // userProductController.clearData();
         Get.back();
         return false;
       },
@@ -52,7 +53,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           leading: IconButton(
               tooltip: "Back",
               onPressed: () {
-                userProductController.clearData();
+                // userProductController.clearData();
                 Get.back();
               },
               icon: const Icon(Icons.arrow_back_ios),
@@ -509,34 +510,131 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           borderRadius: BorderRadius.circular(16),
                           color: Colors.white
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child:
-                        // Image.network(
-                        //     errorBuilder:
-                        //         (BuildContext context, Object exception,
-                        //         StackTrace? stackTrace) {
-                        //       Custom error widget to display when image fails to load
-                              // return  Icon(
-                              //   Icons.image,
-                              //   size: 150,
-                              //   color: Colors.grey,
-                              // );
-                            // },
-                            // userProductController.productDetail[0].image),
-                        CachedNetworkImage(
-                          width: double.infinity,
-                          imageUrl: userProductController.productDetail[0].image.toString(),
-                          fadeInCurve: Curves.easeInOutQuad,
-                          placeholder: (context, url) => const Icon(Icons.image,size: 100,color : ConstColour.loadImageColor),
-                          errorWidget: (context, url, error) => const Icon(Icons.error,size: 100),
+                      child:InkWell(
+                        onTap: () {
+                          if (userProductController.productDetail[0].image
+                              .endsWith('.mp4')) {
+                            showDialog(
+                              context: context,
+                              builder: (_) => Dialog(
+                                backgroundColor:
+                                Colors.white,
+                                insetPadding:
+                                EdgeInsets.zero,
+                                insetAnimationDuration:
+                                const Duration(
+                                    milliseconds: 500),
+                                child: VideoPlayerDialog(
+                                    url: userProductController.productDetail[0].image),
+                              ),
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder:
+                                  (BuildContext context) {
+                                return Container(
+                                  color: Colors.black,
+                                  child: PhotoView(
+                                    tightMode: true,
+                                    filterQuality:
+                                    FilterQuality.high,
+                                    backgroundDecoration:
+                                    const BoxDecoration(
+                                      color: Colors.black,
+                                    ),
+                                    loadingBuilder: (context,
+                                        ImageChunkEvent?
+                                        loadingProgress) {
+                                      if (loadingProgress ==
+                                          null) {
+                                        return Container();
+                                      } else {
+                                        return Center(
+                                          child:
+                                          CircularProgressIndicator(
+                                            color: ConstColour
+                                                .primaryColor,
+                                            value: loadingProgress
+                                                .expectedTotalBytes !=
+                                                null
+                                                ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                                (loadingProgress.expectedTotalBytes ??
+                                                    1)
+                                                : null,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    imageProvider: NetworkImage(
+                                        userProductController.productDetail[0].image
+                                            .toString()),
+                                    heroAttributes:
+                                    const PhotoViewHeroAttributes(
+                                        tag: "someTag"),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
+                        child: userProductController.productDetail[0].image
+                            .endsWith('.mp4')
+                            ? ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(
+                              16),
+                          child: VideoItem(
+                              url: userProductController.productDetail[0].image),
                         )
+                            : ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(
+                              16),
+                          child: CachedNetworkImage(
+                            width: double.infinity,
+                            fit: BoxFit.contain,
+                            progressIndicatorBuilder:
+                                (context, url,
+                                downloadProgress) =>
+                                Center(
+                                  child: CircularProgressIndicator(
+                                      value:
+                                      downloadProgress
+                                          .progress,
+                                      color: ConstColour
+                                          .primaryColor),
+                                ),
+                            imageUrl:
+                            userProductController.productDetail[0].image.toString(),
+                            fadeInCurve:
+                            Curves.easeInOutQuad,
+                            placeholder: (context, url) => const Icon(Icons.image,size: 65, color: ConstColour.loadImageColor),
+                            errorWidget: (context,
+                                url, error) =>
+                            const Icon(
+                                Icons.error,
+                                size: 45),
+                          ),
+                        ),
                       ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child:
+                      //   CachedNetworkImage(
+                      //     width: double.infinity,
+                      //     imageUrl: userProductController.productDetail[0].image.toString(),
+                      //     fadeInCurve: Curves.easeInOutQuad,
+                      //     placeholder: (context, url) => const Icon(Icons.image,size: 100,color : ConstColour.loadImageColor),
+                      //     errorWidget: (context, url, error) => const Icon(Icons.error,size: 100),
+                      //   )
+                      // ),
                     ),
                   ),
                 ),
                 userProductController.productDetail[0].orderImages.isEmpty  ? SizedBox() :  SizedBox(
-                  height: deviceHeight * 0.1,
+                  height: deviceHeight * 0.09,
                   child: Row(
                     children: [
                       Expanded(
@@ -548,59 +646,98 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Dialog(
-                                      child: Container(
-                                        color: Colors.transparent,
-                                        child: PhotoView(
-                                          tightMode: true,
-                                          backgroundDecoration:
-                                           const BoxDecoration(
-                                              color:
-                                              Colors.transparent),
-                                          imageProvider:
-                                          NetworkImage(userProductController.productDetail[0].orderImages[index].path),
-                                          heroAttributes:
-                                          const PhotoViewHeroAttributes(
-                                              tag: "someTag"),
+
+                                if(userProductController.productDetail[0].orderImages[index].path.endsWith('.mp4')){
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                        Dialog(
+                                          backgroundColor:
+                                          Colors
+                                              .white,
+                                          insetPadding:
+                                          EdgeInsets
+                                              .zero,
+                                          insetAnimationDuration:
+                                          const Duration(
+                                              milliseconds: 500),
+                                          child: VideoPlayerDialog(
+                                              url:
+                                              userProductController.productDetail[0].orderImages[index].path),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                );
+                                  );
+                                }else{
+                                  showDialog(
+                                    context:
+                                    context,
+                                    builder:
+                                        (BuildContext
+                                    context) {
+                                      return Container(
+                                        color: Colors
+                                            .black,
+                                        child:
+                                        PhotoView(
+                                          tightMode:
+                                          true,
+                                          filterQuality:
+                                          FilterQuality.high,
+                                          backgroundDecoration:
+                                          const BoxDecoration(
+                                            color:
+                                            Colors.black,
+                                          ),
+                                          loadingBuilder:
+                                              (context, ImageChunkEvent? loadingProgress) {
+                                            if (loadingProgress ==
+                                                null) {
+                                              return Container();
+                                            } else {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                  color: ConstColour.primaryColor,
+                                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          imageProvider:
+                                          NetworkImage(
+                                            userProductController.productDetail[0].orderImages[index].path,
+                                          ),
+                                          heroAttributes:
+                                          const PhotoViewHeroAttributes(tag: "someTag"),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                                  height: deviceHeight * 0.09,
+                                  width: deviceWidth * 0.16,
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8),),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child:
-                                    // Image.network(
-                                    //     errorBuilder:
-                                    //         (BuildContext context, Object exception,
-                                    //         StackTrace? stackTrace) {
-                                          // Custom error widget to display when image fails to load
-                                          // return const Icon(
-                                          //   Icons.image,
-                                          //   size: 60,
-                                          //   color: Colors.grey,
-                                          // );
-                                        // },
-                                        // userProductController.productDetail[0].orderImages[index].path,
-                                        // width: deviceWidth * 0.16
-                                    CachedNetworkImage(
-                                      width: deviceWidth * 0.16,
-                                      imageUrl: userProductController.productDetail[0].orderImages[index].path,
-                                      fadeInCurve: Curves.easeInOutQuad,
-                                      placeholder: (context, url) => const Icon(Icons.image,size: 65,color : ConstColour.loadImageColor),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error,size: 45),
-                                    ),
+                                    padding: const EdgeInsets.all(4.0),
+                                    child:userProductController.productDetail[0].orderImages[index].path
+                                        .endsWith(
+                                        '.mp4')
+                                        ? VideoItem(
+                                        url: userProductController.productDetail[0].orderImages[index].path)
+                                        : ImageItem(
+                                        url:
+                                        userProductController.productDetail[0].orderImages[index].path)
+
+                                    // CachedNetworkImage(
+                                    //   width: deviceWidth * 0.16,
+                                    //   imageUrl: userProductController.productDetail[0].orderImages[index].path,
+                                    //   fadeInCurve: Curves.easeInOutQuad,
+                                    //   placeholder: (context, url) => const Icon(Icons.image,size: 65,color : ConstColour.loadImageColor),
+                                    //   errorWidget: (context, url, error) => const Icon(Icons.error,size: 45),
+                                    // ),
                                   ),
                                 ),
                               ),

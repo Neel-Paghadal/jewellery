@@ -1,7 +1,7 @@
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -29,7 +29,6 @@ class HomeController extends GetxController {
   int pageSize = 6;
   RxBool loadingPage = false.obs;
 
-
   Future<void> handleRefresh() async {
     pageIndex = 1;
     pageSize = 6;
@@ -54,7 +53,7 @@ class HomeController extends GetxController {
         pageIndex,
         pageSize,
       );
-        homeList.addAll(products);
+      homeList.addAll(products);
     } catch (e) {
       // Handle errors
       debugPrint('Error loading products: $e');
@@ -63,16 +62,51 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> orderDeleteCall(String orderId) async {
+    String? token = await ConstPreferences().getToken();
+    debugPrint(token);
+
+    Map<String, dynamic> requestData = {
+      "orderId": orderId
+    };
+    // Set up headers with the token
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    debugPrint("OrderId : $orderId");
+
+    final response = await http.post(Uri.parse(ConstApi.orderDelete),
+        body: jsonEncode(requestData), headers: headers);
+    if (response.statusCode == 200) {
+      isLoaderShow.value = false;
+      // final responseData = dashboardFromJson(response.body);
+      // debugPrint("Order Delete" + responseData.toString());
+
+      debugPrint('Response: ${response.body}');
+
+      Utils().toastMessage(json.decode(response.body)["message"]);
+      homeList.clear();
+      pageIndex = 0;
+      pageSize = 6;
+      loadProducts();
 
 
 
-
-
-
-
-
-
-
+      // Process the data as needed
+    } else {
+      isLoaderShow.value = false;
+      // Error in API call
+      Utils().toastMessage(json.decode(response.body)["error"]);
+      debugPrint('Error: ${response.statusCode}');
+      debugPrint('Error body: ${response.body}');
+    }
+    if (response.statusCode == 401 || response.statusCode == 403) {
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
+    }
+  }
 
   void checkUser() async {
     var role = await ConstPreferences().getRole();
@@ -84,9 +118,9 @@ class HomeController extends GetxController {
   }
 
   getOrderCall(int pageIndex, int pageSize) async {
-    if(homeList.isEmpty){
+    if (homeList.isEmpty) {
       isLoaderShow.value = true;
-    }else{
+    } else {
       isLoaderShow.value = false;
     }
     String? token = await ConstPreferences().getToken();
@@ -99,7 +133,8 @@ class HomeController extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse("http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
+        Uri.parse(
+            "http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
         headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;
@@ -114,7 +149,7 @@ class HomeController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
-    if(response.statusCode == 401 || response.statusCode == 403){
+    if (response.statusCode == 401 || response.statusCode == 403) {
       Utils().toastMessage("Please Relogin Account");
       ConstPreferences().clearPreferences();
       SystemNavigator.pop();

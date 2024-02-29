@@ -8,7 +8,6 @@ import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/Models/file_model.dart';
 import 'package:jewellery_user/Screen/auth_screen/login.dart';
 import '../ConstFile/constApi.dart';
-import '../ConstFile/constPreferences.dart';
 import 'home_Controller.dart';
 import 'login_controller.dart';
 
@@ -69,7 +68,7 @@ class RegisterController extends GetxController{
 
   var filePath;
   void uploadFile(File image) async {
-    var url = Uri.parse('http://208.64.33.118:8558/api/File/Upload');
+    var url = Uri.parse(ConstApi.fileUpload);
     var file = File(image.path);
     var directory = 'Test';
 
@@ -84,7 +83,6 @@ class RegisterController extends GetxController{
         debugPrint('Response: $responseBody');
         final responseData = fileUploadFromJson(responseBody);
         imgList.addAll(responseData.files);
-        var jsonResponse = json.decode(responseBody);
         // var filePath = json.decode(responseBody);
         debugPrint(imgList.toString());
         // Extract and store the filePath value

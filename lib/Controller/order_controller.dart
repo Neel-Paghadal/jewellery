@@ -61,11 +61,9 @@ class OrderController extends GetxController{
         debugPrint('Response: $responseBody');
         final responseData = fileUploadFromJson(responseBody);
         imgList.addAll(responseData.files);
-        var jsonResponse = json.decode(responseBody);
         // var filePath = json.decode(responseBody);
         debugPrint(imgList.toString());
         // Extract and store the filePath value
-        filePath = jsonResponse['filePath'];
         filePath = imgList[0].path;
         debugPrint("File Path "+filePath);
 
@@ -78,6 +76,7 @@ class OrderController extends GetxController{
     }
     isLoading.value = false;
   }
+
   void uploadFileMulti(List<File> images) async {
     var url = Uri.parse('http://208.64.33.118:8558/api/File/Upload');
     var directory = 'Test';
@@ -172,7 +171,9 @@ class OrderController extends GetxController{
         homeController.pageIndex = 0;
         homeController.pageSize = 6;
         homeController.loadProducts();
-        Get.to(() => const HomeScreen());
+        Get.to(() => HomeScreen());
+        imgList.clear();
+        imgListMulti.clear();
       } else {
         debugPrint('Error: ${response.reasonPhrase}');
         Utils().errorsnackBar(response.reasonPhrase.toString(), '');

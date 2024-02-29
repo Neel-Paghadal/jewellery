@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:get/get_utils/get_utils.dart';
 
 UserHome userHomeFromJson(String str) => UserHome.fromJson(json.decode(str));
 

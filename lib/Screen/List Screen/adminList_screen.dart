@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/Common/bottom_button_widget.dart';
@@ -5,12 +7,14 @@ import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
-import 'package:jewellery_user/Screen/Admin%20Screen/home.dart';
+import 'package:jewellery_user/Screen/List%20Screen/adminDetail_screen.dart';
+import 'package:jewellery_user/Screen/List%20Screen/forgot_password_dialog.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/Admin%20Screen/newUser_register.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-import '../../../Models/adminList_model.dart';
+import '../../Controller/adminProfile_controller.dart';
+import 'userlist_screen.dart';
 
 class AdminListScreen extends StatefulWidget {
   const AdminListScreen({super.key});
@@ -23,6 +27,7 @@ class _AdminListScreenState extends State<AdminListScreen> {
   ScrollController _scrollController = ScrollController();
   AdminListController adminListController = Get.put(AdminListController());
   HomeController homeController = Get.put(HomeController());
+  final _random = Random();
 
   // int _pageIndex = 0;
   // int _pageSize = 10;
@@ -164,6 +169,9 @@ class _AdminListScreenState extends State<AdminListScreen> {
   //   }
   // }
 
+  AdminProfileController adminProfileController = Get.put(AdminProfileController());
+
+
   void _onScroll() {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
       // User has reached the end of the list, load more products
@@ -293,23 +301,37 @@ class _AdminListScreenState extends State<AdminListScreen> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
+                      onTap: () {
+                        adminProfileController.adminId = adminListController.adminList[index].id;
+                        Get.to(() => AdminDetailScreen());
+                      },
 
-
-
+                            leading: Container(
+                                width: deviceWidth * 0.13,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:  StickyColors
+                                        .colors[_random.nextInt(15)]
+                                ),
+                                child: Center(
+                                  child: Text(adminListController.adminList[index].firstName.substring(0,1).toUpperCase(),style: TextStyle(
+                                      color: Colors.black,fontSize: 20,fontFamily: ConstFont.poppinsMedium),),
+                                )),
                             shape: RoundedRectangleBorder(
                                 side: const BorderSide(
                                     color: ConstColour.primaryColor),
                                 borderRadius: BorderRadius.circular(21)),
                             title: Text(
-                              "👤 ${adminListController.adminList[index].firstName} ${adminListController.adminList[index].lastName}",
+                              " ${adminListController.adminList[index].firstName} ${adminListController.adminList[index].lastName}",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontFamily: ConstFont.poppinsMedium),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            dense: true,
                             subtitle: Text(
-                              "✆  ${adminListController.adminList[index].mobileNumber}",
+                              " ${adminListController.adminList[index].mobileNumber}",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
@@ -345,9 +367,9 @@ class _AdminListScreenState extends State<AdminListScreen> {
                                     child: const Text("Release",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
                                   ),
                                   PopupMenuItem(
-                                    enabled: false,
+                                    enabled: true,
                                     onTap: () {
-
+                                      forgotPasswordDialouge(context, adminListController.adminList[index].id);
                                     },
                                     value: '/Reset Password',
                                     child: const Text("Reset Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),

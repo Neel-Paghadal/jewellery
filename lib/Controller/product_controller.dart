@@ -34,7 +34,6 @@ class ProductController extends GetxController {
     imgListMulti.clear();
   }
 
-
   RxList<Order> productDetail = <Order>[].obs;
   RxList<FileElement> imgList = <FileElement>[].obs;
   RxList<FileElement> imgListMulti = <FileElement>[].obs;
@@ -89,7 +88,8 @@ class ProductController extends GetxController {
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }
-    if(response.statusCode == 401 || response.statusCode == 403){
+
+    if (response.statusCode == 401 || response.statusCode == 403) {
       Utils().toastMessage("Please Relogin Account");
       ConstPreferences().clearPreferences();
       SystemNavigator.pop();
@@ -114,15 +114,16 @@ class ProductController extends GetxController {
   }
 
   void passOldImage() {
-    productDetail[0].image =
-        "http://208.64.33.118:8558/Files/${modifiedStrings[0]}";
+    productDetail[0].image = "${ConstApi.baseFilePath + modifiedStrings[0]}";
     debugPrint(productDetail[0].image);
     isLoading.value = false;
   }
 
+  // http://208.64.33.118:8558/Files/
+
   void uploadFile(File image) async {
     isLoading.value = true;
-    var url = Uri.parse('http://208.64.33.118:8558/api/File/Upload');
+    var url = Uri.parse(ConstApi.fileUpload);
     var file = File(image.path);
     var directory = 'Test';
 
@@ -148,11 +149,12 @@ class ProductController extends GetxController {
         productDetail[0].image = '';
         // productDetail[0].image =
         //     "http://208.64.33.118:8558/Files/${imgList[0].path}";
-        productDetail[0].image =  ConstApi.baseFilePath+imgList[0].path;
+        productDetail[0].image = ConstApi.baseFilePath + imgList[0].path;
         filePath = imgList[0].path;
         debugPrint("File Path " + filePath);
       } else {
-        debugPrint('Failed to upload file. Status code: ${response.statusCode}');
+        debugPrint(
+            'Failed to upload file. Status code: ${response.statusCode}');
       }
     } catch (error) {
       debugPrint('Error uploading file: $error');
@@ -161,15 +163,13 @@ class ProductController extends GetxController {
   }
 
   void uploadFileMulti(List<File> images) async {
-    var url = Uri.parse('http://208.64.33.118:8558/api/File/Upload');
+    var url = Uri.parse(ConstApi.fileUpload);
     var directory = 'Test';
     var request = http.MultipartRequest('POST', url);
 
     for (var image in images) {
       var file = File(image.path);
-      request
-        ..files.add(await http.MultipartFile.fromPath('files', file.path))
-        ..fields['Directory'] = directory;
+      request..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
     }
 
     debugPrint("REQUEST$request");
@@ -186,7 +186,6 @@ class ProductController extends GetxController {
         imgListMulti.clear();
         imageList.clear();
         imgListMulti.addAll(responseData.files);
-        List<String> seenPaths = [];
 
         var jsonResponse = json.decode(responseBody);
         // var filePath = json.decode(responseBody);
@@ -228,8 +227,7 @@ class ProductController extends GetxController {
       debugPrint(imgList.toString());
     }
     imgListMulti.forEach((fileElement) {
-      fileElement.path =
-          fileElement.path.replaceAll("http://208.64.33.118:8558/Files/", "");
+      fileElement.path = fileElement.path.replaceAll(ConstApi.baseFilePath, "");
     });
 
     List<String> seenPaths = [];
@@ -303,7 +301,7 @@ class ProductController extends GetxController {
         debugPrint('Error: ${response.reasonPhrase}');
         Utils().errorsnackBar(response.reasonPhrase.toString(), '');
       }
-      if(response.statusCode == 401 || response.statusCode == 403){
+      if (response.statusCode == 401 || response.statusCode == 403) {
         Utils().toastMessage("Please Relogin Account");
         ConstPreferences().clearPreferences();
         SystemNavigator.pop();

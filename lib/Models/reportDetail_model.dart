@@ -27,7 +27,9 @@ class ReportDetailModel {
 class ReportDetail {
   String id;
   String name;
-  String dateCreated;
+  String orderStatus;
+  String orderCreatedDate;
+  String assignDate;
   String completedDate;
   String cancelledDate;
   String cancelReason;
@@ -35,27 +37,33 @@ class ReportDetail {
   ReportDetail({
     required this.id,
     required this.name,
-    required this.dateCreated,
+    required this.orderStatus,
+    required this.orderCreatedDate,
+    required this.assignDate,
     required this.completedDate,
     required this.cancelledDate,
-    required this.cancelReason
+    required this.cancelReason,
   });
 
   factory ReportDetail.fromJson(Map<String, dynamic> json) => ReportDetail(
     id: json["id"],
     name: json["name"],
-    dateCreated: json["dateCreated"],
+    orderStatus: json["orderStatus"],
+    orderCreatedDate: json["orderCreatedDate"],
+    assignDate: json["assignDate"],
     completedDate: json["completedDate"],
     cancelledDate: json["cancelledDate"],
-    cancelReason: (json["cancelReason"] == null ||json["cancelReason"] == "") ? "" : json["cancelReason"]
+    cancelReason: json["cancelReason"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
-    "dateCreated": dateCreated,
+    "orderStatus": orderStatus,
+    "orderCreatedDate": orderCreatedDate,
+    "assignDate": assignDate,
     "completedDate": completedDate,
     "cancelledDate": cancelledDate,
-    "cancelReason" : cancelReason
+    "cancelReason": cancelReason,
   };
 }

@@ -6,8 +6,6 @@ import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/login_controller.dart';
 import 'package:jewellery_user/Controller/register_controller.dart';
 import 'package:jewellery_user/Screen/auth_screen/documentScreen.dart';
-
-import '../../Common/bottom_button_widget.dart';
 import '../../Common/snackbar.dart';
 
 class RegisterScreen extends StatefulWidget {

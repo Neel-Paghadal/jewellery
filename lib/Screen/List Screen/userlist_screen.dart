@@ -4,11 +4,36 @@ import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
+import 'package:jewellery_user/Controller/userProfileDetail_controller.dart';
 import 'package:jewellery_user/Controller/userlistScreen_controller.dart';
 import 'package:jewellery_user/Models/userDetail_model.dart';
+import 'package:jewellery_user/Screen/List%20Screen/forgot_password_dialog.dart';
+import 'package:jewellery_user/Screen/List%20Screen/userDetail_screen.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'dart:math';
 
+
+class StickyColors {
+  static final List colors = [
+    const Color(0xffF1F7E6),
+    const Color(0xffF4F5F0),
+    const Color(0xffF2DAC1),
+    const Color(0xffF8EEEC),
+    const Color(0xffFFF7E7),
+    const Color(0xffEDF4FA),
+    const Color(0xffFBFBF9),
+    const Color(0xffEEE8E6),
+    const Color(0xffFFF2D0),
+    const Color(0xffE6DBAC),
+    const Color(0xffEDE8BA),
+    const Color(0xffFDEFB2),
+    const Color(0xffF8F8E8),
+    const Color(0xffF2F7FD),
+    const Color(0xffFDEFB2),
+    const Color(0xffFEC5E5),
+  ];
+}
 class UserList extends StatefulWidget {
   const UserList({super.key});
 
@@ -16,15 +41,18 @@ class UserList extends StatefulWidget {
   State<UserList> createState() => _UserListState();
 }
 
+
+
 class _UserListState extends State<UserList> {
   ScrollController _scrollController = ScrollController();
-  UserListScreenController userListScreenController =
-      Get.put(UserListScreenController());
+  UserListScreenController userListScreenController = Get.put(UserListScreenController());
+  UserProfileDetailController userProfileController = Get.put(UserProfileDetailController());
   AdminListController adminListController = Get.put(AdminListController());
   HomeController homeController = Get.put(HomeController());
   int _pageIndex = 0;
   int _pageSize = 10;
   bool _loading = false;
+  final _random = Random();
 
   @override
   void initState() {
@@ -282,21 +310,37 @@ class _UserListState extends State<UserList> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
+                          onTap: () {
+                            userProfileController.userId = userListScreenController.usersList[index].id;
+                            Get.to(() => UserDetailScreen());
+                          },
                             splashColor: ConstColour.btnHowerColor,
+                            leading: Container(
+                              width: deviceWidth * 0.13,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color:  StickyColors
+                                    .colors[_random.nextInt(15)]
+                                ),
+                                child: Center(
+                                  child: Text(userListScreenController.usersList[index].firstName.substring(0,1).toUpperCase(),style: TextStyle(
+                                      color: Colors.black,fontSize: 20,fontFamily: ConstFont.poppinsMedium),),
+                                )),
                             shape: RoundedRectangleBorder(
                                 side: const BorderSide(
                                     color: ConstColour.primaryColor),
                                 borderRadius: BorderRadius.circular(21)),
                             title: Text(
-                              "👤 ${userListScreenController.usersList[index].firstName} ${userListScreenController.usersList[index].lastName}",
+                              " ${userListScreenController.usersList[index].firstName} ${userListScreenController.usersList[index].lastName}",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontFamily: ConstFont.poppinsMedium),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            dense: true,
                             subtitle: Text(
-                              "✆  ${userListScreenController.usersList[index].mobileNumber}",
+                              " ${userListScreenController.usersList[index].mobileNumber}",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
@@ -342,11 +386,12 @@ class _UserListState extends State<UserList> {
                                         overflow: TextOverflow.ellipsis),
                                   ),
                                   PopupMenuItem(
-                                    enabled: false,
-                                    onTap: () {},
-                                    value: '/Forgot Password',
-
-                                    child: const Text("Forgot Password",
+                                    enabled: true,
+                                    onTap: () {
+                                      forgotPasswordDialouge(context, userListScreenController.usersList[index].id);
+                                    },
+                                    value: '/Reset Password',
+                                    child: const Text("Reset Password",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,

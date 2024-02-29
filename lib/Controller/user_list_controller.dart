@@ -120,13 +120,18 @@ class UserListController extends GetxController {
   }
 
   // assignOrder Update Detail
-  Future<void> assignUpdate(String id, String notes) async {
+  Future<void> assignUpdate(String id,String userID, String notes) async {
     homeController.loadingSec.value = true;
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.updateAssignOrder);
 
-    Map<String, String> requestBody = {"Id": id, "Notes": notes};
+    Map<String, String> requestBody =
+    {
+      "Id": id,
+      "UserId":userID,
+      "Notes": notes
+    };
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -229,11 +234,9 @@ class UserListController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(
-        Uri.parse(
-            'http://208.64.33.118:8558/api/Order/GetOrderUsers?orderId=$id'),
-        headers: headers);
+    final response = await http.get(Uri.parse('http://208.64.33.118:8558/api/Order/GetOrderUsers?orderId=$id'), headers: headers);
     if (response.statusCode == 200) {
+
       debugPrint(response.body);
       final responseData = usersListFromJson(response.body);
       debugPrint("HOME LIST $responseData");

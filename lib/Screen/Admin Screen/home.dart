@@ -10,13 +10,14 @@ import 'package:jewellery_user/Controller/newRegister_controller.dart';
 import 'package:jewellery_user/Controller/order_controller.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/orderDelete_dialog.dart';
 import 'package:jewellery_user/Screen/List%20Screen/adminList_screen.dart';
 import 'package:jewellery_user/Screen/List%20Screen/userlist_screen.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/Admin%20Screen/productdetail.dart';
+import 'package:jewellery_user/Screen/videoplayer_screen.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import '../../ConstFile/constPreferences.dart';
-import '../../Models/dashboard_model.dart';
 import 'order.dart';
 import 'report_search_Screen.dart';
 import 'user_list.dart';
@@ -35,9 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ProductController productController = Get.put(ProductController());
   NewRegisterCon newRegisterCon = Get.put(NewRegisterCon());
   OrderController orderController = Get.put(OrderController());
-  // int _pageIndex = 0;
-  // int _pageSize = 6;
-  // bool _loading = false;
 
   @override
   void initState() {
@@ -50,135 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
     homeController.checkUser();
   }
 
-  // Future<void> _handleRefresh() async {
-  //   _pageIndex = 1;
-  //   _pageSize = 6;
-  //
-  //   homeController.homeList.clear();
-  //   homeController.getOrderCall(
-  //     _pageIndex,
-  //     _pageSize,
-  //   );
-  //   debugPrint("ScreenRefresh");
-  //   return await Future.delayed(const Duration(seconds: 1));
-  // }
-  //
-  // Future<void> _loadProducts() async {
-  //   setState(() {
-  //     _loading = true;
-  //   });
-  //   _pageIndex++;
-  //
-  //   debugPrint("Page Order index$_pageIndex");
-  //   try {
-  //     final RxList<Order> products = await homeController.getOrderCall(
-  //       _pageIndex,
-  //       _pageSize,
-  //     );
-  //     setState(() {
-  //       homeController.homeList.addAll(products);
-  //     });
-  //   } catch (e) {
-  //     // Handle errors
-  //     debugPrint('Error loading products: $e');
-  //   } finally {
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //   }
-  // }
-  //
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       // User has reached the end of the list, load more products
       homeController.loadProducts();
     }
-  }
-
-  void _showLogoutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          shadowColor: Colors.white,
-          elevation: 8.0,
-          backgroundColor: Colors.white,
-          title: const Text(
-            'Logout',
-            style: TextStyle(
-              fontSize: 22,
-              fontFamily: ConstFont.poppinsMedium,
-              color: Colors.black,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-          content: const Text(
-            'Are you sure, want to logout?',
-            style: TextStyle(
-              fontFamily: ConstFont.poppinsRegular,
-              fontSize: 16,
-              color: Colors.black,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            InkWell(
-              borderRadius: BorderRadius.circular(5),
-              onTap: () {
-                Get.back();
-              },
-              splashColor: ConstColour.btnHowerColor,
-              child: Container(
-                decoration: BoxDecoration(
-                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.red),
-                child: const Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontFamily: ConstFont.poppinsRegular,
-                      fontSize: 12,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              borderRadius: BorderRadius.circular(5),
-              onTap: () {
-                Get.back();
-              },
-              splashColor: ConstColour.btnHowerColor,
-              child: TextButton(
-                onPressed: () {
-                  ConstPreferences().clearPreferences();
-                  SystemNavigator.pop();
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: Text(
-                    'Logout',
-                    style: TextStyle(
-                      fontFamily: ConstFont.poppinsMedium,
-                      fontSize: 13,
-                      color: Colors.black,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -201,27 +76,19 @@ class _HomeScreenState extends State<HomeScreen> {
               Get.to(() => const ReportSearchScreen());
             }, icon: Image.asset("asset/icons/statistics.png"), color: Colors.white,)*/
 
-            InkWell(
-                onTap: () {
-                  Get.to(() => const ReportSearchScreen());
-                },
-                borderRadius: BorderRadius.circular(34),
-                child: Image.asset(
-                  "asset/icons/statistics.png",
-                  scale: 3,
-                  color: Colors.white,
-                )),
-            /*TextButton(
-                onPressed: () {
-                  Get.to(() => const ReportSearchScreen());
-                },
-                child: const Text("Report",
-                    style: TextStyle(
-                        color: ConstColour.primaryColor,
-                        fontFamily: ConstFont.poppinsBold,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        overflow: TextOverflow.ellipsis)))*/
+            Tooltip(
+              message: "Report",
+              child: InkWell(
+                  onTap: () {
+                    Get.to(() => const ReportSearchScreen());
+                  },
+                  borderRadius: BorderRadius.circular(34),
+                  child: Image.asset(
+                    "asset/icons/statistics.png",
+                    scale: 3,
+                    color: Colors.white,
+                  )),
+            ),
           ],
           title: const Text("Dashboard",
               style: TextStyle(
@@ -334,21 +201,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontFamily: ConstFont.poppinsMedium),
                   )
                 ])),
-        // bottomNavigationBar: Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: NextButton(
-        //     onPressed: () {
-        //       Get.to(() => const OrderScreen());
-        //     },
-        //     btnName: "Add Design",
-        //   ),
-        // ),
         floatingActionButton: FloatingActionButton.extended(
             backgroundColor: ConstColour.primaryColor,
             splashColor: ConstColour.btnHowerColor,
             icon: const Icon(Icons.add, color: Colors.black),
             onPressed: () {
               orderController.clearController();
+              orderController.imageNotes = null;
               Get.to(() => const OrderScreen());
             },
             label: const Text(
@@ -512,22 +371,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          child: CachedNetworkImage(
-                                            width: double.infinity,
-                                            fit: BoxFit.cover,
-                                            imageUrl: homeController.homeList[index].image
-                                                .toString(),
-                                            fadeInCurve: Curves.easeInOutQuad,
-                                            placeholder: (context, url) =>
-                                                const Icon(Icons.image,
-                                                    size: 65,
-                                                    color: ConstColour
-                                                        .loadImageColor),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error,
-                                                        size: 45),
-                                          ),
+                                          child: homeController
+                                                  .homeList[index].image
+                                                  .endsWith('.mp4')
+                                              ? VideoItem(
+                                                  url: homeController.homeList[index].image)
+                                              : CachedNetworkImage(
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                  imageUrl: homeController.homeList[index].image.toString(),
+                                                  fadeInCurve:
+                                                      Curves.easeInOutQuad,
+                                                  placeholder: (context, url) =>
+                                                      const Icon(Icons.image,
+                                                          size: 65,
+                                                          color: ConstColour
+                                                              .loadImageColor),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error,
+                                                          size: 45),
+                                                ),
                                         ),
                                       ),
                                     ),
@@ -556,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                             Text(
-                                              "# ${homeController.homeList[index].orderId.toString()}",
+                                              "${homeController.homeList[index].orderId.toString()}",
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 14,
@@ -567,83 +431,161 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: deviceHeight * 0.056),
-                                          child: Text(
-                                            "${homeController.homeList[index].dateCreated}",
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 14,
-                                                fontFamily:
-                                                    ConstFont.poppinsRegular),
-                                            overflow: TextOverflow.ellipsis,
+                                          padding:  EdgeInsets.only(top: deviceHeight * 0.032),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${homeController.homeList[index].dateCreated}",
+                                                style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 14,
+                                                    fontFamily: ConstFont
+                                                        .poppinsRegular),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                "${homeController.homeList[index].orderStatus}  ",
+                                                style:  TextStyle(
+                                                    color: (homeController.homeList[index].orderStatus == "Complete")
+                                                        ? ConstColour.completeColor
+                                                        : (homeController.homeList[index].orderStatus == "Cancel")
+                                                        ? ConstColour.cancelColor
+                                                        : (homeController.homeList[index].orderStatus == "Pending")
+                                                        ? ConstColour.pendingColor
+                                                        : (homeController.homeList[index].orderStatus == "Working")
+                                                        ? ConstColour.workingColor
+                                                        : (homeController.homeList[index].orderStatus == "New")
+                                                        ? ConstColour.newColor : Colors.white,
+                                                    fontSize: 14,
+                                                    fontFamily: ConstFont
+                                                        .poppinsRegular),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                    // Column(
-                                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                                    //   mainAxisSize: MainAxisSize.min,
-                                    //   children: [
-                                    //     Padding(
-                                    //       padding: EdgeInsets.only(
-                                    //         top: deviceHeight * 0.01,
-                                    //       ),
-                                    //       child: Text(
-                                    //         homeController.homeList[index].name,
-                                    //         style: const TextStyle(
-                                    //             color: Colors.white,
-                                    //             fontSize: 16,
-                                    //             fontFamily:
-                                    //                 ConstFont.poppinsRegular),
-                                    //         overflow: TextOverflow.ellipsis,
-                                    //       ),
-                                    //     ),
-                                    //     Padding(
-                                    //       padding: EdgeInsets.only(
-                                    //           top: deviceHeight * 0.015,
-                                    //           bottom: deviceHeight * 0.01),
-                                    //       child: Text(
-                                    //         "# ${homeController.homeList[index].orderId.toString()}",
-                                    //         style: const TextStyle(
-                                    //             color: Colors.grey,
-                                    //             fontSize: 14,
-                                    //             fontFamily:
-                                    //                 ConstFont.poppinsRegular),
-                                    //         overflow: TextOverflow.ellipsis,
-                                    //       ),
-                                    //     ),   Padding(
-                                    //       padding: EdgeInsets.only(
-                                    //           top: deviceHeight * 0.015,
-                                    //           bottom: deviceHeight * 0.01),
-                                    //       child: Text(
-                                    //         "Create Date : ${homeController.homeList[index].dateCreated}",
-                                    //         style: const TextStyle(
-                                    //             color: Colors.grey,
-                                    //             fontSize: 14,
-                                    //             fontFamily:
-                                    //                 ConstFont.poppinsRegular),
-                                    //         overflow: TextOverflow.ellipsis,
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // )
                                   ],
                                 ),
-                                IconButton(
-                                    tooltip: "Assign Order",
-                                    onPressed: () {
-                                      userListController.orderId =
-                                          homeController.homeList[index].id;
-                                      userListController.userList.clear();
-                                      Get.to(() => const UserListScreen());
-                                    },
-                                    icon: const Icon(
-                                      // Icons.assignment_ind,
-                                      CupertinoIcons.person_add_solid,
-                                      size: 30,
-                                      color: ConstColour.primaryColor,
-                                    )),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    IconButton(
+                                        tooltip: "Assign Order",
+                                        onPressed: () {
+                                          userListController.orderId =
+                                              homeController.homeList[index].id;
+                                          userListController.userList.clear();
+                                          Get.to(() => const UserListScreen());
+                                        },
+                                        icon: const Icon(
+                                          CupertinoIcons.person_add_solid,
+                                          size: 30,
+                                          color: ConstColour.primaryColor,
+                                        )),
+                                    Padding(
+                                      padding:  EdgeInsets.only(top:  deviceHeight * 0.03),
+                                      child: IconButton(
+                                          tooltip: "Delete",
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+
+                                                return AlertDialog(
+                                                  shape:
+                                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                  shadowColor: Colors.white,
+                                                  elevation: 8.0,
+                                                  // backgroundColor: Colors.white,
+                                                  backgroundColor: Colors.orange.shade100,
+                                                  title: const Text(
+                                                    'Delete Order',
+                                                    style: TextStyle(
+                                                      fontSize: 22,
+                                                      fontFamily: ConstFont.poppinsMedium,
+                                                      color: Colors.black,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  content: const Text(
+                                                    'Are you sure, want to delete order?',
+                                                    style: TextStyle(
+                                                      fontFamily: ConstFont.poppinsRegular,
+                                                      fontSize: 16,
+                                                      color: Colors.black,
+                                                    ),
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  actions: [
+                                                    InkWell(
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      onTap: () {
+                                                        Get.back();
+                                                      },
+                                                      splashColor: ConstColour.btnHowerColor,
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                            borderRadius: BorderRadius.circular(5),
+                                                            color: Colors.red),
+                                                        child: const Padding(
+                                                          padding: EdgeInsets.all(6.0),
+                                                          child: Text(
+                                                            'Cancel',
+                                                            style: TextStyle(
+                                                              fontFamily: ConstFont.poppinsRegular,
+                                                              fontSize: 12,
+                                                              color: Colors.white,
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      onTap: () {
+
+                                                      },
+                                                      splashColor: ConstColour.btnHowerColor,
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          homeController.orderDeleteCall(homeController.homeList[index].id);
+                                                          Get.back();
+                                                        },
+                                                        child: const Padding(
+                                                          padding: EdgeInsets.all(2.0),
+                                                          child: Text(
+                                                            '  Yes  ',
+                                                            style: TextStyle(
+                                                              fontFamily: ConstFont.poppinsMedium,
+                                                              fontSize: 14,
+                                                              color: Colors.black,
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          icon: Icon(
+                                            CupertinoIcons.delete,
+                                            size: 24,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -654,6 +596,91 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shadowColor: Colors.white,
+          elevation: 8.0,
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Logout',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: ConstFont.poppinsMedium,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          content: const Text(
+            'Are you sure, want to logout?',
+            style: TextStyle(
+              fontFamily: ConstFont.poppinsRegular,
+              fontSize: 16,
+              color: Colors.black,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          actions: [
+            InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: Container(
+                decoration: BoxDecoration(
+                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.red),
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsRegular,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () {
+                Get.back();
+              },
+              splashColor: ConstColour.btnHowerColor,
+              child: TextButton(
+                onPressed: () {
+                  ConstPreferences().clearPreferences();
+                  SystemNavigator.pop();
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      fontFamily: ConstFont.poppinsMedium,
+                      fontSize: 13,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
