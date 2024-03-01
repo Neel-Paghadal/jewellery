@@ -7,6 +7,7 @@ import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Controller/User_Controller/productdetail_controller.dart';
 import 'package:jewellery_user/Controller/User_Controller/user_home_con.dart';
 import 'package:jewellery_user/Screen/videoplayer_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../ConstFile/constFonts.dart';
 import 'prodcut_detail.dart';
 
@@ -22,14 +23,13 @@ class _UserHomeState extends State<UserHome> {
   UserProductController userProductController =
       Get.put(UserProductController());
 
-
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           shadowColor: Colors.white,
           elevation: 8.0,
           backgroundColor: Colors.white,
@@ -60,7 +60,7 @@ class _UserHomeState extends State<UserHome> {
               splashColor: ConstColour.btnHowerColor,
               child: Container(
                 decoration: BoxDecoration(
-                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.red),
                 child: const Padding(
@@ -107,15 +107,36 @@ class _UserHomeState extends State<UserHome> {
       },
     );
   }
-
+  SharedPreferences? _prefs;
+  String code = "";
   @override
-  void initState() {
+  void initState()  {
     // TODO: implement initState
     super.initState();
-  userHomeCon.getProductHomeCall();
-  }
-  final _formKey = GlobalKey<FormState>();
+     setState(() {
+      getCode();
+     });
 
+
+  }
+
+  Future<void> getCode() async {
+    final prefs = await SharedPreferences.getInstance();
+    code =  prefs.getString(ConstPreferences().CODE).toString();
+    debugPrint(code);
+    if (code.isNotEmpty && code != "null") {
+      userHomeCon.codeController.text = code;
+      debugPrint(userHomeCon.codeController.text);
+      userHomeCon.getProductCall(code);
+    } else {
+      userHomeCon.getProductHomeCall();
+    }
+  }
+
+
+
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -203,192 +224,195 @@ class _UserHomeState extends State<UserHome> {
             ),
           ],
         ),
-        body:
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+        body: Form(
+          key: _formKey,
+          child: Obx(
+            () =>  Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    cursorColor: ConstColour.errorImage,
+                    enableInteractiveSelection:   !userHomeCon.isProductAvailable.value?  true :  false,
+                    keyboardType:!userHomeCon.isProductAvailable.value ? TextInputType.multiline : TextInputType.none,
+                    enabled: !userHomeCon.isProductAvailable.value,
+                    controller: userHomeCon.codeController,
+                    showCursor: !userHomeCon.isProductAvailable.value,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Please Enter Code";
+                      } else {
+                        return null;
+                      }
+                    },
+                    style: const TextStyle(
+                      // height: deviceHeight * 0.001,
+                      color: ConstColour.black,
+                      fontSize: 15,
+                      fontFamily: ConstFont.poppinsRegular,
+                      overflow: TextOverflow.ellipsis,
+                    ),
 
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      cursorColor: ConstColour.errorImage,
-                      keyboardType: TextInputType.text,
-                      controller: userHomeCon.codeController,
-                      validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return "Please Enter Code";
-                        } else {
-                          return null;
-                        }
-                      },
-                      style: const TextStyle(
-                        // height: deviceHeight * 0.001,
-                        color: ConstColour.black,
-                        fontSize: 15,
+                    decoration: InputDecoration(
+                      fillColor: ConstColour.searchColor,
+                      filled: true,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11),
+                          borderSide: BorderSide.none),
+                      contentPadding: const EdgeInsets.all(6),
+                      hintText: !userHomeCon.isProductAvailable.value ? 'EnterCode'.tr :   userHomeCon.codeController.text ,
+                      hintStyle: const TextStyle(
+                        color: ConstColour.errorImage,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                         fontFamily: ConstFont.poppinsRegular,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                      onChanged: (value) {
-                        userHomeCon.userHome.clear();
-                      },
-
-                      decoration: InputDecoration(
-                        fillColor: ConstColour.searchColor,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(11),
-                            borderSide: BorderSide.none),
-                        contentPadding: const EdgeInsets.all(6),
-                        hintText: 'EnterCode'.tr,
-
-                        hintStyle: const TextStyle(
-                          color: ConstColour.errorImage,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          fontFamily: ConstFont.poppinsRegular,
-                        ),
-                        suffixIcon: TextButton(
-                          style: TextButton.styleFrom(
+                      suffixIcon: userHomeCon.isProductAvailable.value == true ?
+                      SizedBox() :
+                      TextButton(
+                        style: TextButton.styleFrom(
                             // minimumSize: Size(deviceWidth * 0.1, deviceHeight * 0.04),
-                              maximumSize:
-                              Size(deviceWidth * 0.4, deviceHeight * 0.07)),
-                          onPressed: () {
-                            if(_formKey.currentState!.validate()){
-                              userHomeCon.getProductCall(userHomeCon.codeController.text);
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              color: Colors.black,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: deviceWidth * 0.03,
-                                  vertical: deviceHeight * 0.003),
-                              child: Text(
-                                'Apply'.tr,
-                                style: const TextStyle(
-                                    color: ConstColour.primaryColor,
-                                    fontSize: 14,
-                                    fontFamily: ConstFont.poppinsRegular),
-                              ),
+                            maximumSize:
+                                Size(deviceWidth * 0.4, deviceHeight * 0.07)),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            userHomeCon.getProductCall(userHomeCon.codeController.text);
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.black,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: deviceWidth * 0.03,
+                                vertical: deviceHeight * 0.003),
+                            child: Text(
+                              'Apply'.tr,
+                              style: const TextStyle(
+                                  color: ConstColour.primaryColor,
+                                  fontSize: 14,
+                                  fontFamily: ConstFont.poppinsRegular),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-
-
-                  Obx(
-                    () => userHomeCon.userHome.isEmpty
-                        ? Padding(
+                ),
+                Obx(
+                  () => userHomeCon.userHome.isEmpty
+                      ? Padding(
                           padding: EdgeInsets.only(top: deviceHeight * 0.35),
                           child: Text(
-                              "noData".tr,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: ConstFont.poppinsRegular),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                        )
-                        : ListView.builder(
-                            controller: ScrollController(),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: userHomeCon.userHome.length,
-                            itemBuilder: (context, index) {
-
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListTile(
-                                  onTap: () {
-                                    userProductController.orderUserId = userHomeCon.userHome[index].orderUserId;
-                                    debugPrint("Order userId : " + userProductController.orderUserId);
-                                    Get.to(() => const ProductDetailPage());
-                                    userProductController.getProductDetailCall(userHomeCon.userHome[index].orderUserId);
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: const BorderSide(
-                                        color: ConstColour.primaryColor),
-                                  ),
-
-                                leading:  Container(
-                                      height: double.infinity,
-                                      width: deviceWidth * 0.115,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(6),
-                                        child: userHomeCon.userHome[index].image.endsWith('.mp4')
-                                            ? VideoItem(
-                                            url: userHomeCon.userHome[index].image)
-                                            : CachedNetworkImage(
-                                          imageUrl: userHomeCon.userHome[index].image,
-                                          fadeInCurve: Curves.easeInOutQuad,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                          const Icon(Icons.image,
-                                              size: 30,
-                                              color: ConstColour
-                                                  .loadImageColor),
-                                          errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error, size: 30),
-                                        ),
-                                      )),
-
-                                  // leading: Container(
-                                  //     decoration: BoxDecoration(
-                                  //       color: Colors.white,
-                                  //       borderRadius: BorderRadius.circular(6),
-                                  //     ),
-                                  //     child: Padding(
-                                  //       padding: const EdgeInsets.all(4.0),
-                                  //       child: CachedNetworkImage(
-                                  //         width: deviceWidth * 0.115,
-                                  //         imageUrl: userHomeCon.userHome[index].image.toString(),
-                                  //         fadeInCurve: Curves.easeInOutQuad,
-                                  //         placeholder: (context, url) => const Icon(Icons.image,size: 40
-                                  //             ,color : ConstColour.loadImageColor),
-                                  //         errorWidget: (context, url, error) => const Icon(Icons.error,size: 40),
-                                  //       )
-                                  //     )),
-                                  title: Text(
-                                    userHomeCon.userHome[index].name,
-                                    style: const TextStyle(
-                                      fontFamily: ConstFont.poppinsRegular,
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  subtitle: Text(
-                                    "createdate".tr +
-                                        userHomeCon.userHome[index].deliveryDate,
-                                    style: const TextStyle(
-                                      fontFamily: ConstFont.poppinsRegular,
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              );
-
-                            },
+                            "noData".tr,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: ConstFont.poppinsRegular),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                  ),
-                ],
-                      ),
+                        )
+                      : ListView.builder(
+                          controller: ScrollController(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: userHomeCon.userHome.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                onTap: () {
+                                  userProductController.orderUserId =
+                                      userHomeCon.userHome[index].orderUserId;
+                                  debugPrint("Order userId : " +
+                                      userProductController.orderUserId);
+                                  Get.to(() => const ProductDetailPage());
+                                  userProductController.getProductDetailCall(userHomeCon.userHome[index].orderUserId);
+                                },
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: const BorderSide(
+                                      color: ConstColour.primaryColor),
+                                ),
+
+                                leading: Container(
+                                    height: double.infinity,
+                                    width: deviceWidth * 0.115,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: userHomeCon.userHome[index].image
+                                              .endsWith('.mp4')
+                                          ? VideoItem(
+                                              url: userHomeCon
+                                                  .userHome[index].image)
+                                          : CachedNetworkImage(
+                                              imageUrl: userHomeCon
+                                                  .userHome[index].image,
+                                              fadeInCurve: Curves.easeInOutQuad,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  const Icon(Icons.image,
+                                                      size: 30,
+                                                      color: ConstColour
+                                                          .loadImageColor),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error,
+                                                          size: 30),
+                                            ),
+                                    )),
+
+                                // leading: Container(
+                                //     decoration: BoxDecoration(
+                                //       color: Colors.white,
+                                //       borderRadius: BorderRadius.circular(6),
+                                //     ),
+                                //     child: Padding(
+                                //       padding: const EdgeInsets.all(4.0),
+                                //       child: CachedNetworkImage(
+                                //         width: deviceWidth * 0.115,
+                                //         imageUrl: userHomeCon.userHome[index].image.toString(),
+                                //         fadeInCurve: Curves.easeInOutQuad,
+                                //         placeholder: (context, url) => const Icon(Icons.image,size: 40
+                                //             ,color : ConstColour.loadImageColor),
+                                //         errorWidget: (context, url, error) => const Icon(Icons.error,size: 40),
+                                //       )
+                                //     )),
+                                title: Text(
+                                  userHomeCon.userHome[index].name,
+                                  style: const TextStyle(
+                                    fontFamily: ConstFont.poppinsRegular,
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Text(
+                                  "createdate".tr +
+                                      userHomeCon.userHome[index].deliveryDate,
+                                  style: const TextStyle(
+                                    fontFamily: ConstFont.poppinsRegular,
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
             ),
+          ),
+        ),
       ),
     );
   }

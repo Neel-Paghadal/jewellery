@@ -60,7 +60,7 @@ class UserProductController extends GetxController{
       deliveryDate = productDetail[0].deliveryDate.toString();
       notes = productDetail[0].notes.toString();
       description = productDetail[0].description.toString();
-
+      userHomeCon.isProductAvailable.value = true;
       // debugPrint("HOME LIST " + userList[0].userName.toString());
 
       debugPrint('Response: ${response.body}');
@@ -105,8 +105,11 @@ class UserProductController extends GetxController{
         // Successful API call
         var responseBody = json.decode(response.body);
         reasonController.clear();
+        ConstPreferences().clearSinglePreferences(ConstPreferences().CODE);
         Get.to(() => const UserHome());
         debugPrint('Response: $responseBody');
+        userHomeCon.isProductAvailable.value = false;
+
         Utils().toastMessage("Order assign Successfully");
         clearData();
       } else {
@@ -154,6 +157,8 @@ class UserProductController extends GetxController{
         // Successful API call
         var responseBody = json.decode(response.body);
         reasonController.clear();
+        ConstPreferences().clearSinglePreferences(ConstPreferences().CODE);
+        userHomeCon.isProductAvailable.value = false;
         Get.to(() => const UserHome());
         debugPrint('Response: $responseBody');
         Utils().toastMessage("Order Cancel Successfully");

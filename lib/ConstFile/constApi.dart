@@ -23,5 +23,6 @@ class ConstApi {
   static  String  userProfileDetail = '${apiUrl}User/getUserDetails?id=';
   static  String  fileUpload = '${apiUrl}File/Upload';
   static  String  orderDelete = '${apiUrl}Order/DeleteOrder';
+  static  String  getUserOrder = '${apiUrl}Order/GetUserOrder';
 
 }

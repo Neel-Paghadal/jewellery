@@ -2,13 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:jewellery_user/Controller/User_Controller/productdetail_controller.dart';
 import 'package:jewellery_user/Controller/User_Controller/user_home_con.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Screen/videoplayer_screen.dart';
 import 'package:photo_view/photo_view.dart';
-
 import '../../Common/bottom_button_widget.dart';
 import '../../ConstFile/constColors.dart';
 import '../../ConstFile/constFonts.dart';
@@ -59,343 +57,345 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               icon: const Icon(Icons.arrow_back_ios),
               color: ConstColour.primaryColor),
         ),
-        bottomNavigationBar: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: NextButton(
-                  onPressed: () {
+        bottomNavigationBar: Obx(
+          () => userProductController.productDetail.isEmpty ? const SizedBox() :   SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: NextButton(
+                    onPressed: () {
 
-                    showCupertinoModalPopup(
-                      filter: const ColorFilter.mode(
-                          ConstColour
-                              .primaryColor,
-                          BlendMode.clear),
-                      semanticsDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius
-                                  .circular(
-                                  10)),
+                      showCupertinoModalPopup(
+                        filter: const ColorFilter.mode(
+                            ConstColour
+                                .primaryColor,
+                            BlendMode.clear),
+                        semanticsDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius
+                                    .circular(
+                                    10)),
 
-                          shadowColor:
-                          Colors.white,
-                          elevation: 8.0,
-                          // backgroundColor: Colors.white,
-                          backgroundColor: Colors
-                              .orange.shade100,
-                          title: const Text(
-                            'Order',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontFamily: ConstFont.poppinsMedium,
-                              color: Colors.black,
+                            shadowColor:
+                            Colors.white,
+                            elevation: 8.0,
+                            // backgroundColor: Colors.white,
+                            backgroundColor: Colors
+                                .orange.shade100,
+                            title: const Text(
+                              'Order',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontFamily: ConstFont.poppinsMedium,
+                                color: Colors.black,
+                              ),
+                              overflow: TextOverflow
+                                  .ellipsis,
                             ),
-                            overflow: TextOverflow
-                                .ellipsis,
-                          ),
-                          content: const Text(
-                            'Are you sure, want to Complete Order?',
-                            style: TextStyle(
-                              fontFamily: ConstFont.poppinsRegular,
-                              fontSize: 16,
-                              color: Colors.black,
+                            content: const Text(
+                              'Are you sure, want to Complete Order?',
+                              style: TextStyle(
+                                fontFamily: ConstFont.poppinsRegular,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow
+                                  .ellipsis,
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow
-                                .ellipsis,
-                          ),
-                          actions: [
-                            InkWell(
-                              borderRadius:
-                              BorderRadius
-                                  .circular(
-                                  5),
-                              onTap: () {
-                                Get.back();
-                              },
-                              splashColor:
-                              ConstColour
-                                  .btnHowerColor,
-                              child: Container(
-                                decoration:
-                                BoxDecoration(
-                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                    borderRadius:
-                                    BorderRadius.circular(
-                                        5),
-                                    color: Colors
-                                        .red),
-                                child:
-                                const Padding(
-                                  padding:
-                                  EdgeInsets.all(6.0),
-                                  child: Text('Cancel',
-                                    style:
-                                    TextStyle(
-                                      fontFamily:
-                                      ConstFont
-                                          .poppinsRegular,
-                                      fontSize:
-                                      12,
+                            actions: [
+                              InkWell(
+                                borderRadius:
+                                BorderRadius
+                                    .circular(
+                                    5),
+                                onTap: () {
+                                  Get.back();
+                                },
+                                splashColor:
+                                ConstColour
+                                    .btnHowerColor,
+                                child: Container(
+                                  decoration:
+                                  BoxDecoration(
+                                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                      borderRadius:
+                                      BorderRadius.circular(
+                                          5),
                                       color: Colors
-                                          .white,
+                                          .red),
+                                  child:
+                                  const Padding(
+                                    padding:
+                                    EdgeInsets.all(6.0),
+                                    child: Text('Cancel',
+                                      style:
+                                      TextStyle(
+                                        fontFamily:
+                                        ConstFont
+                                            .poppinsRegular,
+                                        fontSize:
+                                        12,
+                                        color: Colors
+                                            .white,
+                                      ),
+                                      overflow:
+                                      TextOverflow
+                                          .ellipsis,
                                     ),
-                                    overflow:
-                                    TextOverflow
-                                        .ellipsis,
                                   ),
                                 ),
                               ),
-                            ),
-                            InkWell(
-                              borderRadius:
-                              BorderRadius.circular(5),
-                              onTap: () {
-                                userProductController.assignComplete(
-                                    userProductController.orderUserId,
-                                    userProductController.reasonController.text
-                                );
-                                Get.back();
-                              },
-                              splashColor:
-                              ConstColour
-                                  .btnHowerColor,
-                              child: Container(
-                                decoration:
-                                BoxDecoration(
-                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                    borderRadius:
-                                    BorderRadius.circular(
-                                        5),
-                                    color: Colors
-                                        .black),
-                                child:
-                                const Padding(
-                                  padding:
-                                  EdgeInsets
-                                      .all(
-                                      6.0),
-                                  child: Text(
-                                    '    Ok    ',
-                                    style:
-                                    TextStyle(
-                                      fontFamily:
-                                      ConstFont
-                                          .poppinsRegular,
-                                      fontSize:
-                                      12,
+                              InkWell(
+                                borderRadius:
+                                BorderRadius.circular(5),
+                                onTap: () {
+                                  userProductController.assignComplete(
+                                      userProductController.orderUserId,
+                                      userProductController.reasonController.text
+                                  );
+                                  Get.back();
+                                },
+                                splashColor:
+                                ConstColour
+                                    .btnHowerColor,
+                                child: Container(
+                                  decoration:
+                                  BoxDecoration(
+                                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                      borderRadius:
+                                      BorderRadius.circular(
+                                          5),
                                       color: Colors
-                                          .white,
+                                          .black),
+                                  child:
+                                  const Padding(
+                                    padding:
+                                    EdgeInsets
+                                        .all(
+                                        6.0),
+                                    child: Text(
+                                      '    Ok    ',
+                                      style:
+                                      TextStyle(
+                                        fontFamily:
+                                        ConstFont
+                                            .poppinsRegular,
+                                        fontSize:
+                                        12,
+                                        color: Colors
+                                            .white,
+                                      ),
+                                      overflow:
+                                      TextOverflow
+                                          .ellipsis,
                                     ),
-                                    overflow:
-                                    TextOverflow
-                                        .ellipsis,
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                            ],
+                          );
+                        },
+                      );
 
 
-                    // homeController.loading.value = true;
-                    // userProductController.assignComplete(
-                    //     userProductController.orderUserId,
-                    //     userProductController.reasonController.text
-                    // );
+                      // homeController.loading.value = true;
+                      // userProductController.assignComplete(
+                      //     userProductController.orderUserId,
+                      //     userProductController.reasonController.text
+                      // );
 
-                  },
-                  btnName: "complete".tr,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    side: const BorderSide(color: Colors.white),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      minimumSize: Size(deviceWidth * 0.9, deviceHeight * 0.06),
-                      maximumSize: Size(deviceWidth * 1.0, deviceHeight * 0.07),
-                    backgroundColor: Colors.black
+                    },
+                    btnName: "complete".tr,
                   ),
-                  onPressed: () {
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      side: const BorderSide(color: Colors.white),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        minimumSize: Size(deviceWidth * 0.9, deviceHeight * 0.06),
+                        maximumSize: Size(deviceWidth * 1.0, deviceHeight * 0.07),
+                      backgroundColor: Colors.black
+                    ),
+                    onPressed: () {
 
 
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return StatefulBuilder(
-                          builder: (context, setState) {
-                            setState(() {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return StatefulBuilder(
+                            builder: (context, setState) {
+                              setState(() {
 
-                            },);
-                            return Dialog(
-                              insetAnimationDuration: const Duration(seconds: 1),
-                              insetAnimationCurve: Curves.linear,
-                              shadowColor: ConstColour.primaryColor,
-                              backgroundColor: Colors.black45,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: ConstColour.bgColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: ConstColour.primaryColor,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.4),
-                                      spreadRadius: 2,
-                                      blurRadius: 2,
-                                      offset: const Offset(0, 2),
+                              },);
+                              return Dialog(
+                                insetAnimationDuration: const Duration(seconds: 1),
+                                insetAnimationCurve: Curves.linear,
+                                shadowColor: ConstColour.primaryColor,
+                                backgroundColor: Colors.black45,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: ConstColour.bgColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: ConstColour.primaryColor,
                                     ),
-                                  ],
-                                ),
-                                child: Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: deviceHeight * 0.01,left: deviceWidth * 0.25,top: deviceHeight * 0.01),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              userHomeCon.codeController.text,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontFamily: ConstFont.poppinsBold,
-                                                  color: Colors.white),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                           IconButton(onPressed : () {
-                                             Get.back();
-                                           }, icon: const Icon(Icons.cancel_outlined,color: ConstColour.primaryColor,size: 24,))
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: deviceHeight * 0.02,
-                                            left: deviceWidth * 0.03,
-                                            right: deviceWidth * 0.03),
-                                        child: TextFormField(
-                                          autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
-                                          textAlign: TextAlign.start,
-                                          keyboardType: TextInputType.text,
-                                          autocorrect: true,
-                                          controller:  userProductController.reasonController,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Enter Reason";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                          decoration: InputDecoration(
-                                            labelStyle:
-                                            const TextStyle(color: Colors.grey),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                              borderSide: const BorderSide(
-                                                  color: ConstColour.textFieldBorder),
-                                            ),
-                                            disabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                              borderSide: const BorderSide(
-                                                  color: ConstColour.textFieldBorder),
-                                            ),
-                                            focusedErrorBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                              borderSide: const BorderSide(
-                                                  color: ConstColour.primaryColor),
-                                            ),
-                                            focusedBorder: const OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: ConstColour.primaryColor),
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(8)),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                              borderSide: const BorderSide(
-                                                  color: ConstColour.textFieldBorder),
-                                            ),
-                                            border: InputBorder.none,
-                                            filled: true,
-                                            labelText: "Reason",
-                                            hintText: "Enter your reason",
-                                            floatingLabelStyle:
-                                            const TextStyle(color: Colors.white),
-                                            hintStyle: const TextStyle(
-                                                color: Colors.grey,
-                                                fontFamily: ConstFont.poppinsRegular,
-                                                fontSize: 16,
-                                                overflow: TextOverflow.ellipsis),
-                                          ),
-                                          minLines: 3,
-                                          maxLines: 4,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontFamily: ConstFont.poppinsRegular),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: NextButtonSec(
-                                          btnName: "orderCancel".tr,
-                                          onPressed: () {
-                                            if(_formKey.currentState!.validate()){
-
-                                                homeController.loadingSec.value = true;
-                                                userProductController.assignCancel(
-                                                    userProductController.orderUserId,
-                                                  userProductController.reasonController.text
-                                                );
-
-                                            }
-
-                                          },
-                                        ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.4),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: const Offset(0, 2),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
+                                  child: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              bottom: deviceHeight * 0.01,left: deviceWidth * 0.25,top: deviceHeight * 0.01),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                userHomeCon.codeController.text,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: ConstFont.poppinsBold,
+                                                    color: Colors.white),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                             IconButton(onPressed : () {
+                                               Get.back();
+                                             }, icon: const Icon(Icons.cancel_outlined,color: ConstColour.primaryColor,size: 24,))
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: deviceHeight * 0.02,
+                                              left: deviceWidth * 0.03,
+                                              right: deviceWidth * 0.03),
+                                          child: TextFormField(
+                                            autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                            textAlign: TextAlign.start,
+                                            keyboardType: TextInputType.text,
+                                            autocorrect: true,
+                                            controller:  userProductController.reasonController,
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return "Please Enter Reason";
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                            decoration: InputDecoration(
+                                              labelStyle:
+                                              const TextStyle(color: Colors.grey),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                                borderSide: const BorderSide(
+                                                    color: ConstColour.textFieldBorder),
+                                              ),
+                                              disabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                                borderSide: const BorderSide(
+                                                    color: ConstColour.textFieldBorder),
+                                              ),
+                                              focusedErrorBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                                borderSide: const BorderSide(
+                                                    color: ConstColour.primaryColor),
+                                              ),
+                                              focusedBorder: const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: ConstColour.primaryColor),
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(8)),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                                borderSide: const BorderSide(
+                                                    color: ConstColour.textFieldBorder),
+                                              ),
+                                              border: InputBorder.none,
+                                              filled: true,
+                                              labelText: "Reason",
+                                              hintText: "Enter your reason",
+                                              floatingLabelStyle:
+                                              const TextStyle(color: Colors.white),
+                                              hintStyle: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontFamily: ConstFont.poppinsRegular,
+                                                  fontSize: 16,
+                                                  overflow: TextOverflow.ellipsis),
+                                            ),
+                                            minLines: 3,
+                                            maxLines: 4,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontFamily: ConstFont.poppinsRegular),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: NextButtonSec(
+                                            btnName: "orderCancel".tr,
+                                            onPressed: () {
+                                              if(_formKey.currentState!.validate()){
 
-                  },
-                  child: Text(
-                      'cancel'.tr,
-                    style: const TextStyle(
-                        fontFamily: ConstFont.poppinsRegular,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,color: Colors.white
+                                                  homeController.loadingSec.value = true;
+                                                  userProductController.assignCancel(
+                                                      userProductController.orderUserId,
+                                                    userProductController.reasonController.text
+                                                  );
+
+                                              }
+
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+
+                    },
+                    child: Text(
+                        'cancel'.tr,
+                      style: const TextStyle(
+                          fontFamily: ConstFont.poppinsRegular,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,color: Colors.white
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         backgroundColor: ConstColour.bgColor,
@@ -417,7 +417,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Icon(Icons.image, size: 300, color: Colors.grey),
-                    Container(
+                    SizedBox(
                       height: deviceHeight * 0.1,
                       child: Row(
                         children: [
@@ -610,9 +610,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             userProductController.productDetail[0].image.toString(),
                             fadeInCurve:
                             Curves.easeInOutQuad,
-                            placeholder: (context, url) => const Icon(Icons.image,size: 65, color: ConstColour.loadImageColor),
-                            errorWidget: (context,
-                                url, error) =>
+                            // placeholder: (context, url) => const Icon(Icons.image,size: 65, color: ConstColour.loadImageColor),
+                            errorWidget: (context, url, error) =>
                             const Icon(
                                 Icons.error,
                                 size: 45),
@@ -633,7 +632,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ),
                 ),
-                userProductController.productDetail[0].orderImages.isEmpty  ? SizedBox() :  SizedBox(
+                userProductController.productDetail[0].orderImages.isEmpty  ? const SizedBox() :  SizedBox(
                   height: deviceHeight * 0.09,
                   child: Row(
                     children: [
@@ -903,7 +902,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 //     ],
                 //   ),
                 // ),
-                (userProductController.notes == "" || userProductController.notes == null) ? SizedBox() : Padding(
+                (userProductController.notes == "" || userProductController.notes == null) ? const SizedBox() : Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -955,7 +954,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: Text(
                           ": ${userProductController.description}",
                           maxLines: 7,
-                          style:  TextStyle(
+                          style:  const TextStyle(
                             color: ConstColour.textColor,
                             fontSize: 16,
                             fontFamily: ConstFont.poppinsRegular,

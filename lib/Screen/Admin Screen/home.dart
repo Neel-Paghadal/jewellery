@@ -44,8 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     homeController.loadProducts();
     _scrollController.addListener(_onScroll);
-
     homeController.checkUser();
+
   }
 
   void _onScroll() {

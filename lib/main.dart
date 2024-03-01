@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jewellery_user/Common/checkInternet.dart';
+import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Language%20Module/languages.dart';
 import 'package:jewellery_user/Screen/splashScreen.dart';
 import 'package:image_picker_android/image_picker_android.dart';
@@ -12,7 +13,6 @@ import 'package:image_picker_platform_interface/image_picker_platform_interface.
 void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:video_player/video_player.dart';
@@ -74,6 +75,7 @@ class VideoItem extends StatelessWidget {
                 Image.memory(
                   snapshot.data as Uint8List,
                   fit: BoxFit.fill,
+                  filterQuality: FilterQuality.high,
                 ),
                 Icon(
                   CupertinoIcons.play_circle_fill,
@@ -157,30 +159,41 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
     super.initState();
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.url),
         videoPlayerOptions: VideoPlayerOptions(
-            allowBackgroundPlayback: false, mixWithOthers: true));
-    _chewieController = ChewieController(
-      videoPlayerController: _controller,
-      allowFullScreen: true,
-      autoInitialize: true,
-      allowedScreenSleep: false,
-      fullScreenByDefault: false,
-      allowMuting: true,
-      allowPlaybackSpeedChanging: true,
-      zoomAndPan: true,
-      // aspectRatio: _controller.value.aspectRatio,
-      cupertinoProgressColors:
-          ChewieProgressColors(bufferedColor: ConstColour.primaryColor),
-      autoPlay: true,
-      looping: true,
-      // Other customization options can be added here
-    );
+            allowBackgroundPlayback: false,
+            mixWithOthers: true,));
+    setState(() {
+      _chewieController = ChewieController(
+        videoPlayerController: _controller,
+        aspectRatio: _controller.value.aspectRatio,
+        allowFullScreen: true,
+        autoInitialize: true,
+        materialProgressColors: ChewieProgressColors(
+          playedColor: Colors.black,
+          handleColor: Colors.blue,
+          backgroundColor: Colors.grey,
+          bufferedColor: ConstColour.primaryColor,
+        ),
+        fullScreenByDefault: false,
+        allowMuting: true,
+        allowPlaybackSpeedChanging: true,
+        zoomAndPan: true,
+        showControlsOnInitialize: false,
+        placeholder: Center(
+          child: CircularProgressIndicator(color: ConstColour.primaryColor,),
+        ),
+        autoPlay: true,
+        looping: true,
+        // Other customization options can be added here
+      );
+
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Chewie(
+    return _chewieController != null ? Chewie(
       controller: _chewieController,
-    );
+    ) : CircularProgressIndicator(color: ConstColour.primaryColor,);
   }
 
   @override

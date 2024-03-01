@@ -267,7 +267,7 @@ class _UserListScreenState extends State<UserListScreen> {
                           onPressed: () {
                             debugPrint("UserId :${userListController.userId}");
 
-                            if (userListController.userId == "") {
+                            if (userListController.userId == "" && userListController.userId == null) {
                               Utils().toastMessage("Please select username");
                             } else {
                               debugPrint("ELSE");
@@ -291,6 +291,295 @@ class _UserListScreenState extends State<UserListScreen> {
         );
       },
     );
+  }
+
+  Future<void> updateAssignOrder(String uniqueCode,String oldUserId) async {
+    var deviceHeight = MediaQuery.of(context).size.height;
+    var deviceWidth = MediaQuery.of(context).size.width;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            setState(() {},);
+            return Dialog(
+              insetAnimationDuration:
+              const Duration(seconds: 1),
+              insetAnimationCurve: Curves.linear,
+              shadowColor: ConstColour.primaryColor,
+              backgroundColor: Colors.black45,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ConstColour.bgColor,
+                  borderRadius:
+                  BorderRadius.circular(8),
+                  border: Border.all(
+                    color: ConstColour.primaryColor,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey
+                          .withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom:
+                          deviceHeight * 0.01,
+                          top: deviceHeight * 0.01,
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment
+                              .spaceBetween,
+                          children: [
+                            Text(
+                                "  Code : ${uniqueCode}",
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors
+                                        .white,
+                                    fontFamily:
+                                    ConstFont
+                                        .poppinsMedium)),
+                            IconButton(
+                                onPressed: () {
+                                  FlutterClipboard.copy(uniqueCode);
+                                  Utils()
+                                      .toastMessage(
+                                      "Copied");
+                                },
+                                icon: const Icon(
+                                  Icons.copy,
+                                  color: ConstColour
+                                      .appBar,
+                                  size: 20,
+                                )),
+                            IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(
+                                  Icons
+                                      .cancel_outlined,
+                                  color: ConstColour
+                                      .primaryColor,
+                                  size: 24,
+                                ))
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: deviceHeight * 0.02,
+                            left: deviceWidth * 0.03,
+                            right: deviceWidth * 0.03),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border:
+                              Border.all(color: ConstColour.primaryColor)),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            borderRadius: BorderRadius.circular(8),
+                            iconEnabledColor: ConstColour.primaryColor,
+                            dropdownColor: Colors.white,
+                            autofocus: true,
+                            elevation: 5,
+                            alignment: Alignment.centerLeft,
+                            iconSize: 30,
+                            focusColor: Colors.white,
+                            underline: const DropdownButtonHideUnderline(
+                                child: SizedBox()),
+                            hint: Padding(
+                              padding:
+                              EdgeInsets.only(left: deviceWidth * 0.05),
+                              child: const Text(
+                                'Select username',
+                                style: TextStyle(
+                                    fontFamily: ConstFont.poppinsRegular,
+                                    fontSize: 14,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            value: dropdownvalue,
+                            items: userListController.userListDrop.map((item) {
+                              return DropdownMenuItem(
+                                  value: item.id.toString(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      item.name.toString(),
+                                      style: const TextStyle(
+                                          fontFamily: ConstFont.poppinsRegular,
+                                          fontSize: 14,
+                                          color: ConstColour.primaryColor),
+                                    ),
+                                  ));
+                            }).toList(),
+
+                            onChanged: (newVal) {
+                              setState(() {
+                                dropdownvalue = newVal;
+                                userListController.userId = newVal.toString();
+                                debugPrint(dropdownvalue.toString());
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top:
+                            deviceHeight * 0.02,
+                            left:
+                            deviceWidth * 0.03,
+                            right:
+                            deviceWidth * 0.03),
+                        child: TextFormField(
+                          autovalidateMode:
+                          AutovalidateMode
+                              .onUserInteraction,
+                          textAlign:
+                          TextAlign.start,
+                          keyboardType:
+                          TextInputType.text,
+                          autocorrect: true,
+                          controller:
+                          userListController
+                              .notesController,
+                          validator: (value) {
+                            if (value!.trim()
+                                .isEmpty) {
+                              return "Please Enter Notes";
+                            } else {
+                              return null;
+                            }
+                          },
+                          decoration:
+                          InputDecoration(
+                            labelStyle:
+                            const TextStyle(
+                                color: Colors
+                                    .grey),
+                            enabledBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(8),
+                              borderSide: const BorderSide(
+                                  color: ConstColour
+                                      .textFieldBorder),
+                            ),
+                            disabledBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(8),
+                              borderSide: const BorderSide(
+                                  color: ConstColour
+                                      .textFieldBorder),
+                            ),
+                            focusedErrorBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(8),
+                              borderSide: const BorderSide(
+                                  color: ConstColour
+                                      .primaryColor),
+                            ),
+                            focusedBorder:
+                            const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: ConstColour
+                                      .primaryColor),
+                              borderRadius:
+                              BorderRadius.all(
+                                  Radius
+                                      .circular(
+                                      8)),
+                            ),
+                            errorBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(8),
+                              borderSide: const BorderSide(
+                                  color: ConstColour
+                                      .textFieldBorder),
+                            ),
+                            border:
+                            InputBorder.none,
+                            filled: true,
+                            labelText: "Notes",
+                            hintText:
+                            "Enter your notes",
+                            floatingLabelStyle:
+                            const TextStyle(
+                                color: Colors
+                                    .white),
+                            hintStyle: const TextStyle(
+                                color: Colors.grey,
+                                fontFamily: ConstFont
+                                    .poppinsRegular,
+                                fontSize: 16,
+                                overflow:
+                                TextOverflow
+                                    .ellipsis),
+                          ),
+                          minLines: 3,
+                          maxLines: 4,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: ConstFont
+                                  .poppinsRegular),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: NextButtonSec(
+                          btnName: "Update",
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              debugPrint("Drop"+userListController.userId.toString());
+                              if(userListController.userId != "" && userListController.userId != null){
+                                homeController.loadingSec.value = true;
+                                userListController.assignUpdate(
+                                    oldUserId,
+                                    userListController.userId.toString(),
+                                    userListController.notesController.text);
+                                Get.back();
+                              }else{
+                                Utils().toastMessage("Please select username");
+                              }
+
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+
   }
 
   @override
@@ -433,7 +722,8 @@ class _UserListScreenState extends State<UserListScreen> {
                               debugPrint("List" + userListController.userList[index].notes.toString());
                               dropdownvalue = null;
                               userListController.userId = null;
-                              if (userListController.userList[index].status == "Complete") {
+                              if (userListController.userList[index].status == "Complete")
+                              {
                                 showDialog(
                                   context: context,
                                   builder: (context) {
@@ -642,292 +932,13 @@ class _UserListScreenState extends State<UserListScreen> {
                                     );
                                   },
                                 );
-                              } else {
-                                if(userListController.userList[index].status == "Cancel"){
+                              }
+                              else {
+                                if(userListController.userList[index].needToReassign == true){
                                   userListController.getUserDropCall(userListController.orderId.toString());
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return StatefulBuilder(
-                                        builder: (context, setState) {
-                                          setState(() {},);
-                                          return Dialog(
-                                            insetAnimationDuration:
-                                            const Duration(seconds: 1),
-                                            insetAnimationCurve: Curves.linear,
-                                            shadowColor: ConstColour.primaryColor,
-                                            backgroundColor: Colors.black45,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: ConstColour.bgColor,
-                                                borderRadius:
-                                                BorderRadius.circular(8),
-                                                border: Border.all(
-                                                  color: ConstColour.primaryColor,
-                                                ),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.4),
-                                                    spreadRadius: 2,
-                                                    blurRadius: 2,
-                                                    offset: const Offset(0, 2),
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Form(
-                                                key: _formKey,
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                        bottom:
-                                                        deviceHeight * 0.01,
-                                                        top: deviceHeight * 0.01,
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                              "  Code : ${userListController.userList[index].code}",
-                                                              style: const TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontFamily:
-                                                                  ConstFont
-                                                                      .poppinsMedium)),
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                FlutterClipboard.copy(
-                                                                    userListController
-                                                                        .userList[
-                                                                    index]
-                                                                        .code);
-                                                                Utils()
-                                                                    .toastMessage(
-                                                                    "Copied");
-                                                              },
-                                                              icon: const Icon(
-                                                                Icons.copy,
-                                                                color: ConstColour
-                                                                    .appBar,
-                                                                size: 20,
-                                                              )),
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                Get.back();
-                                                              },
-                                                              icon: const Icon(
-                                                                Icons
-                                                                    .cancel_outlined,
-                                                                color: ConstColour
-                                                                    .primaryColor,
-                                                                size: 24,
-                                                              ))
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top:
-                                                          deviceHeight * 0.02,
-                                                          left:
-                                                          deviceWidth * 0.03,
-                                                          right:
-                                                          deviceWidth * 0.03),
-                                                      child: TextFormField(
-                                                        autovalidateMode:
-                                                        AutovalidateMode
-                                                            .onUserInteraction,
-                                                        textAlign:
-                                                        TextAlign.start,
-                                                        keyboardType:
-                                                        TextInputType.text,
-                                                        autocorrect: true,
-                                                        controller:
-                                                        userListController
-                                                            .notesController,
-                                                        validator: (value) {
-                                                          if (value!.trim()
-                                                              .isEmpty) {
-                                                            return "Please Enter Notes";
-                                                          } else {
-                                                            return null;
-                                                          }
-                                                        },
-                                                        decoration:
-                                                        InputDecoration(
-                                                          labelStyle:
-                                                          const TextStyle(
-                                                              color: Colors
-                                                                  .grey),
-                                                          enabledBorder:
-                                                          OutlineInputBorder(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                            borderSide: const BorderSide(
-                                                                color: ConstColour
-                                                                    .textFieldBorder),
-                                                          ),
-                                                          disabledBorder:
-                                                          OutlineInputBorder(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                            borderSide: const BorderSide(
-                                                                color: ConstColour
-                                                                    .textFieldBorder),
-                                                          ),
-                                                          focusedErrorBorder:
-                                                          OutlineInputBorder(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                            borderSide: const BorderSide(
-                                                                color: ConstColour
-                                                                    .primaryColor),
-                                                          ),
-                                                          focusedBorder:
-                                                          const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: ConstColour
-                                                                    .primaryColor),
-                                                            borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius
-                                                                    .circular(
-                                                                    8)),
-                                                          ),
-                                                          errorBorder:
-                                                          OutlineInputBorder(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                            borderSide: const BorderSide(
-                                                                color: ConstColour
-                                                                    .textFieldBorder),
-                                                          ),
-                                                          border:
-                                                          InputBorder.none,
-                                                          filled: true,
-                                                          labelText: "Notes",
-                                                          hintText:
-                                                          "Enter your notes",
-                                                          floatingLabelStyle:
-                                                          const TextStyle(
-                                                              color: Colors
-                                                                  .white),
-                                                          hintStyle: const TextStyle(
-                                                              color: Colors.grey,
-                                                              fontFamily: ConstFont
-                                                                  .poppinsRegular,
-                                                              fontSize: 16,
-                                                              overflow:
-                                                              TextOverflow
-                                                                  .ellipsis),
-                                                        ),
-                                                        minLines: 3,
-                                                        maxLines: 4,
-                                                        style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 16,
-                                                            fontFamily: ConstFont
-                                                                .poppinsRegular),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: deviceHeight * 0.02,
-                                                          left: deviceWidth * 0.03,
-                                                          right: deviceWidth * 0.03),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(8),
-                                                            border:
-                                                            Border.all(color: ConstColour.primaryColor)),
-                                                        child: DropdownButton(
-                                                          isExpanded: true,
-                                                          borderRadius: BorderRadius.circular(8),
-                                                          iconEnabledColor: ConstColour.primaryColor,
-                                                          dropdownColor: Colors.white,
-                                                          autofocus: true,
-                                                          elevation: 5,
-                                                          alignment: Alignment.centerLeft,
-                                                          iconSize: 30,
-                                                          focusColor: Colors.white,
-                                                          underline: const DropdownButtonHideUnderline(
-                                                              child: SizedBox()),
-                                                          hint: Padding(
-                                                            padding:
-                                                            EdgeInsets.only(left: deviceWidth * 0.05),
-                                                            child: const Text(
-                                                              'Select username',
-                                                              style: TextStyle(
-                                                                  fontFamily: ConstFont.poppinsRegular,
-                                                                  fontSize: 14,
-                                                                  color: Colors.white),
-                                                            ),
-                                                          ),
-                                                          value: dropdownvalue,
-                                                          items: userListController.userListDrop.map((item) {
-                                                            return DropdownMenuItem(
-                                                                value: item.id.toString(),
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: Text(
-                                                                    item.name.toString(),
-                                                                    style: const TextStyle(
-                                                                        fontFamily: ConstFont.poppinsRegular,
-                                                                        fontSize: 14,
-                                                                        color: ConstColour.primaryColor),
-                                                                  ),
-                                                                ));
-                                                          }).toList(),
+                                  updateAssignOrder(userListController.userList[index].code,userListController.userList[index].id);
 
-                                                          onChanged: (newVal) {
-                                                            setState(() {
-                                                              dropdownvalue = newVal;
-                                                              userListController.userId = newVal.toString();
-                                                              debugPrint(dropdownvalue.toString());
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: NextButtonSec(
-                                                        btnName: "Update",
-                                                        onPressed: () {
-                                                          if (_formKey
-                                                              .currentState!
-                                                              .validate()) {
-                                                            homeController
-                                                                .loadingSec
-                                                                .value = true;
-                                                            userListController.assignUpdate(
-                                                                userListController.userList[index].id,
-                                                                userListController.userId.toString(),
-                                                                userListController.notesController.text);
-                                                            Get.back();
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
+
                                 }else{
                                   showDialog(
                                     context: context,

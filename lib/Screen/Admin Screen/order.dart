@@ -784,21 +784,16 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                   color: ConstColour
                                                                       .primaryColor),
                                                             ),
-                                                            imageUrl: ConstApi
-                                                                    .baseFilePath +
-                                                                orderController
-                                                                    .imgList[0]
-                                                                    .path
-                                                                    .toString(),
+                                                            imageUrl: ConstApi.baseFilePath + orderController.imgList[0].path.toString(),
                                                             fadeInCurve: Curves
                                                                 .easeInOutQuad,
-                                                            placeholder: (context,
-                                                                    url) =>
-                                                                const Icon(
-                                                                    Icons.image,
-                                                                    size: 65,
-                                                                    color: ConstColour
-                                                                        .loadImageColor),
+                                                            // placeholder: (context,
+                                                            //         url) =>
+                                                            //     const Icon(
+                                                            //         Icons.image,
+                                                            //         size: 45,
+                                                            //         color: ConstColour
+                                                            //             .loadImageColor),
                                                             errorWidget: (context,
                                                                     url,
                                                                     error) =>
