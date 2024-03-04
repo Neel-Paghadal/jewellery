@@ -7,6 +7,7 @@ import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/userProfileDetail_controller.dart';
 import 'package:jewellery_user/Controller/userlistScreen_controller.dart';
 import 'package:jewellery_user/Models/userDetail_model.dart';
+import 'package:jewellery_user/Screen/List%20Screen/deleteUserAdminDialouge.dart';
 import 'package:jewellery_user/Screen/List%20Screen/forgot_password_dialog.dart';
 import 'package:jewellery_user/Screen/List%20Screen/userDetail_screen.dart';
 import 'package:jewellery_user/Screen/loader.dart';
@@ -58,7 +59,7 @@ class _UserListState extends State<UserList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loadProducts();
+    userListScreenController.loadProducts();
     _scrollController.addListener(_onScroll);
   }
 
@@ -149,52 +150,54 @@ class _UserListState extends State<UserList> {
     );
   }
 
-  Future<void> _handleRefresh() async {
-    _pageIndex = 1;
-    _pageSize = 10;
+  // Future<void> _handleRefresh() async {
+  //   _pageIndex = 1;
+  //   _pageSize = 10;
+  //
+  //   userListScreenController.usersList.clear();
+  //   userListScreenController.getUserCall(
+  //     _pageIndex,
+  //     _pageSize,
+  //   );
+  //   debugPrint("ScreenRefresh");
+  //   return await Future.delayed(const Duration(seconds: 1));
+  // }
 
-    userListScreenController.usersList.clear();
-    userListScreenController.getUserCall(
-      _pageIndex,
-      _pageSize,
-    );
-    debugPrint("ScreenRefresh");
-    return await Future.delayed(const Duration(seconds: 1));
-  }
-
-  Future<void> _loadProducts() async {
-    setState(() {
-      _loading = true;
-    });
-    _pageIndex++;
-
-    debugPrint("Page Order index$_pageIndex");
-    try {
-      final RxList<UserDetail> products =
-          await userListScreenController.getUserCall(
-        _pageIndex,
-        _pageSize,
-      );
-      setState(() {
-        userListScreenController.usersList.addAll(products);
-      });
-    } catch (e) {
-      // Handle errors
-      debugPrint('Error loading products: $e');
-    } finally {
-      setState(() {
-        _loading = false;
-      });
-    }
-  }
+  // Future<void> _loadProducts() async {
+  //   setState(() {
+  //     _loading = true;
+  //   });
+  //   _pageIndex++;
+  //
+  //   debugPrint("Page Order index$_pageIndex");
+  //   try {
+  //     final RxList<UserDetail> products =
+  //         await userListScreenController.getUserCall(
+  //       _pageIndex,
+  //       _pageSize,
+  //     );
+  //     setState(() {
+  //       userListScreenController.usersList.addAll(products);
+  //     });
+  //   } catch (e) {
+  //     // Handle errors
+  //     debugPrint('Error loading products: $e');
+  //   } finally {
+  //     setState(() {
+  //       _loading = false;
+  //     });
+  //   }
+  // }
 
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       // User has reached the end of the list, load more products
-      _loadProducts();
+      // _loadProducts();
+      userListScreenController.loadProducts();
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -221,11 +224,12 @@ class _UserListState extends State<UserList> {
             icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
+
       body: Obx(
         () => LiquidPullToRefresh(
           color: Colors.black,
           height: deviceHeight * 0.08,
-          onRefresh: _handleRefresh,
+          onRefresh: userListScreenController.handleRefresh,
           showChildOpacityTransition: false,
           backgroundColor: ConstColour.primaryColor,
           springAnimationDurationInMilliseconds: 1,
@@ -288,16 +292,15 @@ class _UserListState extends State<UserList> {
                   )
                 : ListView.builder(
                     controller: _scrollController,
-                    itemCount: userListScreenController.usersList.length +
-                        (_loading ? 1 : 0),
+                    itemCount: userListScreenController.usersList.length + (userListScreenController.loadingPage.value ? 1 : 0),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       if (index == userListScreenController.usersList.length) {
                         // Loading indicator
-                        return _loading
+                        return userListScreenController.loadingPage.value
                             ? Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(25.0),
                                 child: Center(
                                   widthFactor: deviceWidth * 0.1,
                                   child: const CircularProgressIndicator(
@@ -319,8 +322,7 @@ class _UserListState extends State<UserList> {
                               width: deviceWidth * 0.13,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color:  StickyColors
-                                    .colors[_random.nextInt(15)]
+                                  color:  StickyColors.colors[_random.nextInt(15)]
                                 ),
                                 child: Center(
                                   child: Text(userListScreenController.usersList[index].firstName.substring(0,1).toUpperCase(),style: TextStyle(
@@ -392,6 +394,22 @@ class _UserListState extends State<UserList> {
                                     },
                                     value: '/Reset Password',
                                     child: const Text("Reset Password",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontFamily:
+                                                ConstFont.poppinsMedium),
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
+                                  PopupMenuItem(
+                                    enabled: true,
+                                    onTap: () {
+
+                                      deleteUserDialoge(context, userListScreenController.usersList[index].id);
+
+                                    },
+                                    value: '/Delete User',
+                                    child: const Text("Delete User",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,

@@ -55,7 +55,55 @@ class AdminListController extends GetxController {
 
 
 
+  Future<void> deleteAdminCall(String userId) async {
 
+    String? token = await ConstPreferences().getToken();
+    debugPrint(token);
+
+
+    Map<String, dynamic> requestData = {
+      "id": userId,
+    };
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+
+      final http.Response response = await http.post(
+          Uri.parse(ConstApi.deleteUserAdmin+userId),
+          headers: headers,
+          body: jsonEncode(requestData));
+
+
+      if (response.statusCode == 200) {
+        debugPrint('Delete User Response: ${response.body}');
+        final responseData = json.decode(response.body)['message'];
+        Utils().toastMessage(responseData);
+        adminList.clear();
+        pageIndex = 0;
+        pageSize = 10;
+        loadProducts();
+
+        // Utils().snackBar(response.body, '');
+      } else {
+        debugPrint('Error: ${response.reasonPhrase}');
+        Utils().errorsnackBar(response.reasonPhrase.toString(), '');
+      }
+      if(response.statusCode == 401 || response.statusCode == 403){
+        Utils().toastMessage("Please Relogin Account");
+        ConstPreferences().clearPreferences();
+        SystemNavigator.pop();
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      Utils().errorsnackBar(e.toString(), '');
+
+    }
+    debugPrint("Request Data : $requestData");
+  }
 
 
 

@@ -10,7 +10,7 @@ import 'package:jewellery_user/Controller/newRegister_controller.dart';
 import 'package:jewellery_user/Controller/order_controller.dart';
 import 'package:jewellery_user/Controller/product_controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
-import 'package:jewellery_user/Screen/Admin%20Screen/orderDelete_dialog.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/multiOrderDelete.dart';
 import 'package:jewellery_user/Screen/List%20Screen/adminList_screen.dart';
 import 'package:jewellery_user/Screen/List%20Screen/userlist_screen.dart';
 import 'package:jewellery_user/Screen/loader.dart';
@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
     homeController.loadProducts();
     _scrollController.addListener(_onScroll);
     homeController.checkUser();
-
   }
 
   void _onScroll() {
@@ -70,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           backgroundColor: ConstColour.black,
           centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           actions: [
             /*IconButton(onPressed: () {
               Get.to(() => const ReportSearchScreen());
@@ -190,7 +189,36 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               overflow: TextOverflow.ellipsis),
                         ),
-                      )
+                      ),
+                      Obx(
+                        () => Visibility(
+                          visible: homeController.isShow.value,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              tileColor: ConstColour.bgColor,
+                              splashColor: ConstColour.btnHowerColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: const BorderSide(
+                                      color: ConstColour.primaryColor)),
+                              onTap: () {
+                                Get.back();
+                                deleteOrderDialog(context);
+                              },
+                              trailing: const Icon(Icons.delete,
+                                  size: 24, color: ConstColour.primaryColor),
+                              title: const Text("Delete Multi Order",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontFamily: ConstFont.poppinsRegular,
+                                  ),
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const Text(
@@ -324,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // Loading indicator
                         return homeController.loadingPage.value
                             ? Padding(
-                                padding: const EdgeInsets.all(50.0),
+                                padding: const EdgeInsets.all(30.0),
                                 child: Center(
                                   widthFactor: deviceWidth * 0.1,
                                   child: const CircularProgressIndicator(
@@ -375,11 +403,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .homeList[index].image
                                                   .endsWith('.mp4')
                                               ? VideoItem(
-                                                  url: homeController.homeList[index].image)
+                                                  url: homeController
+                                                      .homeList[index].image)
                                               : CachedNetworkImage(
                                                   width: double.infinity,
                                                   fit: BoxFit.cover,
-                                                  imageUrl: homeController.homeList[index].image.toString(),
+                                                  imageUrl: homeController
+                                                      .homeList[index].image
+                                                      .toString(),
                                                   fadeInCurve:
                                                       Curves.easeInOutQuad,
                                                   placeholder: (context, url) =>
@@ -420,7 +451,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                             Text(
-                                              "${homeController.homeList[index].orderId.toString()}",
+                                              homeController
+                                                  .homeList[index].orderId
+                                                  .toString(),
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 14,
@@ -431,14 +464,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ],
                                         ),
                                         subtitle: Padding(
-                                          padding:  EdgeInsets.only(top: deviceHeight * 0.032),
+                                          padding: EdgeInsets.only(
+                                              top: deviceHeight * 0.032),
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "${homeController.homeList[index].dateCreated}",
+                                                homeController.homeList[index]
+                                                    .dateCreated,
                                                 style: const TextStyle(
                                                     color: Colors.grey,
                                                     fontSize: 14,
@@ -448,17 +484,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               Text(
                                                 "${homeController.homeList[index].orderStatus}  ",
-                                                style:  TextStyle(
-                                                    color: (homeController.homeList[index].orderStatus == "Complete")
-                                                        ? ConstColour.completeColor
-                                                        : (homeController.homeList[index].orderStatus == "Cancel")
-                                                        ? ConstColour.cancelColor
-                                                        : (homeController.homeList[index].orderStatus == "Pending")
-                                                        ? ConstColour.pendingColor
-                                                        : (homeController.homeList[index].orderStatus == "Working")
-                                                        ? ConstColour.workingColor
-                                                        : (homeController.homeList[index].orderStatus == "New")
-                                                        ? ConstColour.newColor : Colors.white,
+                                                style: TextStyle(
+                                                    color: (homeController
+                                                                .homeList[index]
+                                                                .orderStatus ==
+                                                            "Complete")
+                                                        ? ConstColour
+                                                            .completeColor
+                                                        : (homeController
+                                                                    .homeList[
+                                                                        index]
+                                                                    .orderStatus ==
+                                                                "Cancel")
+                                                            ? ConstColour
+                                                                .cancelColor
+                                                            : (homeController
+                                                                        .homeList[
+                                                                            index]
+                                                                        .orderStatus ==
+                                                                    "Pending")
+                                                                ? ConstColour
+                                                                    .pendingColor
+                                                                : (homeController
+                                                                            .homeList[
+                                                                                index]
+                                                                            .orderStatus ==
+                                                                        "Working")
+                                                                    ? ConstColour
+                                                                        .workingColor
+                                                                    : (homeController.homeList[index].orderStatus ==
+                                                                            "New")
+                                                                        ? ConstColour
+                                                                            .newColor
+                                                                        : Colors
+                                                                            .white,
                                                     fontSize: 14,
                                                     fontFamily: ConstFont
                                                         .poppinsRegular),
@@ -472,7 +531,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
                                         tooltip: "Assign Order",
@@ -488,87 +548,120 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: ConstColour.primaryColor,
                                         )),
                                     Padding(
-                                      padding:  EdgeInsets.only(top:  deviceHeight * 0.03),
+                                      padding: EdgeInsets.only(
+                                          top: deviceHeight * 0.03),
                                       child: IconButton(
                                           tooltip: "Delete",
                                           onPressed: () {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
-
                                                 return AlertDialog(
-                                                  shape:
-                                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
                                                   shadowColor: Colors.white,
                                                   elevation: 8.0,
                                                   // backgroundColor: Colors.white,
-                                                  backgroundColor: Colors.orange.shade100,
+                                                  backgroundColor:
+                                                      Colors.orange.shade100,
                                                   title: const Text(
                                                     'Delete Order',
                                                     style: TextStyle(
                                                       fontSize: 22,
-                                                      fontFamily: ConstFont.poppinsMedium,
+                                                      fontFamily: ConstFont
+                                                          .poppinsMedium,
                                                       color: Colors.black,
                                                     ),
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                   content: const Text(
                                                     'Are you sure, want to delete order?',
                                                     style: TextStyle(
-                                                      fontFamily: ConstFont.poppinsRegular,
+                                                      fontFamily: ConstFont
+                                                          .poppinsRegular,
                                                       fontSize: 16,
                                                       color: Colors.black,
                                                     ),
                                                     maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                   actions: [
                                                     InkWell(
-                                                      borderRadius: BorderRadius.circular(5),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
                                                       onTap: () {
                                                         Get.back();
                                                       },
-                                                      splashColor: ConstColour.btnHowerColor,
+                                                      splashColor: ConstColour
+                                                          .btnHowerColor,
                                                       child: Container(
-                                                        decoration: BoxDecoration(
-                                                          // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                                            borderRadius: BorderRadius.circular(5),
-                                                            color: Colors.red),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                                color:
+                                                                    Colors.red),
                                                         child: const Padding(
-                                                          padding: EdgeInsets.all(6.0),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  6.0),
                                                           child: Text(
                                                             'Cancel',
                                                             style: TextStyle(
-                                                              fontFamily: ConstFont.poppinsRegular,
+                                                              fontFamily: ConstFont
+                                                                  .poppinsRegular,
                                                               fontSize: 12,
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                             ),
-                                                            overflow: TextOverflow.ellipsis,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                           ),
                                                         ),
                                                       ),
                                                     ),
                                                     InkWell(
-                                                      borderRadius: BorderRadius.circular(5),
-                                                      onTap: () {
-
-                                                      },
-                                                      splashColor: ConstColour.btnHowerColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      onTap: () {},
+                                                      splashColor: ConstColour
+                                                          .btnHowerColor,
                                                       child: TextButton(
                                                         onPressed: () {
-                                                          homeController.orderDeleteCall(homeController.homeList[index].id);
+                                                          homeController
+                                                              .orderDeleteCall(
+                                                                  homeController
+                                                                      .homeList[
+                                                                          index]
+                                                                      .id);
                                                           Get.back();
                                                         },
                                                         child: const Padding(
-                                                          padding: EdgeInsets.all(2.0),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  2.0),
                                                           child: Text(
                                                             '  Yes  ',
                                                             style: TextStyle(
-                                                              fontFamily: ConstFont.poppinsMedium,
+                                                              fontFamily: ConstFont
+                                                                  .poppinsMedium,
                                                               fontSize: 14,
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
-                                                            overflow: TextOverflow.ellipsis,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                           ),
                                                         ),
                                                       ),
@@ -578,7 +671,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               },
                                             );
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             CupertinoIcons.delete,
                                             size: 24,
                                             color: Colors.white,

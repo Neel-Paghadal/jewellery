@@ -32,8 +32,7 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
   // DateTime _endDate = DateTime.now();
 
   DateTime _startDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
-  DateTime _endDate =
-      DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
+  DateTime _endDate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
 
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();

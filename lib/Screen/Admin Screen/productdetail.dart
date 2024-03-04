@@ -679,7 +679,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                     onPressed: () {
                                                       imageSelectionDialoge();
                                                     },
-                                                    // icon: Image.asset("asset/icons/image-editing.gif",width: deviceWidth * 0.15,)
                                                     icon: const Icon(
                                                       CupertinoIcons
                                                           .camera_on_rectangle,
@@ -760,7 +759,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                       .productDetail[0]
                                                       .orderImages[index]
                                                       .path
-                                                  : '${ConstApi.baseFilePath + productController.productDetail[0].orderImages[index].path}';
+                                                  : ConstApi.baseFilePath + productController.productDetail[0].orderImages[index].path;
 
                                               // if (item.endsWith('.mp4')) {
 

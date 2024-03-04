@@ -8,6 +8,7 @@ import 'package:jewellery_user/ConstFile/constFonts.dart';
 import 'package:jewellery_user/Controller/User_Controller/adminList_controller.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Screen/List%20Screen/adminDetail_screen.dart';
+import 'package:jewellery_user/Screen/List%20Screen/deleteUserAdminDialouge.dart';
 import 'package:jewellery_user/Screen/List%20Screen/forgot_password_dialog.dart';
 import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/Admin%20Screen/newUser_register.dart';
@@ -373,6 +374,14 @@ class _AdminListScreenState extends State<AdminListScreen> {
                                     },
                                     value: '/Reset Password',
                                     child: const Text("Reset Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                  ),
+                                  PopupMenuItem(
+                                    enabled: true,
+                                    onTap: () {
+                                      deleteAdminDialoge(context, adminListController.adminList[index].id);
+                                    },
+                                    value: '/Delete Admin',
+                                    child: const Text("Delete Admin",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
                                   ),
                                 ];
                               },

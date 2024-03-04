@@ -24,5 +24,7 @@ class ConstApi {
   static  String  fileUpload = '${apiUrl}File/Upload';
   static  String  orderDelete = '${apiUrl}Order/DeleteOrder';
   static  String  getUserOrder = '${apiUrl}Order/GetUserOrder';
+  static  String  deleteUserAdmin = '${apiUrl}User/deleteuser?id=';
+  static  String  deleteMultiOrder = '${apiUrl}Order/DeleteMultipleOrder';
 
 }

@@ -44,7 +44,6 @@ class HomeController extends GetxController {
 
   Future<void> loadProducts() async {
     loadingPage.value = true;
-
     pageIndex++;
 
     debugPrint("Page Order index$pageIndex");
@@ -80,9 +79,6 @@ class HomeController extends GetxController {
         body: jsonEncode(requestData), headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;
-      // final responseData = dashboardFromJson(response.body);
-      // debugPrint("Order Delete" + responseData.toString());
-
       debugPrint('Response: ${response.body}');
 
       Utils().toastMessage(json.decode(response.body)["message"]);
@@ -107,6 +103,53 @@ class HomeController extends GetxController {
       SystemNavigator.pop();
     }
   }
+
+  Future<void> orderDeleteMultiCall(String fromDate,String toDate) async {
+    String? token = await ConstPreferences().getToken();
+    debugPrint(token);
+
+    Map<String, dynamic> requestData = {
+      "FromDate": fromDate,
+      "ToDate":toDate
+    };
+    // Set up headers with the token
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    debugPrint(requestData.toString());
+
+    final response = await http.post(Uri.parse(ConstApi.deleteMultiOrder),
+        body: jsonEncode(requestData), headers: headers);
+    if (response.statusCode == 200) {
+      isLoaderShow.value = false;
+      debugPrint('Response: ${response.body}');
+
+      Utils().toastMessage(json.decode(response.body)["message"]);
+      homeList.clear();
+      pageIndex = 0;
+      pageSize = 6;
+      loadProducts();
+
+      // Process the data as needed
+    } else {
+      isLoaderShow.value = false;
+      // Error in API call
+      Utils().toastMessage(json.decode(response.body)["error"]);
+      debugPrint('Error: ${response.statusCode}');
+      debugPrint('Error body: ${response.body}');
+    }
+    if (response.statusCode == 401 || response.statusCode == 403) {
+      Utils().toastMessage("Please Relogin Account");
+      ConstPreferences().clearPreferences();
+      SystemNavigator.pop();
+    }
+  }
+
+
+
+
 
   void checkUser() async {
     var role = await ConstPreferences().getRole();
@@ -157,33 +200,5 @@ class HomeController extends GetxController {
     isLoaderShow.value = false;
   }
 
-  // getOrderCall(int pageIndex, int pageSize) async {
-  //   String? token = await ConstPreferences().getToken();
-  //   debugPrint(token);
-  //
-  //   // Set up headers with the token
-  //   Map<String, String> headers = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer $token',
-  //   };
-  //
-  //
-  //   final response =  await http.get(Uri.parse("http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),headers: headers);
-  //   if (response.statusCode == 200) {
-  //     final responseData = dashboardFromJson(response.body);
-  //     debugPrint("HOME LIST "+responseData.toString());
-  //     homeList.clear();
-  //     homeList.addAll(responseData.orders);
-  //     // Successful API call
-  //     debugPrint("HOME LIST "+homeList[0].name.toString());
-  //     debugPrint("HOME LIST "+homeList[1].name.toString());
-  //
-  //     debugPrint('Response: ${response.body}');
-  //     // Process the data as needed
-  //   } else {
-  //     // Error in API call
-  //     debugPrint('Error: ${response.statusCode}');
-  //     debugPrint('Error body: ${response.body}');
-  //   }
-  // }
+
 }
