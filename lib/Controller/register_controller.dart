@@ -70,7 +70,7 @@ class RegisterController extends GetxController{
   void uploadFile(File image) async {
     var url = Uri.parse(ConstApi.fileUpload);
     var file = File(image.path);
-    var directory = 'Test';
+    var directory = 'UserProfile';
 
     var request = http.MultipartRequest('POST', url)..files.add(await http.MultipartFile.fromPath('files', file.path))..fields['Directory'] = directory;
 

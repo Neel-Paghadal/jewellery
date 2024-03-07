@@ -67,9 +67,7 @@ class LoginController extends GetxController {
       } else {
         Utils().errorsnackBar("Login failed", json.decode(response.body)['message']);
         // Handle unsuccessful login
-
         debugPrint('Response: ${response.body}');
-
       }
     } catch (e) {
       Utils().errorsnackBar("title", e.toString());

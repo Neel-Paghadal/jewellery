@@ -148,9 +148,6 @@ class HomeController extends GetxController {
   }
 
 
-
-
-
   void checkUser() async {
     var role = await ConstPreferences().getRole();
     debugPrint("Role : $role");
@@ -177,7 +174,7 @@ class HomeController extends GetxController {
 
     final response = await http.get(
         Uri.parse(
-            "http://208.64.33.118:8558/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
+            ConstApi.baseUrl+"/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
         headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;

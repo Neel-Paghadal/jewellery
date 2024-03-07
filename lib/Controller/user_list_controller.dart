@@ -234,7 +234,7 @@ class UserListController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(Uri.parse('http://208.64.33.118:8558/api/Order/GetOrderUsers?orderId=$id'), headers: headers);
+    final response = await http.get(Uri.parse(ConstApi.baseUrl+'/api/Order/GetOrderUsers?orderId=$id'), headers: headers);
     if (response.statusCode == 200) {
 
       debugPrint(response.body);
@@ -274,7 +274,7 @@ class UserListController extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse("http://208.64.33.118:8558/api/Order/Users?orderId=$id"),
+        Uri.parse(ConstApi.baseUrl+"/api/Order/Users?orderId=$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);

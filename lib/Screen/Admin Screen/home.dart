@@ -166,30 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               overflow: TextOverflow.ellipsis),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          tileColor: ConstColour.bgColor,
-                          splashColor: ConstColour.btnHowerColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: const BorderSide(
-                                  color: ConstColour.primaryColor)),
-                          onTap: () {
-                            Get.back();
-                            _showLogoutDialog(context);
-                          },
-                          trailing: const Icon(Icons.exit_to_app,
-                              size: 24, color: ConstColour.primaryColor),
-                          title: const Text("Log out",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontFamily: ConstFont.poppinsRegular,
-                              ),
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                      ),
+
                       Obx(
                         () => Visibility(
                           visible: homeController.isShow.value,
@@ -217,6 +194,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                   overflow: TextOverflow.ellipsis),
                             ),
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          tileColor: ConstColour.bgColor,
+                          splashColor: ConstColour.btnHowerColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: const BorderSide(
+                                  color: ConstColour.primaryColor)),
+                          onTap: () {
+                            Get.back();
+                            _showLogoutDialog(context);
+                          },
+                          trailing: const Icon(Icons.exit_to_app,
+                              size: 24, color: ConstColour.primaryColor),
+                          title: const Text("Log out",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: ConstFont.poppinsRegular,
+                              ),
+                              overflow: TextOverflow.ellipsis),
                         ),
                       ),
                     ],

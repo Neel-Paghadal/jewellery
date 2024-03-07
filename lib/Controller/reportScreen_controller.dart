@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Models/reportDetail_model.dart';
 import 'package:http/http.dart' as http;
@@ -29,7 +30,7 @@ class ReportScreenController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(Uri.parse("http://208.64.33.118:8558/api/Report/OrderDetails?orderId=$orderId"),
+    final response = await http.get(Uri.parse(ConstApi.baseUrl+"/api/Report/OrderDetails?orderId=$orderId"),
         headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;

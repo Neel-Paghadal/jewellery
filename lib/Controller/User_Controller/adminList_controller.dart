@@ -131,8 +131,7 @@ class AdminListController extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse(
-            "http://208.64.33.118:8558/api/User/Admins?PageNumber=$pageIndex&PageSize=$pageSize"),
+        Uri.parse(ConstApi.baseUrl+"/api/User/Admins?PageNumber=$pageIndex&PageSize=$pageSize"),
         headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;

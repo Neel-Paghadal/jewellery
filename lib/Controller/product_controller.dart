@@ -63,7 +63,7 @@ class ProductController extends GetxController {
 
     final response = await http.get(
         Uri.parse(
-            "http://208.64.33.118:8558/api/Order/GetOrderDetails?orderId=$id"),
+            ConstApi.baseUrl+"/api/Order/GetOrderDetails?orderId=$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);
@@ -101,7 +101,7 @@ class ProductController extends GetxController {
   void replaceString(String imageUrl) {
     strings.add(imageUrl);
     // Common string to remove
-    String commonStringToRemove = "http://208.64.33.118:8558/Files/";
+    String commonStringToRemove = ConstApi.baseUrl+"/Files/";
 
     // Remove common string from each element in the list
     modifiedStrings = strings.map((str) {
@@ -125,7 +125,7 @@ class ProductController extends GetxController {
     isLoading.value = true;
     var url = Uri.parse(ConstApi.fileUpload);
     var file = File(image.path);
-    var directory = 'Test';
+    var directory = 'OrderImages';
 
     var request = http.MultipartRequest('POST', url)
       ..files.add(await http.MultipartFile.fromPath('files', file.path))
@@ -164,7 +164,7 @@ class ProductController extends GetxController {
 
   void uploadFileMulti(List<File> images) async {
     var url = Uri.parse(ConstApi.fileUpload);
-    var directory = 'Test';
+    var directory = 'OrderImages';
     var request = http.MultipartRequest('POST', url);
 
     for (var image in images) {

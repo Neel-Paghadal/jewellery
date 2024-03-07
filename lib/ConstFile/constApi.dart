@@ -1,6 +1,7 @@
 
 class ConstApi {
   static  String baseUrl = 'http://208.64.33.118:8558';
+
   static  String apiUrl = '${baseUrl}/api/';
   static  String baseFilePath = '${baseUrl}/Files/';
   static  String userRegister = '${apiUrl}Auth/Register';
