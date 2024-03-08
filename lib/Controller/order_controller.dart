@@ -46,7 +46,7 @@ class OrderController extends GetxController{
 
 
   void uploadFile(File image) async {
-    var url = Uri.parse(ConstApi.baseUrl+'/api/File/Upload');
+    var url = Uri.parse(ConstApi.fileUpload);
     var file = File(image.path);
     var directory = 'OrderImages';
 
@@ -78,7 +78,7 @@ class OrderController extends GetxController{
   }
 
   void uploadFileMulti(List<File> images) async {
-    var url = Uri.parse(ConstApi.baseUrl+'/api/File/Upload');
+    var url = Uri.parse(ConstApi.fileUpload);
     var directory = 'OrderImages';
     var request = http.MultipartRequest('POST', url);
 

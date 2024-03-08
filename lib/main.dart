@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jewellery_user/Common/checkInternet.dart';
-import 'package:jewellery_user/ConstFile/constPreferences.dart';
 import 'package:jewellery_user/Language%20Module/languages.dart';
 import 'package:jewellery_user/Screen/splashScreen.dart';
 import 'package:image_picker_android/image_picker_android.dart';
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Jewellery',
-      locale: Locale('en','US'),
+      locale: const Locale('en','US'),
       // locale: Locale('gu','IN'),
       // locale: Locale('hi','IN'),
 
@@ -50,10 +49,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(splashColor: Colors.white,useMaterial3: false),
       // home: const SplashScreen(),
-      home :  InternetStatus(child: SplashScreen(),)
+      home :  const InternetStatus(child: SplashScreen(),)
+      // home :  const ProductDetailPage()
       // home :  MultimediaList()
       // home: const ReportScreen(),
-      // home: const UserHome(),
+      // home: const UserHome(),..
     );
   }
 }

@@ -37,6 +37,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         return false;
       },
       child: Scaffold(
+
         appBar: AppBar(
           backgroundColor: ConstColour.bgColor,
           centerTitle: true,
@@ -56,9 +57,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               },
               icon: const Icon(Icons.arrow_back_ios),
               color: ConstColour.primaryColor),
+          actions: [
+            IconButton(onPressed: () {
+              userProductController.productDetail.clear();
+              userProductController.getProductDetailCall(userHomeCon.userHome[0].orderUserId);
+            }, icon: const Icon(Icons.replay_circle_filled,color: ConstColour.primaryColor,))
+          ],
+
         ),
+
         bottomNavigationBar: Obx(
-          () => userProductController.productDetail.isEmpty ? const SizedBox() :   SingleChildScrollView(
+          () => userProductController.productDetail.isEmpty ? const
+          SizedBox() :
+          SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -89,9 +100,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             // backgroundColor: Colors.white,
                             backgroundColor: Colors
                                 .orange.shade100,
-                            title: const Text(
-                              'Order',
-                              style: TextStyle(
+                            title:  Text(
+                              'order'.tr,
+                              style: const TextStyle(
                                 fontSize: 22,
                                 fontFamily: ConstFont.poppinsMedium,
                                 color: Colors.black,
@@ -99,9 +110,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               overflow: TextOverflow
                                   .ellipsis,
                             ),
-                            content: const Text(
-                              'Are you sure, want to Complete Order?',
-                              style: TextStyle(
+                            content: Text(
+                              'orderdes'.tr,
+                              style: const TextStyle(
                                 fontFamily: ConstFont.poppinsRegular,
                                 fontSize: 16,
                                 color: Colors.black,
@@ -132,12 +143,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       color: Colors
                                           .red),
                                   child:
-                                  const Padding(
+                                  Padding(
                                     padding:
-                                    EdgeInsets.all(6.0),
-                                    child: Text('Cancel',
+                                    const EdgeInsets.all(6.0),
+                                    child: Text('cancel'.tr,
                                       style:
-                                      TextStyle(
+                                      const TextStyle(
                                         fontFamily:
                                         ConstFont
                                             .poppinsRegular,
@@ -176,15 +187,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       color: Colors
                                           .black),
                                   child:
-                                  const Padding(
+                                   Padding(
                                     padding:
-                                    EdgeInsets
+                                    const EdgeInsets
                                         .all(
                                         6.0),
                                     child: Text(
-                                      '    Ok    ',
+                                      'ok'.tr,
                                       style:
-                                      TextStyle(
+                                      const TextStyle(
                                         fontFamily:
                                         ConstFont
                                             .poppinsRegular,
@@ -335,7 +346,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               ),
                                               border: InputBorder.none,
                                               filled: true,
-                                              labelText: "Reason",
+                                              labelText: 'reason'.tr,
                                               hintText: "Enter your reason",
                                               floatingLabelStyle:
                                               const TextStyle(color: Colors.white),
@@ -904,67 +915,281 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 // ),
                 (userProductController.notes == "" || userProductController.notes == null) ? const SizedBox() : Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'notes'.tr,
-                          style: const TextStyle(
-                            color: ConstColour.btnHowerColor,
-                            fontSize: 15,
-                            fontFamily: ConstFont.poppinsRegular,
-                            overflow: TextOverflow.ellipsis,
+                  child: InkWell(
+                    onTap: () {
+
+                      showCupertinoModalPopup(
+                        filter: const ColorFilter.mode(
+                            ConstColour
+                                .primaryColor,
+                            BlendMode.clear),
+                        semanticsDismissible: false,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius
+                                    .circular(
+                                    10)),
+
+                            shadowColor:
+                            Colors.white,
+                            elevation: 8.0,
+                            // backgroundColor: Colors.white,
+                            backgroundColor: Colors
+                                .orange.shade100,
+
+                            title: Text(
+                              'notes'.tr,
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontFamily: ConstFont.poppinsMedium,
+                                color: Colors.black,
+                              ),
+                              overflow: TextOverflow
+                                  .ellipsis,
+                            ),
+                            content: Text(
+                              userProductController.notes,
+                              style: const TextStyle(
+                                fontFamily: ConstFont.poppinsRegular,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            actions: [
+                              InkWell(
+                                borderRadius:
+                                BorderRadius
+                                    .circular(
+                                    5),
+                                onTap: () {
+                                  Get.back();
+                                },
+                                splashColor:
+                                ConstColour
+                                    .btnHowerColor,
+                                child: Container(
+                                  decoration:
+                                  BoxDecoration(
+                                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                      borderRadius:
+                                      BorderRadius.circular(
+                                          5),
+                                      color: Colors
+                                          .red),
+                                  child: Padding(
+                                    padding:
+                                    EdgeInsets.symmetric(horizontal: deviceWidth * 0.04,vertical: deviceHeight * 0.005),
+                                    child:  Text('close'.tr,
+                                      style:
+                                      const TextStyle(
+                                        fontFamily:
+                                        ConstFont
+                                            .poppinsRegular,
+                                        fontSize:
+                                        12,
+                                        color: Colors
+                                            .white,
+                                      ),
+                                      overflow:
+                                      TextOverflow
+                                          .ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'notes'.tr,
+                            style: const TextStyle(
+                              color: ConstColour.btnHowerColor,
+                              fontSize: 15,
+                              fontFamily: ConstFont.poppinsRegular,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          ': ${userProductController.notes}',
-                          style: const TextStyle(
-                            color: ConstColour.textColor,
-                            fontSize: 16,
-                            fontFamily: ConstFont.poppinsRegular,
-                            overflow: TextOverflow.ellipsis,
+                        Expanded(
+                          child: Text(
+                            ': ${userProductController.notes}',
+                            style: const TextStyle(
+                              color: ConstColour.textColor,
+                              fontSize: 16,
+                              fontFamily: ConstFont.poppinsRegular,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            maxLines: 2,
                           ),
-                          maxLines: 3,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'description'.tr,
-                          style: const TextStyle(
-                            color: ConstColour.btnHowerColor,
-                            fontSize: 15,
-                            fontFamily: ConstFont.poppinsRegular,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          ": ${userProductController.description}",
-                          maxLines: 7,
-                          style:  const TextStyle(
-                            color: ConstColour.textColor,
-                            fontSize: 16,
-                            fontFamily: ConstFont.poppinsRegular,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                InkWell(
+                  onTap: () {
+                    // showDialog(context: context, builder: (context) {
+                    //   return Dialog(
+                    //     child: ListTile(
+                    //       title: Text(
+                    //         'description'.tr,
+                    //         style: const TextStyle(
+                    //           color: ConstColour.btnHowerColor,
+                    //           fontSize: 15,
+                    //           fontFamily: ConstFont.poppinsRegular,
+                    //           overflow: TextOverflow.ellipsis,
+                    //         ),
+                    //       ),
+                    //       subtitle: Text(
+                    //         ": ${userProductController.description}",
+                    //         maxLines: 7,
+                    //         style:  const TextStyle(
+                    //           color: ConstColour.textColor,
+                    //           fontSize: 16,
+                    //           fontFamily: ConstFont.poppinsRegular,
+                    //           overflow: TextOverflow.ellipsis,
+                    //         ),
+                    //         softWrap: true,
+                    //       ),
+                    //     ),
+                    //   );
+                    // },);
 
-                          softWrap: true,
+
+                    showCupertinoModalPopup(
+                      filter: const ColorFilter.mode(
+                          ConstColour
+                              .primaryColor,
+                          BlendMode.clear),
+                      semanticsDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(
+                                  10)),
+
+                          shadowColor:
+                          Colors.white,
+                          elevation: 8.0,
+                          // backgroundColor: Colors.white,
+                          backgroundColor: Colors
+                              .orange.shade100,
+
+                          title: Text(
+                            'description'.tr,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontFamily: ConstFont.poppinsMedium,
+                              color: Colors.black,
+                            ),
+                            overflow: TextOverflow
+                                .ellipsis,
+                          ),
+                          content: Text(
+                            userProductController.description,
+                            style: const TextStyle(
+                              fontFamily: ConstFont.poppinsRegular,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+
+                          ),
+                          actions: [
+                            InkWell(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(
+                                  5),
+                              onTap: () {
+                                Get.back();
+                              },
+                              splashColor:
+                              ConstColour
+                                  .btnHowerColor,
+                              child: Container(
+                                decoration:
+                                BoxDecoration(
+                                  // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                    borderRadius:
+                                    BorderRadius.circular(
+                                        5),
+                                    color: Colors
+                                        .red),
+                                child:
+                                 Padding(
+                                  padding:
+                                  EdgeInsets.symmetric(horizontal: deviceWidth * 0.04,vertical: deviceHeight * 0.005),
+                                  child: Text('close'.tr,
+                                    style:
+                                    const TextStyle(
+                                      fontFamily:
+                                      ConstFont
+                                          .poppinsRegular,
+                                      fontSize:
+                                      12,
+                                      color: Colors
+                                          .white,
+                                    ),
+                                    overflow:
+                                    TextOverflow
+                                        .ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'description'.tr,
+                            style: const TextStyle(
+                              color: ConstColour.btnHowerColor,
+                              fontSize: 15,
+                              fontFamily: ConstFont.poppinsRegular,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Text(
+                            ": ${userProductController.description}",
+                            maxLines: 2,
+                            style:  const TextStyle(
+                              color: ConstColour.textColor,
+                              fontSize: 16,
+                              fontFamily: ConstFont.poppinsRegular,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                  
+                            softWrap: true,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

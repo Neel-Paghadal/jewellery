@@ -34,7 +34,7 @@ class UserHomeCon extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse(ConstApi.baseUrl+"/api/Order/GetOrderByCode?code=$code"),
+        Uri.parse(ConstApi.baseUrl+"api/Order/GetOrderByCode?code=$code"),
         headers: headers);
     if(response.statusCode == 401 || response.statusCode == 403){
       Utils().toastMessage("Please Relogin Account");

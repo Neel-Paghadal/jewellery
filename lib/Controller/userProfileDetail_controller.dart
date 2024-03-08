@@ -36,8 +36,9 @@ class UserProfileDetailController extends GetxController{
       debugPrint("USER LIST " + responseData.toString());
       userDetailList.clear();
       userDetailList.add(responseData.user);
-      return userDetailList;
       debugPrint('Response: ${response.body}');
+      return userDetailList;
+
       // Process the data as needed
     } else {
       // isLoaderShow.value = false;

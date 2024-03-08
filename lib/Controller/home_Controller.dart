@@ -174,7 +174,7 @@ class HomeController extends GetxController {
 
     final response = await http.get(
         Uri.parse(
-            ConstApi.baseUrl+"/api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
+            ConstApi.baseUrl+"api/Order/Orders?PageNumber=$pageIndex&PageSize=$pageSize"),
         headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;

@@ -28,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    checkLanguages();
     Future.delayed(
       const Duration(seconds: 3),
       () {
@@ -43,8 +44,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void checkLanguages() async {
     String? newValue = await ConstPreferences().getLanguages();
     if (newValue == "English") {
-      userHomeCon.selectedItem = "English";
-      Get.updateLocale(const Locale('en', 'US'));
+      setState(() {
+        userHomeCon.selectedItem = "English";
+        Get.updateLocale(const Locale('en', 'US'));
+      });
     } else if (newValue == "ગુજરાતી") {
       setState(() {
         userHomeCon.selectedItem = "ગુજરાતી";
@@ -131,7 +134,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: ConstColour.bgColor,
       body: Center(
-        child: Text('splash'.tr,
+        child: Text('shivam'.tr,
             style: const TextStyle(
                 fontFamily: ConstFont.poppinsBold,
                 color: ConstColour.primaryColor,

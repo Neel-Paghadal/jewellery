@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 
 void deleteOrderDialog(context) {
-  HomeController homeController = Get.put(HomeController());
 
   DateTime _startDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
   DateTime _endDate =

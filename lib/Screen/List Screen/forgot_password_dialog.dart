@@ -47,11 +47,11 @@ import '../../ConstFile/constColors.dart';
                   mainAxisAlignment:  MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.lock,size: 80,color: ConstColour.primaryColor,),
                     ),
-                    Text("Reset Password?",style: TextStyle(
+                    const Text("Reset Password?",style: TextStyle(
                       fontSize: 18,fontFamily: ConstFont.poppinsMedium,
                     ),overflow: TextOverflow.ellipsis,),
 
@@ -115,7 +115,7 @@ import '../../ConstFile/constColors.dart';
                             borderSide: const BorderSide(
                                 color: ConstColour.textFieldBorder),
                           ),
-                          errorStyle: TextStyle(color: ConstColour.errorHint),
+                          errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                           border: InputBorder.none,
                           filled: true,
@@ -195,7 +195,7 @@ import '../../ConstFile/constColors.dart';
                             borderSide: const BorderSide(
                                 color: ConstColour.textFieldBorder),
                           ),
-                          errorStyle: TextStyle(color: ConstColour.errorHint),
+                          errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                           border: InputBorder.none,
                           filled: true,

@@ -1,7 +1,6 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:jewellery_user/ConstFile/constColors.dart';
 import 'package:video_player/video_player.dart';
@@ -64,7 +63,7 @@ class VideoItem extends StatelessWidget {
         future: VideoThumbnail.thumbnailData(
           video: url,
           imageFormat: ImageFormat.JPEG,
-          quality: 100,
+          quality: 50,
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
@@ -77,7 +76,7 @@ class VideoItem extends StatelessWidget {
                   fit: BoxFit.fill,
                   filterQuality: FilterQuality.high,
                 ),
-                Icon(
+                const Icon(
                   CupertinoIcons.play_circle_fill,
                   color: ConstColour.primaryColor,
                   size: 35,
@@ -178,7 +177,7 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
         allowPlaybackSpeedChanging: true,
         zoomAndPan: true,
         showControlsOnInitialize: false,
-        placeholder: Center(
+        placeholder: const Center(
           child: CircularProgressIndicator(color: ConstColour.primaryColor,),
         ),
         autoPlay: true,
@@ -193,7 +192,7 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
   Widget build(BuildContext context) {
     return _chewieController != null ? Chewie(
       controller: _chewieController,
-    ) : CircularProgressIndicator(color: ConstColour.primaryColor,);
+    ) : const CircularProgressIndicator(color: ConstColour.primaryColor,);
   }
 
   @override

@@ -19,6 +19,12 @@ class ReportSearchController extends GetxController {
   RxList<OrderReport> orderReportList = <OrderReport>[].obs;
   RxList<String> userListDrop = <String>[].obs;
 
+
+
+  String fromdate = "";
+  String todate = "";
+
+
   String? partyName;
 
   getPartyCall() async {

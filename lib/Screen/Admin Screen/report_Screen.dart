@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jewellery_user/Controller/reportScreen_controller.dart';
 import 'package:jewellery_user/Screen/loader.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../ConstFile/constColors.dart';
 import '../../ConstFile/constFonts.dart';
@@ -48,7 +49,13 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
       backgroundColor: ConstColour.bgColor,
       body: Obx(
-        () => Container(
+        () => LiquidPullToRefresh(
+          color: Colors.black,
+          height: deviceHeight * 0.08,
+          onRefresh: reportScreenController.handleRefresh,
+          showChildOpacityTransition: false,
+          backgroundColor: ConstColour.primaryColor,
+          springAnimationDurationInMilliseconds: 1,
           child: reportScreenController.reportDetail.isEmpty
               ? Container(
                   child: reportScreenController.isLoaderShow.value == true
@@ -122,151 +129,162 @@ class _ReportScreenState extends State<ReportScreen> {
                             ),
                           ),
                         )
-                      : const Center(
-                          child: Text(
-                            "No Data Found",
-                            style: TextStyle(
-                                fontFamily: ConstFont.poppinsMedium,
+                      : ListView(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: const Center(
+                            child: Text(
+                              "No Data Found",
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16),
-                          ),
-                        ),
-                )
-              : ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  controller: ScrollController(),
-                  itemCount: reportScreenController.reportDetail.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          border: Border.all(color: ConstColour.primaryColor),
-                          borderRadius: BorderRadius.circular(11),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: deviceWidth * 0.05,
-                              bottom: deviceHeight * 0.01),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  reportScreenController
-                                      .reportDetail[index].name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontFamily: ConstFont.poppinsRegular,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                minLeadingWidth: -40,
-                                visualDensity:
-                                    const VisualDensity(horizontal: -4, vertical: -4),
-                                contentPadding:
-                                    const EdgeInsets.only(left: 0.0, right: 10.0),
-                                horizontalTitleGap: 0.0,
-                                // subtitle: Text(
-                                //   "Completed",
-                                //   style: TextStyle(
-                                //       color: ConstColour.greenColor,
-                                //       fontSize: 16,
-                                //       fontFamily: ConstFont.poppinsBold),
-                                //   overflow: TextOverflow.ellipsis,
-                                // ),
-                                trailing: Text(reportScreenController.reportDetail[index].orderStatus,
-                                  style: TextStyle(
-                                      color: (reportScreenController.reportDetail[index].orderStatus ==
-                                          "Complete")
-                                          ? ConstColour.completeColor
-                                          : (reportScreenController.reportDetail[index].orderStatus ==
-                                          "Cancel")
-                                          ? ConstColour.cancelColor
-                                          : (reportScreenController.reportDetail[index].orderStatus ==
-                                          "Pending")
-                                          ? ConstColour.pendingColor
-                                          : (reportScreenController.reportDetail[index].orderStatus ==
-                                          "Working")
-                                          ? ConstColour.workingColor
-                                          : (reportScreenController.reportDetail[index].orderStatus ==
-                                          "New")
-                                          ? ConstColour.newColor
-                                          : Colors.white,
-
-
-
-
-                                      fontSize: 16,
-                                      fontFamily: ConstFont.poppinsBold),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                fontSize: 16,
+                                fontFamily: ConstFont.poppinsRegular,
                               ),
-                              Text(
-                                "Created Date : ${reportScreenController.reportDetail[index].orderCreatedDate}",
-                                style: TextStyle(color: Colors.blueGrey.shade200, fontSize: 14,
-                                    fontFamily: ConstFont.poppinsRegular),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              reportScreenController.reportDetail[index].assignDate == ""
-                                  ? const SizedBox()
-                                  : Text(
-                                      "Assign Date : ${reportScreenController
-                                              .reportDetail[index]
-                                              .assignDate}",
-                                      style: TextStyle(
-                                          color: Colors.blueGrey.shade200,
-                                          fontSize: 14,
-                                          fontFamily: ConstFont.poppinsRegular),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                              reportScreenController.reportDetail[index].completedDate == ""
-                                  ? const SizedBox()
-                                  : Text(
-                                      "Completed Date : ${reportScreenController
-                                              .reportDetail[index]
-                                              .completedDate}",
-                                      style: TextStyle(
-                                          color: Colors.blueGrey.shade200,
-                                          fontSize: 14,
-                                          fontFamily: ConstFont.poppinsRegular),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                              reportScreenController.reportDetail[index].cancelledDate == ""
-                                  ? const SizedBox()
-                                  : Text(
-                                      "Cancel Date : ${reportScreenController
-                                              .reportDetail[index]
-                                              .cancelledDate}",
-                                      style: TextStyle(
-                                          color: Colors.blueGrey.shade200,
-                                          fontSize: 14,
-                                          fontFamily: ConstFont.poppinsRegular),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                              reportScreenController.reportDetail[index].cancelReason == ""
-                                  ? const SizedBox()
-                                  : Text(
-                                      "Reason : ${reportScreenController
-                                              .reportDetail[index].cancelReason}",
-                                      style: TextStyle(
-                                          color: Colors.blueGrey.shade200,
-                                          fontSize: 14,
-                                          fontFamily: ConstFont.poppinsRegular),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 10,
-                                    ),
-                            ],
-                          ),
-                        ),
+                            )),
                       ),
-                    );
-                  },
-                ),
+                    ],
+                  ),
+                )
+              : ListView(
+                children: [
+                  ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      controller: ScrollController(),
+                      itemCount: reportScreenController.reportDetail.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              border: Border.all(color: ConstColour.primaryColor),
+                              borderRadius: BorderRadius.circular(11),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: deviceWidth * 0.05,
+                                  bottom: deviceHeight * 0.01),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      reportScreenController
+                                          .reportDetail[index].name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontFamily: ConstFont.poppinsRegular,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    minLeadingWidth: -40,
+                                    visualDensity:
+                                        const VisualDensity(horizontal: -4, vertical: -4),
+                                    contentPadding:
+                                        const EdgeInsets.only(left: 0.0, right: 10.0),
+                                    horizontalTitleGap: 0.0,
+                                    // subtitle: Text(
+                                    //   "Completed",
+                                    //   style: TextStyle(
+                                    //       color: ConstColour.greenColor,
+                                    //       fontSize: 16,
+                                    //       fontFamily: ConstFont.poppinsBold),
+                                    //   overflow: TextOverflow.ellipsis,
+                                    // ),
+                                    trailing: Text(reportScreenController.reportDetail[index].orderStatus,
+                                      style: TextStyle(
+                                          color: (reportScreenController.reportDetail[index].orderStatus ==
+                                              "Complete")
+                                              ? ConstColour.completeColor
+                                              : (reportScreenController.reportDetail[index].orderStatus ==
+                                              "Cancel")
+                                              ? ConstColour.cancelColor
+                                              : (reportScreenController.reportDetail[index].orderStatus ==
+                                              "Pending")
+                                              ? ConstColour.pendingColor
+                                              : (reportScreenController.reportDetail[index].orderStatus ==
+                                              "Working")
+                                              ? ConstColour.workingColor
+                                              : (reportScreenController.reportDetail[index].orderStatus ==
+                                              "New")
+                                              ? ConstColour.newColor
+                                              : Colors.white,
+
+
+
+
+                                          fontSize: 16,
+                                          fontFamily: ConstFont.poppinsBold),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Created Date : ${reportScreenController.reportDetail[index].orderCreatedDate}",
+                                    style: TextStyle(color: Colors.blueGrey.shade200, fontSize: 14,
+                                        fontFamily: ConstFont.poppinsRegular),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  reportScreenController.reportDetail[index].assignDate == ""
+                                      ? const SizedBox()
+                                      : Text(
+                                          "Assign Date : ${reportScreenController
+                                                  .reportDetail[index]
+                                                  .assignDate}",
+                                          style: TextStyle(
+                                              color: Colors.blueGrey.shade200,
+                                              fontSize: 14,
+                                              fontFamily: ConstFont.poppinsRegular),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                  reportScreenController.reportDetail[index].completedDate == ""
+                                      ? const SizedBox()
+                                      : Text(
+                                          "Completed Date : ${reportScreenController
+                                                  .reportDetail[index]
+                                                  .completedDate}",
+                                          style: TextStyle(
+                                              color: Colors.blueGrey.shade200,
+                                              fontSize: 14,
+                                              fontFamily: ConstFont.poppinsRegular),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                  reportScreenController.reportDetail[index].cancelledDate == ""
+                                      ? const SizedBox()
+                                      : Text(
+                                          "Cancel Date : ${reportScreenController
+                                                  .reportDetail[index]
+                                                  .cancelledDate}",
+                                          style: TextStyle(
+                                              color: Colors.blueGrey.shade200,
+                                              fontSize: 14,
+                                              fontFamily: ConstFont.poppinsRegular),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                  reportScreenController.reportDetail[index].cancelReason == ""
+                                      ? const SizedBox()
+                                      : Text(
+                                          "Reason : ${reportScreenController
+                                                  .reportDetail[index].cancelReason}",
+                                          style: TextStyle(
+                                              color: Colors.blueGrey.shade200,
+                                              fontSize: 14,
+                                              fontFamily: ConstFont.poppinsRegular),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 10,
+                                        ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                ],
+              ),
         ),
       ),
     );

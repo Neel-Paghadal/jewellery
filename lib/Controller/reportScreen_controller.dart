@@ -13,14 +13,19 @@ class ReportScreenController extends GetxController {
 
   RxBool isLoaderShow = false.obs;
 
+  String orderId = "";
   RxList<ReportDetail> reportDetail = <ReportDetail>[].obs;
 
+  Future<void> handleRefresh() async {
+    reportDetail.clear();
+    isLoaderShow.value = true;
+    getReportDetailCall(orderId);
+    debugPrint("ScreenRefresh");
+    return await Future.delayed(const Duration(seconds: 1));
+  }
+
   getReportDetailCall(String orderId) async {
-    if(reportDetail.isEmpty){
-      isLoaderShow.value = true;
-    }else{
-      isLoaderShow.value = false;
-    }
+
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
 
@@ -30,12 +35,13 @@ class ReportScreenController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(Uri.parse(ConstApi.baseUrl+"/api/Report/OrderDetails?orderId=$orderId"),
+    final response = await http.get(Uri.parse(ConstApi.baseUrl+"api/Report/OrderDetails?orderId=$orderId"),
         headers: headers);
     if (response.statusCode == 200) {
-      isLoaderShow.value = false;
       final responseData = reportDetailModelFromJson(response.body);
       debugPrint("REPORT DETAIL LIST " + responseData.toString());
+      isLoaderShow.value = false;
+      reportDetail.clear();
       reportDetail.addAll(responseData.users);
       debugPrint('Response: ${response.body}');
       // Process the data as needed

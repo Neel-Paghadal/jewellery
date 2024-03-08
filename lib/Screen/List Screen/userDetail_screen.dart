@@ -123,7 +123,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                   fontFamily: ConstFont.poppinsRegular))),
                       SizedBox(height: deviceHeight * 0.01),
                       userProfileController
-                          .userDetailList[index].referenceName == ""? SizedBox() :    ListTile(
+                          .userDetailList[index].referenceName == ""? const SizedBox() :    ListTile(
                           dense: true,
                           splashColor: ConstColour.btnHowerColor,
                           shape: RoundedRectangleBorder(

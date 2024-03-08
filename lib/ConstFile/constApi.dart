@@ -1,9 +1,9 @@
 
 class ConstApi {
-  static  String baseUrl = 'http://208.64.33.118:8558';
-
-  static  String apiUrl = '${baseUrl}/api/';
-  static  String baseFilePath = '${baseUrl}/Files/';
+  // static  String baseUrl = 'http://208.64.33.118:8558/';
+  static  String baseUrl = 'http://208.64.33.118:7500/';
+  static  String apiUrl = '${baseUrl}api/';
+  static  String baseFilePath = '${baseUrl}Files/';
   static  String userRegister = '${apiUrl}Auth/Register';
   static  String userLogin = '${apiUrl}Auth/login';
   static  String  getOrder = '${apiUrl}Order/Orders?PageNumber=1&PageSize=10';

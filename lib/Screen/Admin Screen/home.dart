@@ -166,7 +166,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               overflow: TextOverflow.ellipsis),
                         ),
                       ),
-
                       Obx(
                         () => Visibility(
                           visible: homeController.isShow.value,
@@ -332,361 +331,372 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           )
-                        : const Center(
-                            child: Text(
-                            "No Data Found",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: ConstFont.poppinsRegular,
-                            ),
-                          )),
+                        : ListView(
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: const Center(
+                                    child: Text(
+                                  "No Data Found",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: ConstFont.poppinsRegular,
+                                  ),
+                                )),
+                              ),
+                            ],
+                          ),
                   )
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    controller: _scrollController,
-                    itemCount: homeController.homeList.length +
-                        (homeController.loadingPage.value ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index == homeController.homeList.length) {
-                        // Loading indicator
-                        return homeController.loadingPage.value
-                            ? Padding(
-                                padding: const EdgeInsets.all(30.0),
-                                child: Center(
-                                  widthFactor: deviceWidth * 0.1,
-                                  child: const CircularProgressIndicator(
-                                      color: ConstColour.primaryColor),
-                                ),
-                              )
-                            : Container();
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(11),
-                          onTap: () {
-                            productController.isFilterApplyed.value = false;
-                            Get.to(() => const ProductDetailScreen());
-                            productController.productIndex = index;
-                            productController.getProductDetailCall(
-                                homeController.homeList[index].id);
-                          },
-                          splashColor: ConstColour.btnHowerColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              border:
-                                  Border.all(color: ConstColour.primaryColor),
-                              borderRadius: BorderRadius.circular(11),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.topRight,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        height: deviceHeight * 0.13,
-                                        width: deviceWidth * 0.28,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: Colors.white),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: homeController
-                                                  .homeList[index].image
-                                                  .endsWith('.mp4')
-                                              ? VideoItem(
-                                                  url: homeController
-                                                      .homeList[index].image)
-                                              : CachedNetworkImage(
-                                                  width: double.infinity,
-                                                  fit: BoxFit.cover,
-                                                  imageUrl: homeController
-                                                      .homeList[index].image
-                                                      .toString(),
-                                                  fadeInCurve:
-                                                      Curves.easeInOutQuad,
-                                                  placeholder: (context, url) =>
-                                                      const Icon(Icons.image,
-                                                          size: 65,
-                                                          color: ConstColour
-                                                              .loadImageColor),
-                                                  errorWidget: (context, url,
-                                                          error) =>
-                                                      const Icon(Icons.error,
-                                                          size: 45),
-                                                ),
-                                        ),
-                                      ),
+                : ListView(
+                  children: [
+                    ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        itemCount: homeController.homeList.length +
+                            (homeController.loadingPage.value ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index == homeController.homeList.length) {
+                            // Loading indicator
+                            return homeController.loadingPage.value
+                                ? Padding(
+                                    padding: const EdgeInsets.all(30.0),
+                                    child: Center(
+                                      widthFactor: deviceWidth * 0.1,
+                                      child: const CircularProgressIndicator(
+                                          color: ConstColour.primaryColor),
                                     ),
-                                    Expanded(
-                                      child: ListTile(
-                                        contentPadding: const EdgeInsets.all(0),
-                                        title: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: deviceWidth * 0.08),
-                                              child: Text(
-                                                homeController
-                                                    .homeList[index].name,
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontFamily: ConstFont
-                                                        .poppinsRegular),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
+                                  )
+                                : Container();
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(11),
+                              onTap: () {
+                                productController.isFilterApplyed.value = false;
+                                Get.to(() => const ProductDetailScreen());
+                                productController.productIndex = index;
+                                productController.getProductDetailCall(
+                                    homeController.homeList[index].id);
+                              },
+                              splashColor: ConstColour.btnHowerColor,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  border:
+                                      Border.all(color: ConstColour.primaryColor),
+                                  borderRadius: BorderRadius.circular(11),
+                                ),
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: deviceHeight * 0.13,
+                                            width: deviceWidth * 0.28,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: Colors.white),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: homeController
+                                                      .homeList[index].image
+                                                      .endsWith('.mp4')
+                                                  ? VideoItem(
+                                                      url: homeController
+                                                          .homeList[index].image)
+                                                  : CachedNetworkImage(
+                                                      width: double.infinity,
+                                                      fit: BoxFit.cover,
+                                                      imageUrl: homeController
+                                                          .homeList[index].image
+                                                          .toString(),
+                                                      fadeInCurve:
+                                                          Curves.easeInOutQuad,
+                                                      placeholder: (context, url) =>
+                                                          const Icon(Icons.image,
+                                                              size: 65,
+                                                              color: ConstColour
+                                                                  .loadImageColor),
+                                                      errorWidget: (context, url,
+                                                              error) =>
+                                                          const Icon(Icons.error,
+                                                              size: 45),
+                                                    ),
                                             ),
-                                            Text(
-                                              homeController
-                                                  .homeList[index].orderId
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 14,
-                                                  fontFamily:
-                                                      ConstFont.poppinsRegular),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                        subtitle: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: deviceHeight * 0.032),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                homeController.homeList[index]
-                                                    .dateCreated,
-                                                style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 14,
-                                                    fontFamily: ConstFont
-                                                        .poppinsRegular),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              Text(
-                                                "${homeController.homeList[index].orderStatus}  ",
-                                                style: TextStyle(
-                                                    color: (homeController
-                                                                .homeList[index]
-                                                                .orderStatus ==
-                                                            "Complete")
-                                                        ? ConstColour
-                                                            .completeColor
-                                                        : (homeController
-                                                                    .homeList[
-                                                                        index]
+                                        Expanded(
+                                          child: ListTile(
+                                            contentPadding: const EdgeInsets.all(0),
+                                            title: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: deviceWidth * 0.08),
+                                                  child: Text(
+                                                    homeController
+                                                        .homeList[index].name,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontFamily: ConstFont
+                                                            .poppinsRegular),
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  homeController
+                                                      .homeList[index].orderId
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 14,
+                                                      fontFamily:
+                                                          ConstFont.poppinsRegular),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                            subtitle: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: deviceHeight * 0.032),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    homeController.homeList[index]
+                                                        .dateCreated,
+                                                    style: const TextStyle(
+                                                        color: Colors.grey,
+                                                        fontSize: 14,
+                                                        fontFamily: ConstFont
+                                                            .poppinsRegular),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  Text(
+                                                    "${homeController.homeList[index].orderStatus}  ",
+                                                    style: TextStyle(
+                                                        color: (homeController
+                                                                    .homeList[index]
                                                                     .orderStatus ==
-                                                                "Cancel")
+                                                                "Complete")
                                                             ? ConstColour
-                                                                .cancelColor
+                                                                .completeColor
                                                             : (homeController
                                                                         .homeList[
                                                                             index]
                                                                         .orderStatus ==
-                                                                    "Pending")
+                                                                    "Cancel")
                                                                 ? ConstColour
-                                                                    .pendingColor
+                                                                    .cancelColor
                                                                 : (homeController
                                                                             .homeList[
                                                                                 index]
                                                                             .orderStatus ==
-                                                                        "Working")
+                                                                        "Pending")
                                                                     ? ConstColour
-                                                                        .workingColor
-                                                                    : (homeController.homeList[index].orderStatus ==
-                                                                            "New")
+                                                                        .pendingColor
+                                                                    : (homeController
+                                                                                .homeList[
+                                                                                    index]
+                                                                                .orderStatus ==
+                                                                            "Working")
                                                                         ? ConstColour
-                                                                            .newColor
-                                                                        : Colors
-                                                                            .white,
-                                                    fontSize: 14,
-                                                    fontFamily: ConstFont
-                                                        .poppinsRegular),
-                                                overflow: TextOverflow.ellipsis,
+                                                                            .workingColor
+                                                                        : (homeController.homeList[index].orderStatus ==
+                                                                                "New")
+                                                                            ? ConstColour
+                                                                                .newColor
+                                                                            : Colors
+                                                                                .white,
+                                                        fontSize: 14,
+                                                        fontFamily: ConstFont
+                                                            .poppinsRegular),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        tooltip: "Assign Order",
-                                        onPressed: () {
-                                          userListController.orderId =
-                                              homeController.homeList[index].id;
-                                          userListController.userList.clear();
-                                          Get.to(() => const UserListScreen());
-                                        },
-                                        icon: const Icon(
-                                          CupertinoIcons.person_add_solid,
-                                          size: 30,
-                                          color: ConstColour.primaryColor,
-                                        )),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: deviceHeight * 0.03),
-                                      child: IconButton(
-                                          tooltip: "Delete",
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  shadowColor: Colors.white,
-                                                  elevation: 8.0,
-                                                  // backgroundColor: Colors.white,
-                                                  backgroundColor:
-                                                      Colors.orange.shade100,
-                                                  title: const Text(
-                                                    'Delete Order',
-                                                    style: TextStyle(
-                                                      fontSize: 22,
-                                                      fontFamily: ConstFont
-                                                          .poppinsMedium,
-                                                      color: Colors.black,
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  content: const Text(
-                                                    'Are you sure, want to delete order?',
-                                                    style: TextStyle(
-                                                      fontFamily: ConstFont
-                                                          .poppinsRegular,
-                                                      fontSize: 16,
-                                                      color: Colors.black,
-                                                    ),
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  actions: [
-                                                    InkWell(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      onTap: () {
-                                                        Get.back();
-                                                      },
-                                                      splashColor: ConstColour
-                                                          .btnHowerColor,
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                color:
-                                                                    Colors.red),
-                                                        child: const Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  6.0),
-                                                          child: Text(
-                                                            'Cancel',
-                                                            style: TextStyle(
-                                                              fontFamily: ConstFont
-                                                                  .poppinsRegular,
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.white,
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                            tooltip: "Assign Order",
+                                            onPressed: () {
+                                              userListController.orderId =
+                                                  homeController.homeList[index].id;
+                                              userListController.userList.clear();
+                                              Get.to(() => const UserListScreen());
+                                            },
+                                            icon: const Icon(
+                                              CupertinoIcons.person_add_solid,
+                                              size: 30,
+                                              color: ConstColour.primaryColor,
+                                            )),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: deviceHeight * 0.03),
+                                          child: IconButton(
+                                              tooltip: "Delete",
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  10)),
+                                                      shadowColor: Colors.white,
+                                                      elevation: 8.0,
+                                                      // backgroundColor: Colors.white,
+                                                      backgroundColor:
+                                                          Colors.orange.shade100,
+                                                      title: const Text(
+                                                        'Delete Order',
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontFamily: ConstFont
+                                                              .poppinsMedium,
+                                                          color: Colors.black,
+                                                        ),
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
+                                                      ),
+                                                      content: const Text(
+                                                        'Are you sure, want to delete order?',
+                                                        style: TextStyle(
+                                                          fontFamily: ConstFont
+                                                              .poppinsRegular,
+                                                          fontSize: 16,
+                                                          color: Colors.black,
+                                                        ),
+                                                        maxLines: 2,
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
+                                                      ),
+                                                      actions: [
+                                                        InkWell(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  5),
+                                                          onTap: () {
+                                                            Get.back();
+                                                          },
+                                                          splashColor: ConstColour
+                                                              .btnHowerColor,
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                5),
+                                                                    color:
+                                                                        Colors.red),
+                                                            child: const Padding(
+                                                              padding:
+                                                                  EdgeInsets.all(
+                                                                      6.0),
+                                                              child: Text(
+                                                                'Cancel',
+                                                                style: TextStyle(
+                                                                  fontFamily: ConstFont
+                                                                      .poppinsRegular,
+                                                                  fontSize: 12,
+                                                                  color:
+                                                                      Colors.white,
+                                                                ),
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
                                                             ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      onTap: () {},
-                                                      splashColor: ConstColour
-                                                          .btnHowerColor,
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          homeController
-                                                              .orderDeleteCall(
-                                                                  homeController
-                                                                      .homeList[
-                                                                          index]
-                                                                      .id);
-                                                          Get.back();
-                                                        },
-                                                        child: const Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  2.0),
-                                                          child: Text(
-                                                            '  Yes  ',
-                                                            style: TextStyle(
-                                                              fontFamily: ConstFont
-                                                                  .poppinsMedium,
-                                                              fontSize: 14,
-                                                              color:
-                                                                  Colors.black,
+                                                        InkWell(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  5),
+                                                          onTap: () {},
+                                                          splashColor: ConstColour
+                                                              .btnHowerColor,
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              homeController
+                                                                  .orderDeleteCall(
+                                                                      homeController
+                                                                          .homeList[
+                                                                              index]
+                                                                          .id);
+                                                              Get.back();
+                                                            },
+                                                            child: const Padding(
+                                                              padding:
+                                                                  EdgeInsets.all(
+                                                                      2.0),
+                                                              child: Text(
+                                                                '  Yes  ',
+                                                                style: TextStyle(
+                                                                  fontFamily: ConstFont
+                                                                      .poppinsMedium,
+                                                                  fontSize: 14,
+                                                                  color:
+                                                                      Colors.black,
+                                                                ),
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
                                                             ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                      ],
+                                                    );
+                                                  },
                                                 );
                                               },
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            CupertinoIcons.delete,
-                                            size: 24,
-                                            color: Colors.white,
-                                          )),
+                                              icon: const Icon(
+                                                CupertinoIcons.delete,
+                                                size: 24,
+                                                color: Colors.white,
+                                              )),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                          );
+                        },
+                      ),
+                  ],
+                ),
           ),
         ),
       ),

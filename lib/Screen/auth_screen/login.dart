@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: const BorderSide(
                             color: ConstColour.textFieldBorder),
                       ),
-                      errorStyle: TextStyle(color: ConstColour.errorHint),
+                      errorStyle: const TextStyle(color: ConstColour.errorHint),
                       border: InputBorder.none,
                       filled: true,
                       hintText: "Mobile No",
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             BorderSide(color: ConstColour.textFieldBorder),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                       ),
-                      errorStyle: TextStyle(color: ConstColour.errorHint),
+                      errorStyle: const TextStyle(color: ConstColour.errorHint),
                       suffixIcon: IconButton(
                         icon: Icon(
                           loginController.isHidden.value

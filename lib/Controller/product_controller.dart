@@ -63,7 +63,7 @@ class ProductController extends GetxController {
 
     final response = await http.get(
         Uri.parse(
-            ConstApi.baseUrl+"/api/Order/GetOrderDetails?orderId=$id"),
+            ConstApi.baseUrl+"api/Order/GetOrderDetails?orderId=$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);
@@ -101,7 +101,7 @@ class ProductController extends GetxController {
   void replaceString(String imageUrl) {
     strings.add(imageUrl);
     // Common string to remove
-    String commonStringToRemove = ConstApi.baseUrl+"/Files/";
+    String commonStringToRemove = ConstApi.baseUrl+"Files/";
 
     // Remove common string from each element in the list
     modifiedStrings = strings.map((str) {

@@ -45,12 +45,12 @@ class UserProductController extends GetxController{
 
     final response = await http.get(
         // Uri.parse("http://208.64.33.118:8558/api/Order/GetOrderDetails?orderId=$id"),
-        Uri.parse(ConstApi.baseUrl+"/api/Order/GetUserOrderDetails?id=$id"),
+        Uri.parse("${ConstApi.baseUrl}api/Order/GetUserOrderDetails?id=$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);
       final responseData = productDetailFromJson(response.body);
-      debugPrint("HOME LIST " + responseData.toString());
+      debugPrint("HOME LIST $responseData");
       productDetail.clear();
       productDetail.add(responseData.order);
       design = productDetail[0].name;
@@ -110,7 +110,7 @@ class UserProductController extends GetxController{
         debugPrint('Response: $responseBody');
         userHomeCon.isProductAvailable.value = false;
 
-        Utils().toastMessage("Order assign Successfully");
+        Utils().toastMessage("Order Complete Successfully");
         clearData();
       } else {
         // Failed API call
@@ -140,6 +140,7 @@ class UserProductController extends GetxController{
       "Id":id,
       "Reason":reason
     };
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',

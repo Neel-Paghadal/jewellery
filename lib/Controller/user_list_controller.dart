@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/ConstFile/constApi.dart';
 import 'package:jewellery_user/Models/users_model.dart';
@@ -25,8 +24,17 @@ class UserListController extends GetxController {
 
   RxBool isCall = false.obs;
   // Assign order to new user
-  Future<void> assignOrder(
-      String userId, String code, String notes, String orderId) async {
+
+  Future<void> handleRefresh() async {
+    userList.clear();
+    isCall.value = true;
+    getUserCall(orderId.toString());
+    debugPrint("ScreenRefresh");
+    return await Future.delayed(const Duration(seconds: 1));
+  }
+
+  // assign new order to user
+  Future<void> assignOrder(String userId, String code, String notes, String orderId) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.assignOrder);
@@ -71,6 +79,7 @@ class UserListController extends GetxController {
     homeController.loading.value = false;
     userListDrop.clear();
     userList.clear();
+    isCall.value = true;
     getUserCall(orderId.toString());
   }
 
@@ -116,22 +125,25 @@ class UserListController extends GetxController {
     }
     homeController.loading.value = false;
     userList.clear();
+    isCall.value = true;
     getUserCall(orderId.toString());
   }
 
   // assignOrder Update Detail
-  Future<void> assignUpdate(String id,String userID, String notes) async {
+  Future<void> assignUpdate(String id,String userID, String notes,bool reAssigned) async {
     homeController.loadingSec.value = true;
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.updateAssignOrder);
 
-    Map<String, String> requestBody =
+    Map<String, dynamic> requestBody =
     {
       "Id": id,
       "UserId":userID,
-      "Notes": notes
+      "Notes": notes,
+      "ReAssigned": reAssigned
     };
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -151,6 +163,7 @@ class UserListController extends GetxController {
         reasonController.clear();
         debugPrint('Response: $responseBody');
         Utils().toastMessage("Update Successfully");
+
       } else {
         // Failed API call
         debugPrint(
@@ -167,13 +180,14 @@ class UserListController extends GetxController {
     }
     homeController.loadingSec.value = false;
     userList.clear();
+    isCall.value = true;
     getUserCall(orderId.toString());
   }
 
+
+
   // Assign order Complete
-  Future<void> assignComplete(
-    String id,
-  ) async {
+  Future<void> assignComplete(String id,) async {
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     var url = Uri.parse(ConstApi.orderComplete);
@@ -218,13 +232,13 @@ class UserListController extends GetxController {
     userListDrop.clear();
     getUserDropCall(orderId.toString());
     userList.clear();
+    isCall.value = true;
     getUserCall(orderId.toString());
     homeController.loading.value = false;
   }
 
   // getUserOrderList
   getUserCall(String id) async {
-    isCall.value = true;
     String? token = await ConstPreferences().getToken();
     debugPrint(token);
     getUserDropCall(orderId.toString());
@@ -234,7 +248,7 @@ class UserListController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(Uri.parse(ConstApi.baseUrl+'/api/Order/GetOrderUsers?orderId=$id'), headers: headers);
+    final response = await http.get(Uri.parse('${ConstApi.baseUrl}api/Order/GetOrderUsers?orderId=$id'), headers: headers);
     if (response.statusCode == 200) {
 
       debugPrint(response.body);
@@ -274,7 +288,7 @@ class UserListController extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse(ConstApi.baseUrl+"/api/Order/Users?orderId=$id"),
+        Uri.parse("${ConstApi.baseUrl}api/Order/Users?orderId=$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);
@@ -298,4 +312,5 @@ class UserListController extends GetxController {
       SystemNavigator.pop();
     }
   }
+
 }

@@ -7,6 +7,7 @@ import 'package:jewellery_user/Common/snackbar.dart';
 import 'package:jewellery_user/Controller/home_Controller.dart';
 import 'package:jewellery_user/Controller/user_list_controller.dart';
 import 'package:jewellery_user/Screen/loader.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import '../../Common/bottom_button_widget.dart';
 import '../../ConstFile/constColors.dart';
 import '../../ConstFile/constFonts.dart';
@@ -293,7 +294,7 @@ class _UserListScreenState extends State<UserListScreen> {
     );
   }
 
-  Future<void> updateAssignOrder(String uniqueCode,String oldUserId) async {
+  Future<void> updateAssignOrder(String uniqueCode,String oldUserId,bool ReAssigned) async {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
 
@@ -344,7 +345,7 @@ class _UserListScreenState extends State<UserListScreen> {
                               .spaceBetween,
                           children: [
                             Text(
-                                "  Code : ${uniqueCode}",
+                                "  Code : $uniqueCode",
                                 style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors
@@ -554,13 +555,15 @@ class _UserListScreenState extends State<UserListScreen> {
                           btnName: "Update",
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              debugPrint("Drop"+userListController.userId.toString());
+                              debugPrint("Drop${userListController.userId}");
                               if(userListController.userId != "" && userListController.userId != null){
                                 homeController.loadingSec.value = true;
                                 userListController.assignUpdate(
                                     oldUserId,
                                     userListController.userId.toString(),
-                                    userListController.notesController.text);
+                                    userListController.notesController.text,
+                                  ReAssigned
+                                );
                                 Get.back();
                               }else{
                                 Utils().toastMessage("Please select username");
@@ -622,77 +625,81 @@ class _UserListScreenState extends State<UserListScreen> {
         ),
       ),
       backgroundColor: ConstColour.bgColor,
-      body: SingleChildScrollView(
-        controller: ScrollController(),
-        scrollDirection: Axis.vertical,
-        child: Obx(
-          () => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              userListController.userList.isEmpty
-                  ? Container(
-                      child: userListController.isCall.value == true
-                          ? Loaders(
-                              items: 12,
-                              direction: LoaderDirection.ltr,
-                              baseColor: Colors.grey,
-                              highLightColor: Colors.white,
-                              builder: Padding(
-                                padding:
-                                    EdgeInsets.only(right: deviceWidth * 0.01),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ListTile(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          side: const BorderSide(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              width: deviceWidth * 0.4,
-                                              height: deviceHeight * 0.01,
-                                              color: Colors.grey,
-                                            ),
-                                            Container(
-                                              width: deviceWidth * 0.2,
-                                              height: deviceHeight * 0.01,
-                                              color: Colors.grey,
-                                            ),
-                                          ],
-                                        ),
+      body: Obx(
+        () => LiquidPullToRefresh(
+          color: Colors.black,
+          height: deviceHeight * 0.08,
+          onRefresh: userListController.handleRefresh,
+          showChildOpacityTransition: false,
+          backgroundColor: ConstColour.primaryColor,
+          springAnimationDurationInMilliseconds: 1,
+          child: userListController.userList.isEmpty
+              ? Container(
+                  child: userListController.isCall.value == true
+                      ? Loaders(
+                          items: 12,
+                          direction: LoaderDirection.ltr,
+                          baseColor: Colors.grey,
+                          highLightColor: Colors.white,
+                          builder: Padding(
+                            padding:
+                                EdgeInsets.only(right: deviceWidth * 0.01),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListTile(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(8),
+                                      side: const BorderSide(
+                                        color: Colors.grey,
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding: EdgeInsets.only(
-                                top: deviceHeight * 0.35,
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "No Data Found",
-                                  style: TextStyle(
-                                      fontFamily: ConstFont.poppinsMedium,
-                                      color: Colors.white,
-                                      fontSize: 16),
-                                ),
-                              ),
+                                    ),
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width: deviceWidth * 0.4,
+                                          height: deviceHeight * 0.01,
+                                          color: Colors.grey,
+                                        ),
+                                        Container(
+                                          width: deviceWidth * 0.2,
+                                          height: deviceHeight * 0.01,
+                                          color: Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                    )
-                  : ListView.builder(
+                          ),
+                        )
+                      : ListView(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: const Center(
+                            child: Text(
+                              "No Data Found",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: ConstFont.poppinsRegular,
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView(
+                children: [
+                  ListView.builder(
                       controller: ScrollController(),
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -700,7 +707,7 @@ class _UserListScreenState extends State<UserListScreen> {
                       itemBuilder: (BuildContext context, index) {
 
                         if (userListController.userList[index].status == "Working") {
-                          imageStr = "asset/icons/time-management.png";
+                          imageStr = "asset/icons/work-in-progress.png";
                         } else if (userListController.userList[index].status == "Complete") {
                           imageStr = "asset/icons/checkmark.png";
                         } else if (userListController.userList[index].status == "Cancel") {
@@ -718,8 +725,8 @@ class _UserListScreenState extends State<UserListScreen> {
                             splashColor: ConstColour.btnHowerColor,
                             onTap: () {
                               userListController.notesController.text = userListController.userList[index].notes.toString();
-                              debugPrint("Controller" + userListController.notesController.text);
-                              debugPrint("List" + userListController.userList[index].notes.toString());
+                              debugPrint("Controller${userListController.notesController.text}");
+                              debugPrint("List${userListController.userList[index].notes}");
                               dropdownvalue = null;
                               userListController.userId = null;
                               if (userListController.userList[index].status == "Complete")
@@ -936,10 +943,15 @@ class _UserListScreenState extends State<UserListScreen> {
                               else {
                                 if(userListController.userList[index].needToReassign == true){
                                   userListController.getUserDropCall(userListController.orderId.toString());
-                                  updateAssignOrder(userListController.userList[index].code,userListController.userList[index].id);
+                                  updateAssignOrder(
+                                      userListController.userList[index].code,
+                                      userListController.userList[index].id,
+                                      userListController.userList[index].needToReassign,
+                                  );
 
 
                                 }else{
+
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -1150,7 +1162,9 @@ class _UserListScreenState extends State<UserListScreen> {
                                                             userListController.assignUpdate(
                                                                 userListController.userList[index].id,
                                                                 userListController.userList[index].userId,
-                                                                userListController.notesController.text);
+                                                                userListController.notesController.text,
+                                                                userListController.userList[index].needToReassign
+                                                            );
                                                             Get.back();
                                                           }
                                                         },
@@ -1656,8 +1670,8 @@ class _UserListScreenState extends State<UserListScreen> {
                         );
                       },
                     ),
-            ],
-          ),
+                ],
+              ),
         ),
       ),
     );

@@ -268,127 +268,138 @@ class _AdminListScreenState extends State<AdminListScreen> {
                               ),
                             ),
                           )
-                        : const Center(
-                          child: Text(
-                            "No Data Found",
-                            style: TextStyle(
-                                fontFamily: ConstFont.poppinsMedium,
-                                color: Colors.white,
-                                fontSize: 16),
-                          ),
+                        : ListView(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          child: const Center(
+                              child: Text(
+                                "No Data Found",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: ConstFont.poppinsRegular,
+                                ),
+                              )),
                         ),
+                      ],
+                    ),
                   )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemCount:
-                        adminListController.adminList.length + (adminListController.loadingPage.value ? 1 : 0),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      if (index == adminListController.adminList.length) {
-                        // Loading indicator
-                        return adminListController.loadingPage.value
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  widthFactor: deviceWidth * 0.1,
-                                  child: const CircularProgressIndicator(
-                                      color: ConstColour.primaryColor),
-                                ),
-                              )
-                            : Container();
-                      }
+                : ListView(
+                  children: [
+                    ListView.builder(
+                        controller: _scrollController,
+                        itemCount:
+                            adminListController.adminList.length + (adminListController.loadingPage.value ? 1 : 0),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          if (index == adminListController.adminList.length) {
+                            // Loading indicator
+                            return adminListController.loadingPage.value
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      widthFactor: deviceWidth * 0.1,
+                                      child: const CircularProgressIndicator(
+                                          color: ConstColour.primaryColor),
+                                    ),
+                                  )
+                                : Container();
+                          }
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                      onTap: () {
-                        adminProfileController.adminId = adminListController.adminList[index].id;
-                        Get.to(() => AdminDetailScreen());
-                      },
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                          onTap: () {
+                            adminProfileController.adminId = adminListController.adminList[index].id;
+                            Get.to(() => const AdminDetailScreen());
+                          },
 
-                            leading: Container(
-                                width: deviceWidth * 0.13,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color:  StickyColors
-                                        .colors[_random.nextInt(15)]
+                                leading: Container(
+                                    width: deviceWidth * 0.13,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:  StickyColors
+                                            .colors[_random.nextInt(15)]
+                                    ),
+                                    child: Center(
+                                      child: Text(adminListController.adminList[index].firstName.substring(0,1).toUpperCase(),style: const TextStyle(
+                                          color: Colors.black,fontSize: 20,fontFamily: ConstFont.poppinsMedium),),
+                                    )),
+                                shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        color: ConstColour.primaryColor),
+                                    borderRadius: BorderRadius.circular(21)),
+                                title: Text(
+                                  " ${adminListController.adminList[index].firstName} ${adminListController.adminList[index].lastName}",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: ConstFont.poppinsMedium),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                child: Center(
-                                  child: Text(adminListController.adminList[index].firstName.substring(0,1).toUpperCase(),style: TextStyle(
-                                      color: Colors.black,fontSize: 20,fontFamily: ConstFont.poppinsMedium),),
+                                dense: true,
+                                subtitle: Text(
+                                  " ${adminListController.adminList[index].mobileNumber}",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: ConstFont.poppinsMedium),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                trailing: PopupMenuButton(
+                                  tooltip: 'Options',
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: const BorderSide(
+                                      color: ConstColour.primaryColor
+                                    ),
+                                  ),
+                                  elevation: 5.0,
+                                  enableFeedback: true,
+                                  shadowColor: ConstColour.primaryColor,
+                                  iconSize: 24,
+                                  color: Colors.white,
+                                  iconColor: ConstColour.primaryColor,
+                                  onSelected: (value) {
+                                    // your logic
+                                    debugPrint(value);
+                                  },
+                                  itemBuilder: (BuildContext bc) {
+                                    return [
+                                      PopupMenuItem(
+                                        enabled: true,
+                                        onTap: () {
+                                          releaseDeviceDialog(context, adminListController.adminList[index].id);
+                                        },
+                                        value: '/Release',
+                                        child: const Text("Release",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                      ),
+                                      PopupMenuItem(
+                                        enabled: true,
+                                        onTap: () {
+                                          forgotPasswordDialouge(context, adminListController.adminList[index].id);
+                                        },
+                                        value: '/Reset Password',
+                                        child: const Text("Reset Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                      ),
+                                      PopupMenuItem(
+                                        enabled: true,
+                                        onTap: () {
+                                          deleteAdminDialoge(context, adminListController.adminList[index].id);
+                                        },
+                                        value: '/Delete Admin',
+                                        child: const Text("Delete Admin",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
+                                      ),
+                                    ];
+                                  },
                                 )),
-                            shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    color: ConstColour.primaryColor),
-                                borderRadius: BorderRadius.circular(21)),
-                            title: Text(
-                              " ${adminListController.adminList[index].firstName} ${adminListController.adminList[index].lastName}",
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: ConstFont.poppinsMedium),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            dense: true,
-                            subtitle: Text(
-                              " ${adminListController.adminList[index].mobileNumber}",
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: ConstFont.poppinsMedium),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: PopupMenuButton(
-                              tooltip: 'Options',
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(
-                                  color: ConstColour.primaryColor
-                                ),
-                              ),
-                              elevation: 5.0,
-                              enableFeedback: true,
-                              shadowColor: ConstColour.primaryColor,
-                              iconSize: 24,
-                              color: Colors.white,
-                              iconColor: ConstColour.primaryColor,
-                              onSelected: (value) {
-                                // your logic
-                                debugPrint(value);
-                              },
-                              itemBuilder: (BuildContext bc) {
-                                return [
-                                  PopupMenuItem(
-                                    enabled: true,
-                                    onTap: () {
-                                      releaseDeviceDialog(context, adminListController.adminList[index].id);
-                                    },
-                                    value: '/Release',
-                                    child: const Text("Release",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
-                                  ),
-                                  PopupMenuItem(
-                                    enabled: true,
-                                    onTap: () {
-                                      forgotPasswordDialouge(context, adminListController.adminList[index].id);
-                                    },
-                                    value: '/Reset Password',
-                                    child: const Text("Reset Password",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
-                                  ),
-                                  PopupMenuItem(
-                                    enabled: true,
-                                    onTap: () {
-                                      deleteAdminDialoge(context, adminListController.adminList[index].id);
-                                    },
-                                    value: '/Delete Admin',
-                                    child: const Text("Delete Admin",style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: ConstFont.poppinsMedium),overflow: TextOverflow.ellipsis),
-                                  ),
-                                ];
-                              },
-                            )),
-                      );
-                    },
-                  ),
+                          );
+                        },
+                      ),
+                  ],
+                ),
           ),
         ),
       ),

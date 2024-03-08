@@ -7,7 +7,7 @@ class ConstPreferences {
   var LANGUAGES = "LANGUAGES";
   var ROLE = "ROLE";
   var CODE = "CODE";
-  SharedPreferences? _prefs;
+
 
 
 

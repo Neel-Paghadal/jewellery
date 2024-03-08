@@ -67,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 children: [
 
-                  Text("Create Account",style: TextStyle(
+                  const Text("Create Account",style: TextStyle(
                     color: ConstColour.primaryColor,
                     fontWeight: FontWeight.w700,
                     fontFamily: ConstFont.poppinsRegular,
@@ -75,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   )),
                   Divider(height: deviceHeight * 0.01),
 
-                  Text("Create an account so you can\nexplore all the existing jobs",style: TextStyle(
+                  const Text("Create an account so you can\nexplore all the existing jobs",style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontFamily: ConstFont.poppinsRegular,
@@ -130,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderSide: const BorderSide(
                                     color: ConstColour.textFieldBorder),
                               ),
-                              errorStyle: TextStyle(color: ConstColour.errorHint),
+                              errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                               border: InputBorder.none,
                               filled: true,
@@ -190,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderSide: const BorderSide(
                                     color: ConstColour.textFieldBorder),
                               ),
-                              errorStyle: TextStyle(color: ConstColour.errorHint),
+                              errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                               border: InputBorder.none,
                               filled: true,
@@ -266,7 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontFamily: ConstFont.poppinsRegular,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                       ),
                       style: const TextStyle(
@@ -322,7 +322,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                         border: InputBorder.none,
                         filled: true,
@@ -401,7 +401,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                         border: InputBorder.none,
                         filled: true,
@@ -479,7 +479,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                         border: InputBorder.none,
                         filled: true,
@@ -541,7 +541,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: const BorderSide(
                               color: ConstColour.textFieldBorder),
                         ),
-                        errorStyle: TextStyle(color: ConstColour.errorHint),
+                        errorStyle: const TextStyle(color: ConstColour.errorHint),
 
                         border: InputBorder.none,
                         filled: true,
@@ -602,7 +602,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       titleAlignment: ListTileTitleAlignment.center,
                       title: Padding(
                         padding: EdgeInsets.only(left: deviceWidth * 0.1),
-                        child: Text(
+                        child: const Text(
                           "Next",
                           style: TextStyle(
                               fontFamily: ConstFont.poppinsRegular,
@@ -613,7 +613,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.arrow_forward,
                         size: 24,
                       ),

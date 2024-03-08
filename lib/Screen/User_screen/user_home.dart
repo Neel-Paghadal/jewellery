@@ -33,23 +33,23 @@ class _UserHomeState extends State<UserHome> {
           shadowColor: Colors.white,
           elevation: 8.0,
           backgroundColor: Colors.white,
-          title: const Text(
-            'Logout',
-            style: TextStyle(
+          title: Text(
+            'logout'.tr,
+            style: const TextStyle(
               fontSize: 22,
               fontFamily: ConstFont.poppinsMedium,
               color: Colors.black,
             ),
             overflow: TextOverflow.ellipsis,
           ),
-          content: const Text(
-            'Are you sure, want to logout?',
-            style: TextStyle(
+          content: Text(
+            'logoutdes'.tr,
+            style: const TextStyle(
               fontFamily: ConstFont.poppinsRegular,
               fontSize: 16,
               color: Colors.black,
             ),
-            overflow: TextOverflow.ellipsis,
+
           ),
           actions: [
             InkWell(
@@ -63,16 +63,16 @@ class _UserHomeState extends State<UserHome> {
                     // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.red),
-                child: const Padding(
-                  padding: EdgeInsets.all(6.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
                   child: Text(
-                    'Cancel',
-                    style: TextStyle(
+                    'cancel'.tr,
+                    style: const TextStyle(
                       fontFamily: ConstFont.poppinsRegular,
                       fontSize: 12,
                       color: Colors.white,
                     ),
-                    overflow: TextOverflow.ellipsis,
+
                   ),
                 ),
               ),
@@ -88,11 +88,11 @@ class _UserHomeState extends State<UserHome> {
                   ConstPreferences().clearPreferences();
                   SystemNavigator.pop();
                 },
-                child: const Padding(
-                  padding: EdgeInsets.all(6.0),
+                child:  Padding(
+                  padding: const EdgeInsets.all(6.0),
                   child: Text(
-                    'Logout',
-                    style: TextStyle(
+                    'logout'.tr,
+                    style: const TextStyle(
                       fontFamily: ConstFont.poppinsMedium,
                       fontSize: 13,
                       color: Colors.black,
@@ -269,7 +269,7 @@ class _UserHomeState extends State<UserHome> {
                         fontFamily: ConstFont.poppinsRegular,
                       ),
                       suffixIcon: userHomeCon.isProductAvailable.value == true ?
-                      SizedBox() :
+                      const SizedBox() :
                       TextButton(
                         style: TextButton.styleFrom(
                             // minimumSize: Size(deviceWidth * 0.1, deviceHeight * 0.04),
@@ -327,8 +327,7 @@ class _UserHomeState extends State<UserHome> {
                                 onTap: () {
                                   userProductController.orderUserId =
                                       userHomeCon.userHome[index].orderUserId;
-                                  debugPrint("Order userId : " +
-                                      userProductController.orderUserId);
+                                  debugPrint("Order userId : " + userProductController.orderUserId);
                                   Get.to(() => const ProductDetailPage());
                                   userProductController.getProductDetailCall(userHomeCon.userHome[index].orderUserId);
                                 },
@@ -337,7 +336,6 @@ class _UserHomeState extends State<UserHome> {
                                   side: const BorderSide(
                                       color: ConstColour.primaryColor),
                                 ),
-
                                 leading: Container(
                                     height: double.infinity,
                                     width: deviceWidth * 0.115,
@@ -368,7 +366,6 @@ class _UserHomeState extends State<UserHome> {
                                                           size: 30),
                                             ),
                                     )),
-
                                 // leading: Container(
                                 //     decoration: BoxDecoration(
                                 //       color: Colors.white,
