@@ -13,7 +13,6 @@ import 'package:jewellery_user/Screen/loader.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'dart:math';
 
-
 class StickyColors {
   static final List colors = [
     const Color(0xffF1F7E6),
@@ -34,6 +33,7 @@ class StickyColors {
     const Color(0xffFEC5E5),
   ];
 }
+
 class UserList extends StatefulWidget {
   const UserList({super.key});
 
@@ -41,12 +41,12 @@ class UserList extends StatefulWidget {
   State<UserList> createState() => _UserListState();
 }
 
-
-
 class _UserListState extends State<UserList> {
   ScrollController _scrollController = ScrollController();
-  UserListScreenController userListScreenController = Get.put(UserListScreenController());
-  UserProfileDetailController userProfileController = Get.put(UserProfileDetailController());
+  UserListScreenController userListScreenController =
+      Get.put(UserListScreenController());
+  UserProfileDetailController userProfileController =
+      Get.put(UserProfileDetailController());
   AdminListController adminListController = Get.put(AdminListController());
   HomeController homeController = Get.put(HomeController());
 
@@ -147,45 +147,6 @@ class _UserListState extends State<UserList> {
     );
   }
 
-  // Future<void> _handleRefresh() async {
-  //   _pageIndex = 1;
-  //   _pageSize = 10;
-  //
-  //   userListScreenController.usersList.clear();
-  //   userListScreenController.getUserCall(
-  //     _pageIndex,
-  //     _pageSize,
-  //   );
-  //   debugPrint("ScreenRefresh");
-  //   return await Future.delayed(const Duration(seconds: 1));
-  // }
-
-  // Future<void> _loadProducts() async {
-  //   setState(() {
-  //     _loading = true;
-  //   });
-  //   _pageIndex++;
-  //
-  //   debugPrint("Page Order index$_pageIndex");
-  //   try {
-  //     final RxList<UserDetail> products =
-  //         await userListScreenController.getUserCall(
-  //       _pageIndex,
-  //       _pageSize,
-  //     );
-  //     setState(() {
-  //       userListScreenController.usersList.addAll(products);
-  //     });
-  //   } catch (e) {
-  //     // Handle errors
-  //     debugPrint('Error loading products: $e');
-  //   } finally {
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //   }
-  // }
-
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
@@ -194,7 +155,6 @@ class _UserListState extends State<UserList> {
       userListScreenController.loadProducts();
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +181,6 @@ class _UserListState extends State<UserList> {
             icon: const Icon(Icons.arrow_back_ios),
             color: ConstColour.primaryColor),
       ),
-
       body: Obx(
         () => LiquidPullToRefresh(
           color: Colors.black,
@@ -278,159 +237,195 @@ class _UserListState extends State<UserList> {
                             ),
                           )
                         : ListView(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height,
-                          child: const Center(
-                              child: Text(
-                                "No Data Found",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: ConstFont.poppinsRegular,
-                                ),
-                              )),
-                        ),
-                      ],
-                    ),
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: const Center(
+                                    child: Text(
+                                  "No Data Found",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: ConstFont.poppinsRegular,
+                                  ),
+                                )),
+                              ),
+                            ],
+                          ),
                   )
                 : ListView(
-                  children: [
-                    ListView.builder(
-                        controller: _scrollController,
-                        itemCount: userListScreenController.usersList.length + (userListScreenController.loadingPage.value ? 1 : 0),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          if (index == userListScreenController.usersList.length) {
-                            // Loading indicator
-                            return userListScreenController.loadingPage.value
-                                ? Padding(
-                                    padding: const EdgeInsets.all(25.0),
-                                    child: Center(
-                                      widthFactor: deviceWidth * 0.1,
-                                      child: const CircularProgressIndicator(
-                                          color: ConstColour.primaryColor),
-                                    ),
-                                  )
-                                : Container();
-                          }
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.only(bottom: deviceHeight * 0.125),
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            itemCount:
+                                userListScreenController.usersList.length +
+                                    (userListScreenController.loadingPage.value
+                                        ? 1
+                                        : 0),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              if (index ==
+                                  userListScreenController.usersList.length) {
+                                // Loading indicator
+                                return userListScreenController
+                                        .loadingPage.value
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(25.0),
+                                        child: Center(
+                                          widthFactor: deviceWidth * 0.1,
+                                          child:
+                                              const CircularProgressIndicator(
+                                                  color:
+                                                      ConstColour.primaryColor),
+                                        ),
+                                      )
+                                    : Container();
+                              }
 
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              onTap: () {
-                                userProfileController.userId = userListScreenController.usersList[index].id;
-                                Get.to(() => const UserDetailScreen());
-                              },
-                                splashColor: ConstColour.btnHowerColor,
-                                leading: Container(
-                                  width: deviceWidth * 0.13,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color:  StickyColors.colors[_random.nextInt(15)]
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                    onTap: () {
+                                      userProfileController.userId =
+                                          userListScreenController
+                                              .usersList[index].id;
+                                      Get.to(() => const UserDetailScreen());
+                                    },
+                                    splashColor: ConstColour.btnHowerColor,
+                                    leading: Container(
+                                        width: deviceWidth * 0.13,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: StickyColors
+                                                .colors[_random.nextInt(15)]),
+                                        child: Center(
+                                          child: Text(
+                                            userListScreenController
+                                                .usersList[index].firstName
+                                                .substring(0, 1)
+                                                .toUpperCase(),
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontFamily:
+                                                    ConstFont.poppinsMedium),
+                                          ),
+                                        )),
+                                    shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                            color: ConstColour.primaryColor),
+                                        borderRadius:
+                                            BorderRadius.circular(21)),
+                                    title: Text(
+                                      " ${userListScreenController.usersList[index].firstName} ${userListScreenController.usersList[index].lastName}",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontFamily: ConstFont.poppinsMedium),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    child: Center(
-                                      child: Text(userListScreenController.usersList[index].firstName.substring(0,1).toUpperCase(),style: const TextStyle(
-                                          color: Colors.black,fontSize: 20,fontFamily: ConstFont.poppinsMedium),),
+                                    dense: true,
+                                    subtitle: Text(
+                                      " ${userListScreenController.usersList[index].mobileNumber}",
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontFamily: ConstFont.poppinsMedium),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    trailing: PopupMenuButton(
+                                      tooltip: 'Options',
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        side: const BorderSide(
+                                            color: ConstColour.primaryColor),
+                                      ),
+                                      elevation: 5.0,
+                                      enableFeedback: true,
+                                      shadowColor: ConstColour.primaryColor,
+                                      iconSize: 24,
+                                      color: Colors.white,
+                                      iconColor: ConstColour.primaryColor,
+                                      onSelected: (value) {
+                                        // your logic
+                                        debugPrint(value);
+                                      },
+                                      itemBuilder: (BuildContext bc) {
+                                        return [
+                                          PopupMenuItem(
+                                            enabled: true,
+                                            onTap: () {
+                                              debugPrint(
+                                                  userListScreenController
+                                                      .usersList[index]
+                                                      .firstName);
+                                              releaseDeviceDialog(
+                                                  context,
+                                                  userListScreenController
+                                                      .usersList[index].id);
+                                            },
+                                            value: '/Release',
+                                            child: const Text("Release",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontFamily: ConstFont
+                                                        .poppinsMedium),
+                                                overflow:
+                                                    TextOverflow.ellipsis),
+                                          ),
+                                          PopupMenuItem(
+                                            enabled: true,
+                                            onTap: () {
+                                              forgotPasswordDialouge(
+                                                  context,
+                                                  userListScreenController
+                                                      .usersList[index].id);
+                                            },
+                                            value: '/Reset Password',
+                                            child: const Text("Reset Password",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontFamily: ConstFont
+                                                        .poppinsMedium),
+                                                overflow:
+                                                    TextOverflow.ellipsis),
+                                          ),
+                                          PopupMenuItem(
+                                            enabled: true,
+                                            onTap: () {
+                                              deleteUserDialoge(
+                                                  context,
+                                                  userListScreenController
+                                                      .usersList[index].id);
+                                            },
+                                            value: '/Delete User',
+                                            child: const Text("Delete User",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontFamily: ConstFont
+                                                        .poppinsMedium),
+                                                overflow:
+                                                    TextOverflow.ellipsis),
+                                          ),
+                                        ];
+                                      },
                                     )),
-                                shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        color: ConstColour.primaryColor),
-                                    borderRadius: BorderRadius.circular(21)),
-                                title: Text(
-                                  " ${userListScreenController.usersList[index].firstName} ${userListScreenController.usersList[index].lastName}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontFamily: ConstFont.poppinsMedium),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                dense: true,
-                                subtitle: Text(
-                                  " ${userListScreenController.usersList[index].mobileNumber}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontFamily: ConstFont.poppinsMedium),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                trailing: PopupMenuButton(
-                                  tooltip: 'Options',
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    side: const BorderSide(
-                                        color: ConstColour.primaryColor),
-                                  ),
-                                  elevation: 5.0,
-                                  enableFeedback: true,
-                                  shadowColor: ConstColour.primaryColor,
-                                  iconSize: 24,
-                                  color: Colors.white,
-                                  iconColor: ConstColour.primaryColor,
-                                  onSelected: (value) {
-                                    // your logic
-                                    debugPrint(value);
-                                  },
-                                  itemBuilder: (BuildContext bc) {
-                                    return [
-                                      PopupMenuItem(
-                                        enabled: true,
-                                        onTap: () {
-                                          debugPrint(userListScreenController
-                                              .usersList[index].firstName);
-                                          releaseDeviceDialog(
-                                              context,
-                                              userListScreenController
-                                                  .usersList[index].id);
-                                        },
-                                        value: '/Release',
-                                        child: const Text("Release",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontFamily:
-                                                    ConstFont.poppinsMedium),
-                                            overflow: TextOverflow.ellipsis),
-                                      ),
-                                      PopupMenuItem(
-                                        enabled: true,
-                                        onTap: () {
-                                          forgotPasswordDialouge(context, userListScreenController.usersList[index].id);
-                                        },
-                                        value: '/Reset Password',
-                                        child: const Text("Reset Password",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontFamily:
-                                                    ConstFont.poppinsMedium),
-                                            overflow: TextOverflow.ellipsis),
-                                      ),
-                                      PopupMenuItem(
-                                        enabled: true,
-                                        onTap: () {
-
-                                          deleteUserDialoge(context, userListScreenController.usersList[index].id);
-
-                                        },
-                                        value: '/Delete User',
-                                        child: const Text("Delete User",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontFamily:
-                                                    ConstFont.poppinsMedium),
-                                            overflow: TextOverflow.ellipsis),
-                                      ),
-                                    ];
-                                  },
-                                )),
-                          );
-                        },
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                  ],
-                ),
+                    ],
+                  ),
           ),
         ),
       ),

@@ -54,9 +54,9 @@ class UserHomeCon extends GetxController {
     } else {
       // Error in API call.
       Utils().toastMessage(json.decode(response.body)['error']);
-      if(json.decode(response.body)['error'] == "Failed to Fetch Order!!"){
+      // if(json.decode(response.body)['error'] != null){
         getProductHomeCall();
-      }
+      // }
       debugPrint('Error: ${response.statusCode}');
       debugPrint('Error body: ${response.body}');
     }

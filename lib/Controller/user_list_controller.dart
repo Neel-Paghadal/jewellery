@@ -148,6 +148,7 @@ class UserListController extends GetxController {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
+
     debugPrint("Request Body :$requestBody");
 
     try {

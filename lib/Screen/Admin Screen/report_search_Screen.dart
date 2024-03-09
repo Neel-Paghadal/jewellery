@@ -255,145 +255,152 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                           ),
                   )
                 : ListView(
-                  children: [
-                    ListView.builder(
-                        controller: _scrollController,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: reportSearchController.orderReportList.length +
-                            (_loading ? 1 : 0),
-                        itemBuilder: (context, index) {
-                          // if (reportSearchController
-                          //         .orderReportList[index].status ==
-                          //     "Completed") {
-                          //   reportbuttonColor = ConstColour.greenColor;
-                          // } else if (reportSearchController
-                          //         .orderReportList[index].status ==
-                          //     "Cancelled") {
-                          //   reportbuttonColor = ConstColour.quantityRemove;
-                          // } else if (reportSearchController
-                          //         .orderReportList[index].status ==
-                          //     "Pending") {
-                          //   reportbuttonColor = Colors.yellow;
-                          // }
 
-                          if (index ==
-                              reportSearchController.orderReportList.length) {
-                            // Loading indicator
-                            return _loading
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Center(
-                                      widthFactor: deviceWidth * 0.1,
-                                      child: const CircularProgressIndicator(
-                                          color: ConstColour.primaryColor),
-                                    ),
-                                  )
-                                : Container();
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                border: Border.all(color: ConstColour.primaryColor),
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                              child: ListTile(
-                                onTap: () {
-                                  reportScreenController.reportDetail.clear();
-                                reportScreenController.orderId = reportSearchController.orderReportList[index].id;
-                                  reportScreenController.getReportDetailCall(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: deviceHeight * 0.125),
+                        child: ListView.builder(
+                            controller: _scrollController,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: reportSearchController.orderReportList.length +
+                                (_loading ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              // if (reportSearchController
+                              //         .orderReportList[index].status ==
+                              //     "Completed") {
+                              //   reportbuttonColor = ConstColour.greenColor;
+                              // } else if (reportSearchController
+                              //         .orderReportList[index].status ==
+                              //     "Cancelled") {
+                              //   reportbuttonColor = ConstColour.quantityRemove;
+                              // } else if (reportSearchController
+                              //         .orderReportList[index].status ==
+                              //     "Pending") {
+                              //   reportbuttonColor = Colors.yellow;
+                              // }
+
+                              if (index ==
+                                  reportSearchController.orderReportList.length) {
+                                // Loading indicator
+                                return _loading
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Center(
+                                          widthFactor: deviceWidth * 0.1,
+                                          child: const CircularProgressIndicator(
+                                              color: ConstColour.primaryColor),
+                                        ),
+                                      )
+                                    : Container();
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    border: Border.all(color: ConstColour.primaryColor),
+                                    borderRadius: BorderRadius.circular(11),
+                                  ),
+                                  child: ListTile(
+                                    onTap: () {
+                                      reportScreenController.reportDetail.clear();
+                                    reportScreenController.orderId = reportSearchController.orderReportList[index].id;
+                                      reportScreenController.getReportDetailCall(
+                                          reportSearchController
+                                              .orderReportList[index].id);
+                                      Get.to(() => const ReportScreen());
+                                    },
+                                    leading: Container(
+                                        height: double.infinity,
+                                        width: deviceWidth * 0.115,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(6),
+                                          child: reportSearchController
+                                                  .orderReportList[index].image
+                                                  .endsWith('.mp4')
+                                              ? VideoItem(
+                                                  url: reportSearchController
+                                                      .orderReportList[index].image)
+                                              : CachedNetworkImage(
+                                                  imageUrl: reportSearchController
+                                                      .orderReportList[index].image,
+                                                  fadeInCurve: Curves.easeInOutQuad,
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      const Icon(Icons.image,
+                                                          size: 30,
+                                                          color: ConstColour
+                                                              .loadImageColor),
+                                                  errorWidget: (context, url, error) =>
+                                                      const Icon(Icons.error, size: 30),
+                                                ),
+                                        )),
+                                    title: Text(
                                       reportSearchController
-                                          .orderReportList[index].id);
-                                  Get.to(() => const ReportScreen());
-                                },
-                                leading: Container(
-                                    height: double.infinity,
-                                    width: deviceWidth * 0.115,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6),
+                                          .orderReportList[index].orderId,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontFamily: ConstFont.poppinsRegular),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(6),
-                                      child: reportSearchController
-                                              .orderReportList[index].image
-                                              .endsWith('.mp4')
-                                          ? VideoItem(
-                                              url: reportSearchController
-                                                  .orderReportList[index].image)
-                                          : CachedNetworkImage(
-                                              imageUrl: reportSearchController
-                                                  .orderReportList[index].image,
-                                              fadeInCurve: Curves.easeInOutQuad,
-                                              fit: BoxFit.cover,
-                                              placeholder: (context, url) =>
-                                                  const Icon(Icons.image,
-                                                      size: 30,
-                                                      color: ConstColour
-                                                          .loadImageColor),
-                                              errorWidget: (context, url, error) =>
-                                                  const Icon(Icons.error, size: 30),
-                                            ),
-                                    )),
-                                title: Text(
-                                  reportSearchController
-                                      .orderReportList[index].orderId,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: ConstFont.poppinsRegular),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text(
-                                  reportSearchController
-                                      .orderReportList[index].dateCreated,
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 13,
-                                      fontFamily: ConstFont.poppinsRegular),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                trailing: Text(
-                                  reportSearchController
-                                      .orderReportList[index].orderStatus,
-                                  style: TextStyle(
-                                      color: (reportSearchController
-                                                  .orderReportList[index]
-                                                  .orderStatus ==
-                                              "Complete")
-                                          ? ConstColour.completeColor
-                                          : (reportSearchController
+                                    subtitle: Text(
+                                      reportSearchController
+                                          .orderReportList[index].dateCreated,
+                                      style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 13,
+                                          fontFamily: ConstFont.poppinsRegular),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    trailing: Text(
+                                      reportSearchController
+                                          .orderReportList[index].orderStatus,
+                                      style: TextStyle(
+                                          color: (reportSearchController
                                                       .orderReportList[index]
                                                       .orderStatus ==
-                                                  "Cancel")
-                                              ? ConstColour.cancelColor
+                                                  "Complete")
+                                              ? ConstColour.completeColor
                                               : (reportSearchController
                                                           .orderReportList[index]
                                                           .orderStatus ==
-                                                      "Pending")
-                                                  ? ConstColour.pendingColor
+                                                      "Cancel")
+                                                  ? ConstColour.cancelColor
                                                   : (reportSearchController
-                                                              .orderReportList[
-                                                                  index]
+                                                              .orderReportList[index]
                                                               .orderStatus ==
-                                                          "Working")
-                                                      ? ConstColour.workingColor
+                                                          "Pending")
+                                                      ? ConstColour.pendingColor
                                                       : (reportSearchController
                                                                   .orderReportList[
                                                                       index]
                                                                   .orderStatus ==
-                                                              "New")
-                                                          ? ConstColour.newColor
-                                                          : Colors.white,
-                                      fontFamily: ConstFont.poppinsBold),
+                                                              "Working")
+                                                          ? ConstColour.workingColor
+                                                          : (reportSearchController
+                                                                      .orderReportList[
+                                                                          index]
+                                                                      .orderStatus ==
+                                                                  "New")
+                                                              ? ConstColour.newColor
+                                                              : Colors.white,
+                                          fontFamily: ConstFont.poppinsBold),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
+                              );
+                            },
+                          ),
                       ),
+                    ),
                   ],
                 ),
           ),

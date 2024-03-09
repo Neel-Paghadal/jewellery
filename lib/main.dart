@@ -9,13 +9,16 @@ import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 
 
+import 'Screen/videoplayer_screen.dart';
+
+
 void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   final ImagePickerPlatform imagePickerImplementation = ImagePickerPlatform.instance;
   if (imagePickerImplementation is ImagePickerAndroid) {
     imagePickerImplementation.useAndroidPhotoPicker = true;
@@ -48,12 +51,11 @@ class MyApp extends StatelessWidget {
       // fallbackLocale: Locale('en','US'),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(splashColor: Colors.white,useMaterial3: false),
-      // home: const SplashScreen(),
+      // home:  MyHomePage(),
       home :  const InternetStatus(child: SplashScreen(),)
       // home :  const ProductDetailPage()
-      // home :  MultimediaList()
+      // home :  DemoHome()
       // home: const ReportScreen(),
-      // home: const UserHome(),..
     );
   }
 }
