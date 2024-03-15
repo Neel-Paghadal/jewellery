@@ -23,7 +23,7 @@ Future mainImageCancelDialog(context,) {
         // backgroundColor: Colors.white,
         backgroundColor: Colors.orange.shade100,
         // title: const Text(
-        //   'Order',
+        //   'Inma',
         //   style: TextStyle(
         //     fontSize: 22,
         //     fontFamily: ConstFont
@@ -73,7 +73,7 @@ Future mainImageCancelDialog(context,) {
             borderRadius: BorderRadius.circular(5),
             onTap: () {
               orderController.imageNotes = null;
-              // orderController.imageNotesLocal = null;
+              orderController.imageNotesLocal = null;
               orderController.imgList.clear();
               Get.back();
             },

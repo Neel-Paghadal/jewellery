@@ -278,14 +278,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                               color: ConstColour.primaryColor),
-                                          borderRadius: BorderRadius.circular(11),
+                                          borderRadius:
+                                              BorderRadius.circular(11),
                                         ),
                                         child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.image,
                                                 size: 100,
@@ -298,7 +300,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               children: [
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      top: deviceHeight * 0.035),
+                                                      top:
+                                                          deviceHeight * 0.035),
                                                   child: Container(
                                                     height: deviceHeight * 0.01,
                                                     width: deviceWidth * 0.5,
@@ -317,7 +320,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Padding(
                                                   padding: EdgeInsets.only(
                                                       left: deviceWidth * 0.37,
-                                                      top: deviceHeight * 0.035),
+                                                      top:
+                                                          deviceHeight * 0.035),
                                                   child: Container(
                                                     width: deviceWidth * 0.2,
                                                     height: deviceHeight * 0.01,
@@ -352,12 +356,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                     )
                   : ListView(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height,
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: deviceHeight * 0.125),
-                          child: ListView.builder(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          child: Padding(
+                            padding:
+                                EdgeInsets.only(bottom: deviceHeight * 0.125),
+                            child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               controller: _scrollController,
@@ -368,11 +373,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   // Loading indicator
                                   return homeController.loadingPage.value
                                       ? Padding(
-                                          padding: const EdgeInsets.only(bottom: 30,top: 10),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 30, top: 10),
                                           child: Center(
                                             widthFactor: deviceWidth * 0.1,
-                                            child: const CircularProgressIndicator(
-                                                color: ConstColour.primaryColor),
+                                            child:
+                                                const CircularProgressIndicator(
+                                                    color: ConstColour
+                                                        .primaryColor),
                                           ),
                                         )
                                       : Container();
@@ -393,8 +401,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.black,
-                                        border:
-                                            Border.all(color: ConstColour.primaryColor),
+                                        border: Border.all(
+                                            color: ConstColour.primaryColor),
                                         borderRadius: BorderRadius.circular(11),
                                       ),
                                       child: Stack(
@@ -405,40 +413,52 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.all(8.0),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
                                                 child: Container(
                                                   height: deviceHeight * 0.13,
                                                   width: deviceWidth * 0.28,
                                                   decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(8),
+                                                          BorderRadius.circular(
+                                                              8),
                                                       color: Colors.white),
                                                   child: ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.circular(8),
+                                                        BorderRadius.circular(
+                                                            8),
                                                     child: homeController
-                                                            .homeList[index].image
+                                                            .homeList[index]
+                                                            .image
                                                             .endsWith('.mp4')
                                                         ? VideoItem(
                                                             url: homeController
-                                                                .homeList[index].image)
+                                                                .homeList[index]
+                                                                .image)
                                                         : CachedNetworkImage(
-                                                            width: double.infinity,
+                                                            width:
+                                                                double.infinity,
                                                             fit: BoxFit.cover,
-                                                            imageUrl: homeController
-                                                                .homeList[index].image
-                                                                .toString(),
-                                                            fadeInCurve:
-                                                                Curves.easeInOutQuad,
+                                                            imageUrl:
+                                                                homeController
+                                                                    .homeList[
+                                                                        index]
+                                                                    .image
+                                                                    .toString(),
+                                                            fadeInCurve: Curves
+                                                                .easeInOutQuad,
                                                             placeholder: (context,
                                                                     url) =>
-                                                                const Icon(Icons.image,
+                                                                const Icon(
+                                                                    Icons.image,
                                                                     size: 65,
                                                                     color: ConstColour
                                                                         .loadImageColor),
-                                                            errorWidget: (context, url,
+                                                            errorWidget: (context,
+                                                                    url,
                                                                     error) =>
-                                                                const Icon(Icons.error,
+                                                                const Icon(
+                                                                    Icons.error,
                                                                     size: 45),
                                                           ),
                                                   ),
@@ -452,57 +472,66 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Padding(
                                                         padding: EdgeInsets.only(
-                                                            right: deviceWidth * 0.08),
+                                                            right: deviceWidth *
+                                                                0.08),
                                                         child: Text(
                                                           homeController
-                                                              .homeList[index].name,
+                                                              .homeList[index]
+                                                              .name,
                                                           style: const TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize: 16,
                                                               fontFamily: ConstFont
                                                                   .poppinsRegular),
-                                                          overflow:
-                                                              TextOverflow.ellipsis,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                           maxLines: 2,
                                                         ),
                                                       ),
                                                       Text(
                                                         homeController
-                                                            .homeList[index].orderId
+                                                            .homeList[index]
+                                                            .orderId
                                                             .toString(),
                                                         style: const TextStyle(
                                                             color: Colors.grey,
                                                             fontSize: 14,
-                                                            fontFamily: ConstFont
-                                                                .poppinsRegular),
-                                                        overflow: TextOverflow.ellipsis,
+                                                            fontFamily: ConstFont.poppinsRegular),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                     ],
                                                   ),
                                                   subtitle: Padding(
                                                     padding: EdgeInsets.only(
-                                                        top: deviceHeight * 0.032),
+                                                        top: deviceHeight *
+                                                            0.032),
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Text(
-                                                          homeController.homeList[index]
+                                                          homeController
+                                                              .homeList[index]
                                                               .dateCreated,
                                                           style: const TextStyle(
-                                                              color: Colors.grey,
+                                                              color:
+                                                                  Colors.grey,
                                                               fontSize: 14,
                                                               fontFamily: ConstFont
                                                                   .poppinsRegular),
-                                                          overflow:
-                                                              TextOverflow.ellipsis,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
                                                         Text(
                                                           "${homeController.homeList[index].orderStatus}  ",
@@ -521,31 +550,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           "Cancel")
                                                                       ? ConstColour
                                                                           .cancelColor
-                                                                      : (homeController
-                                                                                  .homeList[
-                                                                                      index]
-                                                                                  .orderStatus ==
+                                                                      : (homeController.homeList[index].orderStatus ==
                                                                               "Pending")
                                                                           ? ConstColour
                                                                               .pendingColor
-                                                                          : (homeController
-                                                                                      .homeList[
-                                                                                          index]
-                                                                                      .orderStatus ==
-                                                                                  "Working")
-                                                                              ? ConstColour
-                                                                                  .workingColor
-                                                                              : (homeController.homeList[index].orderStatus ==
-                                                                                      "New")
-                                                                                  ? ConstColour
-                                                                                      .newColor
-                                                                                  : Colors
-                                                                                      .white,
+                                                                          : (homeController.homeList[index].orderStatus == "Working")
+                                                                              ? ConstColour.workingColor
+                                                                              : (homeController.homeList[index].orderStatus == "New")
+                                                                                  ? ConstColour.newColor
+                                                                                  : Colors.white,
                                                               fontSize: 14,
-                                                              fontFamily: ConstFont
-                                                                  .poppinsRegular),
-                                                          overflow:
-                                                              TextOverflow.ellipsis,
+                                                              fontFamily: ConstFont.poppinsRegular),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
                                                       ],
                                                     ),
@@ -564,14 +581,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     userListController.orderId =
                                                         homeController
                                                             .homeList[index].id;
-                                                    userListController.userList.clear();
-                                                    Get.to(
-                                                        () => const UserListScreen());
+                                                    userListController.userList
+                                                        .clear();
+                                                    Get.to(() =>
+                                                        const UserListScreen());
                                                   },
                                                   icon: const Icon(
-                                                    CupertinoIcons.person_add_solid,
+                                                    CupertinoIcons
+                                                        .person_add_solid,
                                                     size: 30,
-                                                    color: ConstColour.primaryColor,
+                                                    color: ConstColour
+                                                        .primaryColor,
                                                   )),
                                               Padding(
                                                 padding: EdgeInsets.only(
@@ -581,74 +601,84 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     onPressed: () {
                                                       showDialog(
                                                         context: context,
-                                                        builder:
-                                                            (BuildContext context) {
+                                                        builder: (BuildContext
+                                                            context) {
                                                           return AlertDialog(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                10)),
-                                                            shadowColor: Colors.white,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                            shadowColor:
+                                                                Colors.white,
                                                             elevation: 8.0,
                                                             // backgroundColor: Colors.white,
                                                             backgroundColor:
-                                                                Colors.orange.shade100,
+                                                                Colors.orange
+                                                                    .shade100,
                                                             title: const Text(
                                                               'Delete Order',
                                                               style: TextStyle(
                                                                 fontSize: 22,
-                                                                fontFamily: ConstFont
-                                                                    .poppinsMedium,
-                                                                color: Colors.black,
+                                                                fontFamily:
+                                                                    ConstFont
+                                                                        .poppinsMedium,
+                                                                color: Colors
+                                                                    .black,
                                                               ),
                                                               overflow:
-                                                                  TextOverflow.ellipsis,
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                             content: const Text(
                                                               'Are you sure, want to delete order?',
                                                               style: TextStyle(
-                                                                fontFamily: ConstFont
-                                                                    .poppinsRegular,
+                                                                fontFamily:
+                                                                    ConstFont
+                                                                        .poppinsRegular,
                                                                 fontSize: 16,
-                                                                color: Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                               ),
                                                               maxLines: 2,
                                                               overflow:
-                                                                  TextOverflow.ellipsis,
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                             actions: [
                                                               InkWell(
                                                                 borderRadius:
                                                                     BorderRadius
-                                                                        .circular(5),
+                                                                        .circular(
+                                                                            5),
                                                                 onTap: () {
                                                                   Get.back();
                                                                 },
-                                                                splashColor: ConstColour
-                                                                    .btnHowerColor,
-                                                                child: Container(
+                                                                splashColor:
+                                                                    ConstColour
+                                                                        .btnHowerColor,
+                                                                child:
+                                                                    Container(
                                                                   decoration:
                                                                       BoxDecoration(
                                                                           // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
-                                                                          borderRadius:
-                                                                              BorderRadius
-                                                                                  .circular(
-                                                                                      5),
-                                                                          color: Colors
-                                                                              .red),
-                                                                  child: const Padding(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              5),
+                                                                          color:
+                                                                              Colors.red),
+                                                                  child:
+                                                                      const Padding(
                                                                     padding:
                                                                         EdgeInsets.all(
                                                                             6.0),
                                                                     child: Text(
                                                                       'Cancel',
-                                                                      style: TextStyle(
+                                                                      style:
+                                                                          TextStyle(
                                                                         fontFamily:
-                                                                            ConstFont
-                                                                                .poppinsRegular,
-                                                                        fontSize: 12,
+                                                                            ConstFont.poppinsRegular,
+                                                                        fontSize:
+                                                                            12,
                                                                         color: Colors
                                                                             .white,
                                                                       ),
@@ -662,31 +692,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               InkWell(
                                                                 borderRadius:
                                                                     BorderRadius
-                                                                        .circular(5),
+                                                                        .circular(
+                                                                            5),
                                                                 onTap: () {},
-                                                                splashColor: ConstColour
-                                                                    .btnHowerColor,
-                                                                child: TextButton(
-                                                                  onPressed: () {
-                                                                    homeController
-                                                                        .orderDeleteCall(
-                                                                            homeController
-                                                                                .homeList[
-                                                                                    index]
-                                                                                .id);
+                                                                splashColor:
+                                                                    ConstColour
+                                                                        .btnHowerColor,
+                                                                child:
+                                                                    TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    homeController.orderDeleteCall(homeController
+                                                                        .homeList[
+                                                                            index]
+                                                                        .id);
                                                                     Get.back();
                                                                   },
-                                                                  child: const Padding(
+                                                                  child:
+                                                                      const Padding(
                                                                     padding:
                                                                         EdgeInsets.all(
                                                                             2.0),
                                                                     child: Text(
                                                                       '  Yes  ',
-                                                                      style: TextStyle(
+                                                                      style:
+                                                                          TextStyle(
                                                                         fontFamily:
-                                                                            ConstFont
-                                                                                .poppinsMedium,
-                                                                        fontSize: 14,
+                                                                            ConstFont.poppinsMedium,
+                                                                        fontSize:
+                                                                            14,
                                                                         color: Colors
                                                                             .black,
                                                                       ),
@@ -717,10 +751,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               },
                             ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
             ),
           ),
         ),
