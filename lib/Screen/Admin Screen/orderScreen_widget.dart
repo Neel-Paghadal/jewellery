@@ -8,6 +8,7 @@ import '../../ConstFile/constFonts.dart';
 
 
 Future mainImageCancelDialog(context,) {
+
   OrderController orderController = Get.put(OrderController());
 
   return showCupertinoModalPopup(
@@ -72,6 +73,7 @@ Future mainImageCancelDialog(context,) {
             borderRadius: BorderRadius.circular(5),
             onTap: () {
               orderController.imageNotes = null;
+              // orderController.imageNotesLocal = null;
               orderController.imgList.clear();
               Get.back();
             },

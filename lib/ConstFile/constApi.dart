@@ -1,7 +1,8 @@
 
 class ConstApi {
   // static  String baseUrl = 'http://208.64.33.118:8558/';
-  static  String baseUrl = 'http://208.64.33.118:7500/';
+  // static  String baseUrl = 'http://208.64.33.118:7500/';
+  static  String baseUrl = 'http://208.64.33.118:7452/';
   static  String apiUrl = '${baseUrl}api/';
   static  String baseFilePath = '${baseUrl}Files/';
   static  String userRegister = '${apiUrl}Auth/Register';
@@ -27,5 +28,7 @@ class ConstApi {
   static  String  getUserOrder = '${apiUrl}Order/GetUserOrder';
   static  String  deleteUserAdmin = '${apiUrl}User/deleteuser?id=';
   static  String  deleteMultiOrder = '${apiUrl}Order/DeleteMultipleOrder';
+  static  String  newOrder = '${apiUrl}Order/NewOrder';
+  static  String  getUserOrderDetails = '${apiUrl}Order/GetUserOrderDetails?id=';
 
 }

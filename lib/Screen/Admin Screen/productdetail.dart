@@ -26,11 +26,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   ProductController productController = Get.put(ProductController());
   var _startDate;
-  var startdate = DateTime.now()
-      .add(Duration(
-          hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute))
-      .millisecondsSinceEpoch
-      .obs;
+  var startdate = DateTime.now().add(Duration(hours: -TimeOfDay.now().hour, minutes: -TimeOfDay.now().minute)).millisecondsSinceEpoch.obs;
 
   // List<File> _imageList = [];
   File? imageNotes;
@@ -46,7 +42,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Future getImageCamera() async {
     _checkPermission();
 
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    final image = await ImagePicker().pickImage(source: ImageSource.camera,imageQuality: 50);
     if (image == null) return;
 
     final imageTemporary = File(image.path);
@@ -60,7 +56,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Future getImageGallery() async {
     _checkPermission();
-    final image = await ImagePicker().pickMedia(imageQuality: 100);
+    final image = await ImagePicker().pickMedia(imageQuality: 50);
     if (image == null) return;
 
     final imageTemporary = File(image.path);
@@ -76,7 +72,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Future<void> _pickImages() async {
     List<XFile>? pickedImages = await ImagePicker().pickMultipleMedia(
       imageQuality: 50,
-      maxWidth: 800,
     );
 
     setState(() {

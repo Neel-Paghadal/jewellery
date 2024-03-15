@@ -71,7 +71,7 @@ class Languages extends Translations {
           'description': 'विवरण',
           'complete': 'पूरा',
           'cancel': 'रद्द करना',
-          'orderCancel': 'आदेश रद्द करें',
+          'orderCancel': 'ऑर्डर रद्द करें',
           'reason': 'कारण',
           'productDetail': 'वास्तु की बारीकी',
           'noData': 'डाटा प्राप्त नहीं हुआ',

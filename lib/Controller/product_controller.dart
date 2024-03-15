@@ -32,6 +32,9 @@ class ProductController extends GetxController {
     deliveryDateController.clear();
     imgList.clear();
     imgListMulti.clear();
+    isLoading.value = false;
+    isLoadingSec.value = false;
+    isFilterApplyed.value = false;
   }
 
   RxList<Order> productDetail = <Order>[].obs;
@@ -137,7 +140,7 @@ class ProductController extends GetxController {
       if (response.statusCode == 200) {
         debugPrint('File uploaded successfully');
         debugPrint(response.toString());
-        debugPrint('Response: $responseBody');
+        debugPrint('Response  newew w : $responseBody');
         final responseData = fileUploadFromJson(responseBody);
         imgList.addAll(responseData.files);
         var jsonResponse = json.decode(responseBody);

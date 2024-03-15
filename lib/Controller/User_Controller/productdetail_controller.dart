@@ -45,7 +45,7 @@ class UserProductController extends GetxController{
 
     final response = await http.get(
         // Uri.parse("http://208.64.33.118:8558/api/Order/GetOrderDetails?orderId=$id"),
-        Uri.parse("${ConstApi.baseUrl}api/Order/GetUserOrderDetails?id=$id"),
+        Uri.parse("${ConstApi.getUserOrderDetails}$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);

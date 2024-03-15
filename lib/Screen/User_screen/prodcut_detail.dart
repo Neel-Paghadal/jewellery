@@ -71,13 +71,172 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           SizedBox() :
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: NextButton(
-                    onPressed: () {
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: NextButton(
+                //     onPressed: () {
+                //
+                //       showCupertinoModalPopup(
+                //         filter: const ColorFilter.mode(
+                //             ConstColour
+                //                 .primaryColor,
+                //             BlendMode.clear),
+                //         semanticsDismissible: false,
+                //         context: context,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //             shape: RoundedRectangleBorder(
+                //                 borderRadius:
+                //                 BorderRadius
+                //                     .circular(
+                //                     10)),
+                //
+                //             shadowColor:
+                //             Colors.white,
+                //             elevation: 8.0,
+                //             // backgroundColor: Colors.white,
+                //             backgroundColor: Colors
+                //                 .orange.shade100,
+                //             title:  Text(
+                //               'order'.tr,
+                //               style: const TextStyle(
+                //                 fontSize: 22,
+                //                 fontFamily: ConstFont.poppinsMedium,
+                //                 color: Colors.black,
+                //               ),
+                //               overflow: TextOverflow
+                //                   .ellipsis,
+                //             ),
+                //             content: Text(
+                //               'orderdes'.tr,
+                //               style: const TextStyle(
+                //                 fontFamily: ConstFont.poppinsRegular,
+                //                 fontSize: 16,
+                //                 color: Colors.black,
+                //               ),
+                //               maxLines: 2,
+                //               overflow: TextOverflow
+                //                   .ellipsis,
+                //             ),
+                //             actions: [
+                //               InkWell(
+                //                 borderRadius:
+                //                 BorderRadius
+                //                     .circular(
+                //                     5),
+                //                 onTap: () {
+                //                   Get.back();
+                //                 },
+                //                 splashColor:
+                //                 ConstColour
+                //                     .btnHowerColor,
+                //                 child: Container(
+                //                   decoration:
+                //                   BoxDecoration(
+                //                     // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                //                       borderRadius:
+                //                       BorderRadius.circular(
+                //                           5),
+                //                       color: Colors
+                //                           .red),
+                //                   child:
+                //                   Padding(
+                //                     padding:
+                //                     const EdgeInsets.all(6.0),
+                //                     child: Text('cancel'.tr,
+                //                       style:
+                //                       const TextStyle(
+                //                         fontFamily:
+                //                         ConstFont
+                //                             .poppinsRegular,
+                //                         fontSize:
+                //                         12,
+                //                         color: Colors
+                //                             .white,
+                //                       ),
+                //                       overflow:
+                //                       TextOverflow
+                //                           .ellipsis,
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //               InkWell(
+                //                 borderRadius:
+                //                 BorderRadius.circular(5),
+                //                 onTap: () {
+                //                   userProductController.assignComplete(
+                //                       userProductController.orderUserId,
+                //                       userProductController.reasonController.text
+                //                   );
+                //                   Get.back();
+                //                 },
+                //                 splashColor:
+                //                 ConstColour
+                //                     .btnHowerColor,
+                //                 child: Container(
+                //                   decoration:
+                //                   BoxDecoration(
+                //                     // gradient: const LinearGradient(colors: [Colors.white,Colors.black26]),
+                //                       borderRadius:
+                //                       BorderRadius.circular(
+                //                           5),
+                //                       color: Colors
+                //                           .black),
+                //                   child:
+                //                    Padding(
+                //                     padding:
+                //                     const EdgeInsets
+                //                         .all(
+                //                         6.0),
+                //                     child: Text(
+                //                       'ok'.tr,
+                //                       style:
+                //                       const TextStyle(
+                //                         fontFamily:
+                //                         ConstFont
+                //                             .poppinsRegular,
+                //                         fontSize:
+                //                         12,
+                //                         color: Colors
+                //                             .white,
+                //                       ),
+                //                       overflow:
+                //                       TextOverflow
+                //                           .ellipsis,
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ],
+                //           );
+                //         },
+                //       );
+                //
+                //
+                //       // homeController.loading.value = true;
+                //       // userProductController.assignComplete(
+                //       //     userProductController.orderUserId,
+                //       //     userProductController.reasonController.text
+                //       // );
+                //
+                //     },
+                //     btnName: "complete".tr,
+                //   ),
+                // ),
+
+
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        minimumSize: Size(deviceWidth * 0.4, deviceHeight * 0.06),
+                        maximumSize: Size(deviceWidth * 1.0, deviceHeight * 0.07),
+                        backgroundColor: ConstColour.primaryColor
+                    ),
+                    onPressed: homeController.loading.value.obs == true ? null :  () {
 
                       showCupertinoModalPopup(
                         filter: const ColorFilter.mode(
@@ -187,7 +346,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       color: Colors
                                           .black),
                                   child:
-                                   Padding(
+                                  Padding(
                                     padding:
                                     const EdgeInsets
                                         .all(
@@ -224,9 +383,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       // );
 
                     },
-                    btnName: "complete".tr,
-                  ),
-                ),
+
+                    child:  homeController.loading.value.obs == true
+                        ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    ) : Text("complete".tr,style:
+                    const TextStyle(fontFamily: ConstFont.poppinsRegular,fontWeight: FontWeight.w600,
+                        fontSize: 20,color: Colors.black),overflow: TextOverflow.ellipsis,textAlign
+                        : TextAlign.center,)),
+
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
@@ -234,7 +399,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       side: const BorderSide(color: Colors.white),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        minimumSize: Size(deviceWidth * 0.9, deviceHeight * 0.06),
+                        minimumSize: Size(deviceWidth * 0.4, deviceHeight * 0.06),
                         maximumSize: Size(deviceWidth * 1.0, deviceHeight * 0.07),
                       backgroundColor: Colors.black
                     ),

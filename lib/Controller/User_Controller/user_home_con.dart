@@ -73,8 +73,7 @@ class UserHomeCon extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(
-        Uri.parse(ConstApi.getUserOrder),
+    final response = await http.get(Uri.parse(ConstApi.getUserOrder),
         headers: headers);
 
     if (response.statusCode == 200) {

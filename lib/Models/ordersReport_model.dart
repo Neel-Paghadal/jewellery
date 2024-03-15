@@ -24,8 +24,8 @@ class OrdersReportModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "orders": List<dynamic>.from(orders.map((x) => x.toJson())),
-      };
+    "orders": List<dynamic>.from(orders.map((x) => x.toJson())),
+  };
 }
 
 class OrderReport {
@@ -46,20 +46,20 @@ class OrderReport {
   });
 
   factory OrderReport.fromJson(Map<String, dynamic> json) => OrderReport(
-        id: json["id"],
-        orderId: json["orderId"],
-        image: json["image"],
-        dateCreated: json["dateCreated"],
-        orderStatus: json["orderStatus"],
-        party: json["party"],
-      );
+    id: json["id"],
+    orderId: json["orderId"],
+    image: json["image"],
+    dateCreated: json["dateCreated"],
+    orderStatus: json["orderStatus"],
+    party: json["party"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "orderId": orderId,
-        "image": image,
-        "dateCreated": dateCreated,
-        "orderStatus": orderStatus,
-        "party": party
-      };
+    "id": id,
+    "orderId": orderId,
+    "image": image,
+    "dateCreated": dateCreated,
+    "orderStatus": orderStatus,
+    "party": party
+  };
 }

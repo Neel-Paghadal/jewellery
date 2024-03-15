@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:jewellery_user/Common/checkInternet.dart';
 import 'package:jewellery_user/Language%20Module/languages.dart';
-import 'package:jewellery_user/Screen/splashScreen.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
-
-
-import 'Screen/videoplayer_screen.dart';
-
+import 'package:jewellery_user/Screen/splashScreen.dart';
+import 'Common/checkInternet.dart';
 
 void main() {
-
   WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  final ImagePickerPlatform imagePickerImplementation = ImagePickerPlatform.instance;
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  final ImagePickerPlatform imagePickerImplementation =
+      ImagePickerPlatform.instance;
   if (imagePickerImplementation is ImagePickerAndroid) {
     imagePickerImplementation.useAndroidPhotoPicker = true;
   }
@@ -42,22 +38,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Jewellery',
-      locale: const Locale('en','US'),
-      // locale: Locale('gu','IN'),
-      // locale: Locale('hi','IN'),
+        title: 'Jewellery',
+        locale: const Locale('en', 'US'),
+        // locale: Locale('gu','IN'),
+        // locale: Locale('hi','IN'),
 
-      translations: Languages(),
-      // fallbackLocale: Locale('en','US'),
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(splashColor: Colors.white,useMaterial3: false),
-      // home:  MyHomePage(),
-      home :  const InternetStatus(child: SplashScreen(),)
-      // home :  const ProductDetailPage()
-      // home :  DemoHome()
-      // home: const ReportScreen(),
-    );
+        translations: Languages(),
+        // fallbackLocale: Locale('en','US'),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(splashColor: Colors.white, useMaterial3: false),
+        home: const InternetStatus(
+          child: SplashScreen(),
+        ));
   }
 }
-
-

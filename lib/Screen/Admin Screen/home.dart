@@ -383,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(11),
                                     onTap: () {
-                                      productController.isFilterApplyed.value = false;
+                                      productController.clearController();
                                       Get.to(() => const ProductDetailScreen());
                                       productController.productIndex = index;
                                       productController.getProductDetailCall(

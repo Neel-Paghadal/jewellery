@@ -49,11 +49,8 @@ class User {
       userName: json["userName"],
       status: json["status"],
       code: json["code"],
-      reason: (json["reason"] == null || json['reason'] == "")
-          ? ""
-          : json["reason"],
-      notes:
-          (json["notes"] == null || json['notes'] == "") ? "" : json["notes"],
+      reason: (json["reason"] == null || json['reason'] == "") ? "" : json["reason"],
+      notes: (json["notes"] == null || json['notes'] == "") ? "" : json["notes"],
       userId: json["userId"],
       needToReassign: json["needToReassign"]);
 

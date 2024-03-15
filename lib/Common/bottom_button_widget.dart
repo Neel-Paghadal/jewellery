@@ -28,7 +28,10 @@ class NextButton extends StatelessWidget {
           child:  homeController.loading.value.obs == true
           ? const CircularProgressIndicator(
         color: Colors.white,
-      ) : Text(btnName,style: const TextStyle(fontFamily: ConstFont.poppinsRegular,fontWeight: FontWeight.w600, fontSize: 20,color: Colors.black),overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,)),
+      ) : Text(btnName,style:
+          const TextStyle(fontFamily: ConstFont.poppinsRegular,fontWeight: FontWeight.w600,
+              fontSize: 20,color: Colors.black),overflow: TextOverflow.ellipsis,textAlign
+              : TextAlign.center,)),
     );
   }
 
