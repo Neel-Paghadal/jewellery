@@ -33,7 +33,7 @@ class UserProfileDetailController extends GetxController{
     if (response.statusCode == 200) {
       // isLoaderShow.value = false;
       final responseData = userProfileDetailModelFromJson(response.body);
-      debugPrint("USER LIST " + responseData.toString());
+      debugPrint("USER LIST $responseData");
       userDetailList.clear();
       userDetailList.add(responseData.user);
       debugPrint('Response: ${response.body}');

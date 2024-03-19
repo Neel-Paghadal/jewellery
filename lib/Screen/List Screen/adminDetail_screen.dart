@@ -381,20 +381,9 @@ class _AdminDetailScreenState extends State<AdminDetailScreen> {
                                                         .loadImageColor),
                                             errorWidget:
                                                 (context, url, error) =>
-                                                    const Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(Icons.error, size: 45),
-                                                Text(
-                                                  "Image",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontFamily: ConstFont
-                                                          .poppinsMedium,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
+                                                    Image.asset("asset/icons/no_image_available.png",
+                                                        width:
+                                                        double.infinity)
                                           ),
                                         ),
                                       ],

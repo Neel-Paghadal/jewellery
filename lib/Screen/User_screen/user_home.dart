@@ -362,8 +362,9 @@ class _UserHomeState extends State<UserHome> {
                                                           .loadImageColor),
                                               errorWidget:
                                                   (context, url, error) =>
-                                                      const Icon(Icons.error,
-                                                          size: 30),
+                                                      Image.asset("asset/icons/no_image_available.png",
+                                                          width:
+                                                          double.infinity),
                                             ),
                                     )),
                                 // leading: Container(

@@ -65,8 +65,7 @@ class ProductController extends GetxController {
     };
 
     final response = await http.get(
-        Uri.parse(
-            ConstApi.baseUrl+"api/Order/GetOrderDetails?orderId=$id"),
+        Uri.parse("${ConstApi.baseUrl}api/Order/GetOrderDetails?orderId=$id"),
         headers: headers);
     if (response.statusCode == 200) {
       debugPrint(response.body);
@@ -104,7 +103,7 @@ class ProductController extends GetxController {
   void replaceString(String imageUrl) {
     strings.add(imageUrl);
     // Common string to remove
-    String commonStringToRemove = ConstApi.baseUrl+"Files/";
+    String commonStringToRemove = "${ConstApi.baseUrl}Files/";
 
     // Remove common string from each element in the list
     modifiedStrings = strings.map((str) {
@@ -117,7 +116,7 @@ class ProductController extends GetxController {
   }
 
   void passOldImage() {
-    productDetail[0].image = "${ConstApi.baseFilePath + modifiedStrings[0]}";
+    productDetail[0].image = ConstApi.baseFilePath + modifiedStrings[0];
     debugPrint(productDetail[0].image);
     isLoading.value = false;
   }
@@ -294,7 +293,7 @@ class ProductController extends GetxController {
         homeController.pageIndex = 0;
         homeController.pageSize = 6;
         homeController.loadProducts();
-        Get.to(() => HomeScreen());
+        Get.to(() => const HomeScreen());
         Utils().toastMessage(json.decode(response.body)['message']);
         // Utils().toastMessage("Order Successfull");
 

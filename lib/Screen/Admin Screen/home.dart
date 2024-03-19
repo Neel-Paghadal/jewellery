@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,6 +17,7 @@ import 'package:jewellery_user/Screen/loader.dart';
 import 'package:jewellery_user/Screen/Admin%20Screen/productdetail.dart';
 import 'package:jewellery_user/Screen/videoplayer_screen.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:video_compress/video_compress.dart';
 import '../../ConstFile/constPreferences.dart';
 import 'order.dart';
 import 'report_search_Screen.dart';
@@ -457,9 +457,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             errorWidget: (context,
                                                                     url,
                                                                     error) =>
-                                                                const Icon(
-                                                                    Icons.error,
-                                                                    size: 45),
+                                                                Image.asset("asset/icons/no_image_available.png",
+                                                                    width:
+                                                                    double.infinity),
                                                           ),
                                                   ),
                                                 ),
@@ -826,6 +826,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   ConstPreferences().clearPreferences();
                   SystemNavigator.pop();
+                  CachedNetworkImageProvider('').cacheManager?.emptyCache();
+
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(6.0),

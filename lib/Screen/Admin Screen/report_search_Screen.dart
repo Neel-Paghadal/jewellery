@@ -339,7 +339,9 @@ class _ReportSearchScreenState extends State<ReportSearchScreen> {
                                                           color: ConstColour
                                                               .loadImageColor),
                                                   errorWidget: (context, url, error) =>
-                                                      const Icon(Icons.error, size: 30),
+                                                      Image.asset("asset/icons/no_image_available.png",
+                                                          width:
+                                                          double.infinity)
                                                 ),
                                         )),
                                     title: Text(

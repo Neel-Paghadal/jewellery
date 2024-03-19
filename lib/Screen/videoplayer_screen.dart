@@ -187,6 +187,9 @@ class ImageItem extends StatelessWidget {
       height: 150,
       width: 150,
       fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Image.asset("asset/icons/no_image_available.png",
+          width:
+          double.infinity,),
     );
   }
 }
@@ -216,6 +219,9 @@ class VideoItem extends StatelessWidget {
                   snapshot.data as Uint8List,
                   fit: BoxFit.fill,
                   filterQuality: FilterQuality.high,
+                  errorBuilder:  (context, error, stackTrace) => Image.asset("asset/icons/no_video.png",
+                      width:
+                      double.infinity),
                 ),
                 const Icon(
                   CupertinoIcons.play_circle_fill,
@@ -300,7 +306,7 @@ class _VideoItemLocalState extends State<VideoItemLocal> {
           ),
         ],
       )
-          : Center(
+          : const Center(
         child: CircularProgressIndicator(),
       ),
     );
@@ -342,6 +348,9 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
           backgroundColor: Colors.grey,
           bufferedColor: ConstColour.primaryColor,
         ),
+        errorBuilder: (context, errorMessage) => Image.asset("asset/icons/no_video.png",
+            width:
+            double.infinity),
         placeholder: const Center(
           child: CircularProgressIndicator(color: ConstColour.primaryColor,),
         ),
@@ -360,7 +369,7 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
         ) : const CircularProgressIndicator(color: ConstColour.primaryColor,),
         IconButton(onPressed: () {
           Get.back();
-        }, icon: Icon(Icons.arrow_back_outlined,size: 28,color: ConstColour.primaryColor,))
+        }, icon: const Icon(Icons.arrow_back_outlined,size: 28,color: ConstColour.primaryColor,))
       ],
     );
   }
@@ -423,7 +432,7 @@ class _VideoPlayerDialogLocalState extends State<VideoPlayerDialogLocal> {
             onPressed: () {
               Get.back();
             },
-            icon: Icon(Icons.arrow_back_outlined,size: 28,color: ConstColour.primaryColor,)
+            icon: const Icon(Icons.arrow_back_outlined,size: 28,color: ConstColour.primaryColor,)
         ),
       ],
     );

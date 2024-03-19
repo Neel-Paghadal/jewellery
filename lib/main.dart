@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jewellery_user/Language%20Module/languages.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
+import 'package:jewellery_user/Screen/Admin%20Screen/order.dart';
 import 'package:jewellery_user/Screen/splashScreen.dart';
 import 'Common/checkInternet.dart';
 
@@ -49,6 +50,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(splashColor: Colors.white, useMaterial3: false),
         home: const InternetStatus(
           child: SplashScreen(),
-        ));
+        )
+
+
+    );
   }
 }

@@ -719,6 +719,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                     const BoxDecoration(
                                       color: Colors.black,
                                     ),
+                                    errorBuilder: (context, error, stackTrace) => Image.asset("asset/icons/no_image_available.png",
+                                        width:
+                                        double.infinity),
                                     loadingBuilder: (context,
                                         ImageChunkEvent?
                                         loadingProgress) {
@@ -788,9 +791,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             Curves.easeInOutQuad,
                             // placeholder: (context, url) => const Icon(Icons.image,size: 65, color: ConstColour.loadImageColor),
                             errorWidget: (context, url, error) =>
-                            const Icon(
-                                Icons.error,
-                                size: 45),
+                                Image.asset("asset/icons/no_image_available.png",
+                                    width:
+                                    double.infinity),
                           ),
                         ),
                       ),
@@ -876,6 +879,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               );
                                             }
                                           },
+                                          errorBuilder: (context, error, stackTrace) => Image.asset("asset/icons/no_image_available.png",
+                                              width:
+                                              double.infinity),
                                           imageProvider:
                                           NetworkImage(
                                             userProductController.productDetail[0].orderImages[index].path,

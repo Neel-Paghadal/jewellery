@@ -205,11 +205,9 @@
 
 //new
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jewellery_user/ConstFile/constApi.dart';
@@ -263,6 +261,10 @@ class OrderController extends GetxController {
     isLoadingSec.value = false;
   }
 
+  int _requestCount = 0;
+
+
+
   var filePath;
 
   RxDouble progressed = 0.0.obs;
@@ -270,6 +272,9 @@ class OrderController extends GetxController {
 
   Future<void> createNewOrder(String name, String party, double carat, double weight, String deliveryDate, String description,
       File image, List<File> subImages) async {
+    final stopwatch = Stopwatch();
+    stopwatch.start(); // Start measuring time
+
     final String? token = await ConstPreferences().getToken(); // Your JWT token
     var file = File(image.path);
     // Prepare the data to be sent in the request body
@@ -293,7 +298,11 @@ class OrderController extends GetxController {
     debugPrint(request.toString());
     try {
       // Send the request
-      var response = await request.send();
+      var response = await request.send().timeout(Duration(minutes: 5));
+
+      stopwatch.stop(); // Stop measuring time
+      print('Request took: ${stopwatch.elapsedMilliseconds} milliseconds');
+
       if (response.statusCode == 201) {
         // Successful request
         debugPrint(response.stream.bytesToString().toString());
@@ -310,8 +319,8 @@ class OrderController extends GetxController {
         homeController.loading.value = false;
         // Handle errors
         debugPrint(response.stream.bytesToString().toString());
-        print(
-            'Failed to create new order. Status code: ${response.statusCode}');
+        print('Failed to create new order. Status code: ${response.statusCode}');
+        Utils().toastMessage("Failed To Create New Order");
         print('Response body: ${await response.stream.bytesToString()}');
       }
     } catch (e) {

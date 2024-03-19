@@ -72,12 +72,12 @@ class UserListScreenController extends GetxController{
     };
 
     final response = await http.get(
-        Uri.parse(ConstApi.baseUrl+"api/User/Users?PageNumber=$pageIndex&PageSize=$pageSize"),
+        Uri.parse("${ConstApi.baseUrl}api/User/Users?PageNumber=$pageIndex&PageSize=$pageSize"),
         headers: headers);
     if (response.statusCode == 200) {
       isLoaderShow.value = false;
       final responseData = userDetailModelFromJson(response.body);
-      debugPrint("USER LIST " + responseData.toString());
+      debugPrint("USER LIST $responseData");
       usersList.addAll(responseData.users);
       debugPrint('Response: ${response.body}');
       // Process the data as needed

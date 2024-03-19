@@ -35,11 +35,11 @@ class ReportScreenController extends GetxController {
       'Authorization': 'Bearer $token',
     };
 
-    final response = await http.get(Uri.parse(ConstApi.baseUrl+"api/Report/OrderDetails?orderId=$orderId"),
+    final response = await http.get(Uri.parse("${ConstApi.baseUrl}api/Report/OrderDetails?orderId=$orderId"),
         headers: headers);
     if (response.statusCode == 200) {
       final responseData = reportDetailModelFromJson(response.body);
-      debugPrint("REPORT DETAIL LIST " + responseData.toString());
+      debugPrint("REPORT DETAIL LIST $responseData");
       isLoaderShow.value = false;
       reportDetail.clear();
       reportDetail.addAll(responseData.users);

@@ -424,6 +424,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                             );
                                                           }
                                                         },
+                                                        errorBuilder:  (context, error, stackTrace) => Image.asset("asset/icons/no_image_available.png",
+                                                            width:
+                                                            double.infinity),
                                                         imageProvider: NetworkImage(
                                                             productController
                                                                 .productDetail[
@@ -479,9 +482,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                       // placeholder: (context, url) => const Icon(Icons.image,size: 65, color: ConstColour.loadImageColor),
                                                       errorWidget: (context,
                                                               url, error) =>
-                                                          const Icon(
-                                                              Icons.error,
-                                                              size: 45),
+                                                          Image.asset("asset/icons/no_image_available.png",
+                                                              width:
+                                                              double.infinity),
                                                     ),
                                                   ),
                                           ),
@@ -829,6 +832,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                                               );
                                                                             }
                                                                           },
+                                                                              errorBuilder: (context, error, stackTrace) => Image.asset("asset/icons/no_image_available.png",
+                                                                                  width:
+                                                                                  double.infinity),
                                                                           imageProvider:
                                                                               NetworkImage(
                                                                             item,
